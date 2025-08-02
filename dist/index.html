@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>一线吃瓜网</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="swiper.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -56,74 +57,126 @@
                 </div>
                 
                 <!-- 📝 修改用户名：直接修改下面引号内的文字 -->
-                <h1 class="profile-name" id="profileName">吃瓜第一线</h1>  <!-- ← 修改这里：你的名字 -->
+                <h1 class="profile-name" id="profileName">www.636.icu</h1>  <!-- ← 修改这里：你的名字 -->
                 
                 <!-- 📝 修改个人简介：直接修改下面引号内的文字 -->
-                <p class="profile-bio" id="profileBio">[ 636.icu-热门大瓜·24小时不间断更新 ]</p>  <!-- ← 修改这里：你的简介 -->
+                <p class="profile-bio" id="profileBio" style="font-size: 28px; color: #fff;">一线吃瓜网</p>  <!-- ← 修改这里：你的简介 -->
                 
                 <!-- ========================================
                      📊 统计数据区域 - 修改指南 2️⃣
                      ======================================== -->
-                <div class="profile-stats">
-                    <div class="stat-item">
-                        <!-- 📊 修改关注者数量：修改下面的数字 -->
-                        <span class="stat-number">→ →</span>  <!-- ← 修改这里：关注者数量 -->
-                        <span class="stat-label">
-                        网红黑料    . . . . . . . . . . . . .  
-                        校园大瓜 </span>
-                    </div>
-            <!-- ========================================
-                 🔗 链接区域 - 修改指南 3️⃣ 和 4️⃣
-                 ======================================== -->
-            <section class="links-section">
-                <div class="main-links">
-                    
-                    <!-- 🔗 第一个链接 - 修改指南 3️⃣ -->
-                    <a href="https://f.wps.cn/g/mVSCm5ZJ/" class="main-link gradient-1" data-analytics="官网">  <!-- ← 修改这里：链接地址 -->
+                     <style type="text/css">
+                     	.profile{position: relative; overflow: hidden;border: 4px solid rgba(2555,255,255,.3);border-radius: 10px;}
+                     	.profile img{width: 100% !important;height: auto !important;display: block;}
+                     	.profile .swiper-button-next{color: #fff;}
+                     	.profile .swiper-button-prev{color: #fff;}
+                     	.swiper-button-next:after, .swiper-button-prev:after{font-size: 20px;}
+                     	.fgt{height: 20px;}
+                     	.swiper{padding-bottom: 25px;}
+                     	.main-link{width: 60%; margin:10px auto;height: 45px;}
+                     </style>
+                     <!--这里是图片切换-->
+                <div class="profile">
+                    <div class="swiper mySwiper">
+    					<div class="swiper-wrapper">
+      						<div class="swiper-slide"><img src="a1.png" style="width: 100%;"/></div>
+      						<div class="swiper-slide"><img src="a2.png" style="width: 100%;"/></div>
+      						<div class="swiper-slide"><img src="a3.png" style="width: 100%;"/></div>
+      					</div>
+					    <div class="swiper-button-next"></div>
+					    <div class="swiper-button-prev"></div>
+					    <div class="swiper-pagination"></div>
+					    <a href="https://f.wps.cn/g/mVSCm5ZJ/" class="main-link gradient-1" data-analytics="官网">  <!-- ← 修改这里：链接地址 -->
                         <!-- 🍉 西瓜图标 -->
                         <span class="watermelon-icon">🍉</span>
                         <!-- 📝 修改链接标题：直接修改下面的文字 -->
-                        <span>八 月 新 瓜 </span>  <!-- ← 修改这里：链接标题 -->
+                        
+                        <span>八月新瓜</span>
+                        <b>获取<br />资源</b> 
                         <i class="fas fa-arrow-right arrow"></i>
                     </a>
-                    
-                    <!-- 🔗 第二个链接 - 修改指南 3️⃣ -->
-                    <a href="https://f.wps.cn/g/mVSCm5ZJ/" class="main-link gradient-2" data-analytics="作品集">  <!-- ← 修改这里：链接地址 -->
+	  				</div>
+                </div>
+                <div class="fgt"></div>
+                <div class="profile">
+                    <div class="swiper mySwiper">
+    					<div class="swiper-wrapper">
+      						<div class="swiper-slide"><img src="a4.png" style="width: 100%;"/></div>
+      						<div class="swiper-slide"><img src="a5.png" style="width: 100%;"/></div>
+      						<div class="swiper-slide"><img src="a6.png" style="width: 100%;"/></div>
+      					</div>
+      					<a href="https://f.wps.cn/g/mVSCm5ZJ/" class="main-link gradient-2" data-analytics="作品集">  <!-- ← 修改这里：链接地址 -->
                         <!-- 💾 网盘图标 -->
                         <i class="fas fa-cloud"></i>
                         <!-- 📝 修改链接标题：直接修改下面的文字 -->
-                        <span>海量资源</span>  <!-- ← 修改这里：链接标题 -->
+                        <span>女性向资源</span>  <!-- ← 修改这里：链接标题 -->
+                        <b>获取<br />资源</b> 
                         <i class="fas fa-arrow-right arrow"></i>
                     </a>
-                    
-                    <!-- 🔗 第三个链接 - 修改指南 3️⃣ -->
-                    <a href="https://qm.qq.com/q/wURvBQkDHU" class="main-link gradient-3" data-analytics="博客">  <!-- ← 修改这里：链接地址 -->
+					    <div class="swiper-button-next"></div>
+					    <div class="swiper-button-prev"></div>
+					    <div class="swiper-pagination"></div>
+	  				</div>
+                </div>
+                 <div class="fgt"></div>
+                <div class="profile">
+                    <div class="swiper mySwiper">
+    					<div class="swiper-wrapper">
+      						<div class="swiper-slide"><img src="a7.png" style="width: 100%;"/></div>
+      						<div class="swiper-slide"><img src="a8.png" style="width: 100%;"/></div>
+      						<div class="swiper-slide"><img src="a9.png" style="width: 100%;"/></div>
+    					</div>
+    					 <a href="https://f.wps.cn/g/mVSCm5ZJ/" class="main-link gradient-3" data-analytics="博客">  <!-- ← 修改这里：链接地址 -->
                         <!-- 🐧 QQ企鹅图标 -->
                         <span class="penguin-icon">🐧</span>
                         <!-- 📝 修改链接标题：直接修改下面的文字 -->
-                        <span>一 键 进 群</span>  <!-- ← 修改这里：链接标题 -->
+                        <span>大尺度影视</span>  <!-- ← 修改这里：链接标题 -->
+                        <b>获取<br />资源</b> 
                         <i class="fas fa-arrow-right arrow"></i>
                     </a>
-                    
-                    <!-- 
-                    ➕ 添加新链接：复制上面的 <a> 标签，修改 href 和文字
-                    🎨 渐变颜色：gradient-1 (蓝紫), gradient-2 (橙红), gradient-3 (绿青)
-                    🎨 常用图标：
-                    - fas fa-heart (爱心)
-                    - fas fa-music (音乐)
-                    - fas fa-camera (相机)
-                    - fas fa-envelope (邮件)
-                    - fas fa-phone (电话)
-                    - fas fa-map-marker-alt (位置)
-                    - fas fa-star (星星)
-                    - fas fa-shopping-cart (购物车)
-                    -->
-                    
+					    <div class="swiper-button-next"></div>
+					    <div class="swiper-button-prev"></div>
+					    <div class="swiper-pagination"></div>
+	  				</div>
                 </div>
+                <!--这里是图片切换-->
             </section>
 
-            <!-- ========================================
-       
+           
+            <section class="qr-section">
+                <div class="qr-container">
+                    <!--<div class="qr-code" id="qrCode">
+                        <canvas id="qrCanvas"></canvas>
+                    </div>-->
+                    <p class="qr-text">一线吃瓜网</p>  <!-- ← 修改这里：二维码说明 -->
+                    <style type="text/css">
+                    	.pr_wbnr h3{font-size: 12px; line-height: 22px; color: #333;text-align: left;}
+                    </style>
+                    <div class="pr_wbnr">
+                    	<h3 style="overflow: hidden; text-overflow:ellipsis; white-space: nowrap;">一线吃瓜网攻克各种资源难题，带来最新最快最全的吃瓜黑料啊啊啊啊</h3>	
+                    	<h3 style="overflow: hidden; text-overflow:ellipsis; white-space: nowrap;">明星、网红、女神、校园…………</h3>	
+                    	<h3 style="overflow: hidden; text-overflow:ellipsis; white-space: nowrap;">让您不错过任何一个热门大瓜</h3>	
+                    	<p style="text-align: right; color: #ff0000;font-weight: bold; font-size: 12px; margin-top: 10px;">非法律允许地区以及18岁以下用户禁止访问！</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- 底部工具栏 -->
+        <footer class="toolbar" style="z-index: 100;">
+            <button class="tool-btn" id="shareBtn">
+                <i class="fas fa-share-alt"></i>
+                <span>分享</span>
+            </button>
+            <!--<button class="tool-btn" id="themeBtn">
+                <i class="fas fa-palette"></i>
+                <span>主题</span>
+            </button>
+            <button class="tool-btn" id="analyticsBtn">
+                <i class="fas fa-chart-line"></i>
+                <span>统计</span>
+            </button>-->
+        </footer>
 
         <!-- 分享模态框 -->
         <div class="modal" id="shareModal">
@@ -145,8 +198,28 @@
             </div>
         </div>
     </div>
-
+	
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
     <script src="simple-script.js"></script>
+    <script src="swiper.min.js"></script>
 </body>
 </html> 
+<script>
+    var swiper1 = new Swiper(".profile .mySwiper", {
+      spaceBetween: 0,
+      centeredSlides: true,
+      loop:true,
+      autoplay: {
+        delay: 2500,
+        disableOnInteraction: false,
+      },
+      pagination: {
+        el: ".profile .swiper-pagination",
+        clickable: true,
+      },
+      navigation: {
+        nextEl: ".profile .swiper-button-next",
+        prevEl: ".profile .swiper-button-prev",
+      },
+    });
+  </script>

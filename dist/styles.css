@@ -210,14 +210,12 @@ body::before {
 
 /* 名称和简介 */
 .profile-name {
-    font-size: 2rem;
-    font-weight: 700;
-    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: 12px;
-    letter-spacing: -0.025em;
+    font-size: 1.4rem;
+    font-weight: 400;
+    letter-spacing: -0.025em; color: #000;
+   
+    
+    
 }
 
 .profile-bio {
@@ -640,11 +638,11 @@ body::before {
     flex-direction: column;
     gap: 16px;
 }
-
-.main-link {
+.main-link b{font-size: 10px;line-height: 1.5; font-weight: 400; margin-right: 5px;}
+.main-link { position: relative;
     display: flex;
     align-items: center;
-    padding: 22px 28px;
+    padding: 22px 12px;
     background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(12px);
     border-radius: 16px;
@@ -681,7 +679,7 @@ body::before {
 
 .main-link span:first-child,
 .main-link i:first-child {
-    margin-right: 16px;
+    margin-right: 5px;
     font-size: 1.4rem;
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
@@ -885,7 +883,7 @@ body::before {
         rgba(248, 250, 252, 0.9) 100%);
     backdrop-filter: blur(16px);
     border-radius: 20px;
-    padding: 36px;
+    padding:15px 20px;
     box-shadow: 
         0 8px 32px rgba(0, 0, 0, 0.12),
         0 4px 16px rgba(99, 102, 241, 0.08),
@@ -1151,15 +1149,15 @@ body::before {
 /* 工具栏升级 */
 .toolbar {
     position: fixed;
-    bottom: 24px;
-    left: 50%;
+    bottom: 20px;
+    right: 0px;
     transform: translateX(-50%);
     display: flex;
     gap: 8px;
     background: rgba(255, 255, 255, 0.9);
     backdrop-filter: var(--backdrop-blur);
-    padding: 16px 20px;
-    border-radius: 28px;
+    padding: 0 5px;
+    border-radius: 10px;
     box-shadow: var(--shadow-heavy);
     border: 1px solid rgba(255, 255, 255, 0.3);
 }
