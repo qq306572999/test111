@@ -1,580 +1,740 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="format-detection" content="telephone=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link href="yibazhan/css/layui.css" rel="stylesheet">
-    <link rel="stylesheet" href="yibazhan/css/style.css">
-    <title>资源总站</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一线吃瓜网</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="swiper.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- 整合所有样式：轮播 + 小雨客服（含QQ式头像布局） -->
+    <style>
+        /* 原页面轮播样式 */
+        .profile{
+            position: relative; 
+            overflow: hidden;
+            border: 4px solid rgba(255,255,255,.3);
+            border-radius: 10px;
+        }
+        .profile img{
+            width: 100% !important;
+            height: auto !important;
+            display: block;
+        }
+        .profile .swiper-button-next,
+        .profile .swiper-button-prev{
+            color: #fff;
+        }
+        .swiper-button-next:after, 
+        .swiper-button-prev:after{
+            font-size: 20px;
+        }
+        .fgt{height: 20px;}
+        .swiper{padding-bottom: 25px;}
+        .main-link{
+            width: 60%; 
+            margin:10px auto;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            text-decoration: none;
+        }
+        .pr_wbnr h3{
+            font-size: 12px; 
+            line-height: 22px; 
+            color: #333;
+            text-align: left;
+        }
+
+        /* 小雨客服样式：QQ式聊天布局（头像+气泡） */
+        /* 1. 触发按钮 */
+        .service-trigger-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: #0084ff;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0,132,255,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 9998;
+            transition: all 0.3s;
+        }
+        .service-trigger-btn:hover {
+            transform: scale(1.1);
+            background: #0073e6;
+        }
+
+        /* 2. 客服弹窗 */
+        .service-popup {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 380px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background: #fff;
+            overflow: hidden;
+            font-family: "Microsoft YaHei", sans-serif;
+            display: none;
+            z-index: 9999;
+            flex-direction: column;
+        }
+
+        /* 3. 弹窗头部 */
+        .popup-header {
+            padding: 12px 16px;
+            background: #f5f5f5;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+        .service-name {
+            font-weight: 600;
+            color: #333;
+            margin-right: 8px;
+            font-size: 15px;
+        }
+        .online-status {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #4cd964;
+            margin-right: 4px;
+            animation: blink 1.5s infinite;
+        }
+        .status-text {
+            font-size: 12px;
+            color: #666;
+        }
+        .popup-close {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #999;
+            transition: all 0.2s;
+        }
+        .popup-close:hover {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        /* 4. 聊天消息区域：核心QQ式布局 */
+        .message-container {
+            height: 400px;
+            padding: 16px;
+            overflow-y: auto;
+            background: #fafafa;
+            flex: 1;
+        }
+        /* 消息行容器：头像+气泡 */
+        .message-row {
+            margin-bottom: 16px;
+            display: flex; /* 横向排列：头像+气泡 */
+            clear: both;
+        }
+        /* 客服消息：头像居左，气泡在右 */
+        .service-message-row {
+            align-items: flex-start; /* 气泡顶部与头像顶部对齐 */
+        }
+        /* 用户消息：头像居右，气泡在左（如需用户头像可启用） */
+        .user-message-row {
+            flex-direction: row-reverse; /* 反转顺序：气泡左，头像右 */
+            align-items: flex-start;
+        }
+
+        /* 小雨头像样式（b1.png） */
+        .service-avatar-img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 8px; /* 头像与气泡间距 */
+            border: 1px solid #eee;
+        }
+        /* 用户头像（如需可启用） */
+        .user-avatar-img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-left: 8px;
+            border: 1px solid #eee;
+            display: none; /* 暂不显示用户头像，如需显示改为block */
+        }
+
+        /* 消息气泡样式 */
+        .message-bubble {
+            max-width: 75%; /* 气泡最大宽度，避免过宽 */
+            padding: 10px 14px;
+            border-radius: 18px;
+            line-height: 1.5;
+            font-size: 14px;
+            position: relative;
+        }
+        /* 客服气泡：浅蓝色背景，左侧小三角 */
+        .service-bubble {
+            background: #e5f3ff;
+            color: #333;
+            border-top-left-radius: 4px; /* 左上角圆角减小，更像QQ */
+        }
+        /* 客服气泡左侧小三角（伪元素） */
+        .service-bubble::before {
+            content: '';
+            position: absolute;
+            left: -6px; /* 气泡左侧外部 */
+            top: 10px; /* 三角垂直位置 */
+            width: 0;
+            height: 0;
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+            border-right: 6px solid #e5f3ff; /* 与气泡背景同色 */
+        }
+
+        /* 用户气泡：蓝色背景，右侧小三角 */
+        .user-bubble {
+            background: #0084ff;
+            color: #fff;
+            border-top-right-radius: 4px;
+        }
+        /* 用户气泡右侧小三角 */
+        .user-bubble::before {
+            content: '';
+            position: absolute;
+            right: -6px;
+            top: 10px;
+            width: 0;
+            height: 0;
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+            border-left: 6px solid #0084ff;
+        }
+
+        /* 5. 用户上传图片预览 */
+        .user-images {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+            max-width: 75%;
+            margin-left: auto; /* 跟随用户消息右对齐 */
+        }
+        .user-images img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 1px solid #eee;
+        }
+
+        /* 6. 底部上传区域 */
+        .input-area {
+            padding: 12px 16px;
+            border-top: 1px solid #eee;
+            background: #fff;
+        }
+        .img-upload {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #0084ff;
+            color: #fff;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+        .img-upload:hover {
+            background: #0073e6;
+        }
+        #img-input {
+            display: none;
+        }
+        .upload-tip {
+            font-size: 12px;
+            color: #999;
+            margin-top: 8px;
+            text-align: center;
+        }
+        .warning-tip {
+            font-size: 12px;
+            color: #ff4d4f;
+            margin-top: 4px;
+            text-align: center;
+            display: none;
+        }
+
+        /* 在线状态闪烁动画 */
+        @keyframes blink {
+            0%,100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
 </head>
 <body>
-<div id="img-content" class="rich_media_wrp">
-    <h1 class="rich_media_title" id="activity-name">
-        <span>免费领取资源教程</span>
-    </h1>
+    <div class="container">
+        <!-- 背景动画 -->
+        <div class="background-animation">
+            <div class="floating-shape shape-1"></div>
+            <div class="floating-shape shape-2"></div>
+            <div class="floating-shape shape-3"></div>
+            <div class="floating-shape"></div>
+            <div class="floating-shape"></div>
+        </div>
 
-    <div id="meta_content" class="rich_media_meta_list">
-        <div class="developer-note">
-            <div class="developer-note-header">
-                <div class="developer-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#fff"
-                         viewBox="0 0 16 16">
-                        <path
-                                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z">
-                        </path>
-                    </svg>
-                </div>
-                <span class="developer-title">简单几步即可领取资源</span>
-            </div>
-            <div class="developer-content">
-                <strong>我们整理了全网吃瓜，黑料，同人动漫、黑白彩色漫画，动漫新番、3d同人绅士手游 全部免费！</strong>
-<br> <font color="red">资源整合不易，免费分享给大家，所以请大家帮忙宣传一下，设置了一个非常简单的小任务（30秒就可以搞定）<p>
-<span style="color: rgb(132, 63, 161);">
-<strong><span class="developer-title">你可以免费得到全网热门瓜，黑料，同人动漫+漫画800G，+JM软件+多款3d同人绅士手游 免费畅玩！！</span></strong></span></p>
-<span class="color_font" style="color: rgb(237, 0, 253);"><strong><span style="color: rgb(14, 0, 252);">不想做任务的</span><span style="color: rgb(254, 183, 0);">土豪</span><span style="color: rgb(14, 0, 252);">，也可以进付费</span>
-</strong></span></font>                                <div style="margin:0px;padding:0px;">
-                    <div style="margin:0px;padding:0px;">
-                        <div class="layui-btn-container" style="margin: 10px 0; text-align: center;"><a
-                                href="https://shop.zxmomo.com//details/07B0A4A5" target="_blank"
-                                class="layui-btn layui-btn-normal layui-btn-radius"
-                                style="font-size: 14px; font-weight: bold; padding: 0 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.15);">
-                            <i class="layui-icon layui-icon-cart"
-                               style="margin-right: 5px; font-size: 14px;"></i>直接购买
-                        </a>
-                        </div>
+        <!-- 主要内容 -->
+        <main class="profile-container">
+            <div class="shimmer-line"></div>
+            
+            <!-- 个人信息区域 -->
+            <section class="profile-header">
+                <div class="avatar-container">
+                    <img src="Tx.jpg" alt="头像" class="avatar" id="avatarImg">
+                    <div class="avatar-border"></div>
+                    <div class="decoration-dot"></div>
+                    <div class="decoration-dot"></div>
+                    <div class="decoration-dot"></div>
+                    <div class="decoration-dot"></div>
+                    <div class="admin-secret-entry" id="adminSecretEntry">
+                        <i class="fas fa-cog"></i>
                     </div>
                 </div>
-                            </div>
+                
+                <h1 class="profile-name" id="profileName">www.636.icu</h1>
+                <p class="profile-bio" id="profileBio" style="font-size: 28px; color: #fff;">一线吃瓜网</p>
 
-            <!-- 添加顶部图片展示 -->
-            <section class="center-text">
-                <div class="slideshow-container">
-                    <div class="slideshow-slide">
-                                        <img src="yibazhan/images/402146a7411f5ae2dfb5491c959a6b8b.jpg" onclick="showTaskTip()" alt="资源总站">
-                                   </div>                    <a class="slideshow-prev" onclick="changeSlide(-1)">❮</a>
-                    <a class="slideshow-next" onclick="changeSlide(1)">❯</a>
+                <!-- 第一组轮播（a1-a5） -->
+                <div class="profile">
+                    <div class="swiper mySwiper" id="swiperGroup1">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide"><img src="a1.png" style="width: 100%;" alt="第一组图1"/></div>
+                            <div class="swiper-slide"><img src="a2.png" style="width: 100%;" alt="第一组图2"/></div>
+                            <div class="swiper-slide"><img src="a3.png" style="width: 100%;" alt="第一组图3"/></div>
+                            <div class="swiper-slide"><img src="a4.png" style="width: 100%;" alt="第一组图4"/></div>
+                            <div class="swiper-slide"><img src="a5.png" style="width: 100%;" alt="第一组图5"/></div>
+                        </div>
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                        <div class="swiper-pagination"></div>
+                        <a href="https://f.wps.cn/g/mVSCm5ZJ/" class="main-link gradient-1" data-analytics="官网">
+                            <span class="watermelon-icon">🍉</span>
+                            <span>热门吃瓜</span>
+                            <b>获取<br />资源</b> 
+                            <i class="fas fa-arrow-right arrow"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="fgt"></div>
 
-                    <div class="slideshow-dots">
-                        <span class="slideshow-dot" onclick="currentSlide("{$index}")">1</span>                    </div>
+                <!-- 第二组轮播（a6-a10） -->
+                <div class="profile">
+                    <div class="swiper mySwiper" id="swiperGroup2">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide"><img src="a6.png" style="width: 100%;" alt="第二组图1"/></div>
+                            <div class="swiper-slide"><img src="a7.png" style="width: 100%;" alt="第二组图2"/></div>
+                            <div class="swiper-slide"><img src="a8.png" style="width: 100%;" alt="第二组图3"/></div>
+                            <div class="swiper-slide"><img src="a9.png" style="width: 100%;" alt="第二组图4"/></div>
+                            <div class="swiper-slide"><img src="a10.png" style="width: 100%;" alt="第二组图5"/></div>
+                        </div>
+                        <a href="https://f.wps.cn/g/mVSCm5ZJ/" class="main-link gradient-2" data-analytics="作品集">
+                            <i class="fas fa-cloud"></i>
+                            <span>反差女神</span>
+                            <b>获取<br />资源</b> 
+                            <i class="fas fa-arrow-right arrow"></i>
+                        </a>
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+                </div>
+                <div class="fgt"></div>
 
+                <!-- 第三组轮播（a11-a15） -->
+                <div class="profile">
+                    <div class="swiper mySwiper" id="swiperGroup3">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide"><img src="a11.png" style="width: 100%;" alt="第三组图1"/></div>
+                            <div class="swiper-slide"><img src="a12.png" style="width: 100%;" alt="第三组图2"/></div>
+                            <div class="swiper-slide"><img src="a13.png" style="width: 100%;" alt="第三组图3"/></div>
+                            <div class="swiper-slide"><img src="a14.png" style="width: 100%;" alt="第三组图4"/></div>
+                            <div class="swiper-slide"><img src="a15.png" style="width: 100%;" alt="第三组图5"/></div>
+                        </div>
+                        <a href="https://f.wps.cn/g/mVSCm5ZJ/" class="main-link gradient-3" data-analytics="博客">
+                            <span class="penguin-icon">🧭</span>
+                            <span>silk/女性向</span>
+                            <b>获取<br />资源</b> 
+                            <i class="fas fa-arrow-right arrow"></i>
+                        </a>
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+                </div>
+                <div class="fgt"></div>
+
+                <!-- 第四组轮播（a16-a20） -->
+                <div class="profile">
+                    <div class="swiper mySwiper" id="swiperGroup4">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide"><img src="a16.png" style="width: 100%;" alt="第四组图1"/></div>
+                            <div class="swiper-slide"><img src="a17.png" style="width: 100%;" alt="第四组图2"/></div>
+                            <div class="swiper-slide"><img src="a18.png" style="width: 100%;" alt="第四组图3"/></div>
+                            <div class="swiper-slide"><img src="a19.png" style="width: 100%;" alt="第四组图4"/></div>
+                            <div class="swiper-slide"><img src="a20.png" style="width: 100%;" alt="第四组图5"/></div>
+                        </div>
+                        <a href="https://f.wps.cn/g/mVSCm5ZJ/" class="main-link gradient-4" data-analytics="往期">
+                            <i class="fas fa-history"></i>
+                            <span>绅士游戏</span>
+                            <b>获取<br />资源</b> 
+                            <i class="fas fa-arrow-right arrow"></i>
+                        </a>
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                        <div class="swiper-pagination"></div>
+                    </div>
                 </div>
             </section>
 
-            <div class="rich_media_content">
-                <div class="steps-container">
-                    <div class="step-card" style="line-height: 1.8;">
-                        <div class="step-header" style="margin-bottom: 15px;">
-                            <div class="step-number">1</div>
-                            <h3 style="margin: 0; line-height: 1.5;">第一步</h3>
-                        </div>
-                        <div class="search-keywords">
-<p class="step-instruction" style="line-height: 1.6; margin-bottom: 15px;">
-<strong>【打开抖音】【快手】<span class="STYLE1"></span>搜索下面其中一个关键词【点击复制】<span class="STYLE1">↓↓</span></strong>
-</p>
-<div class="image-container" style="line-height: 2; margin-top: 10px;">
-<span class="keyword-btn STYLE17" onclick="copyKeyword(this.innerText)" style="margin-bottom: 10px; display: inline-block;">
-<strong style="color: #ff0000; font-weight: bold;">抽屉变装隐藏款</strong></span>
-<span class="keyword-btn STYLE17" onclick="copyKeyword(this.innerText)" style="margin-bottom: 10px; display: inline-block;">
-<strong style="color: #ff0000; font-weight: bold;">抽屉变装</strong></span>
-<span class="keyword-btn STYLE17" onclick="copyKeyword(this.innerText)" style="margin-bottom: 10px; display: inline-block;">
-<strong style="color: #ff0000; font-weight: bold;">肖雅婷</strong>
-</span>
-<span class="keyword-btn STYLE17" onclick="copyKeyword(this.innerText)" style="margin-bottom: 10px; display: inline-block;">
-<strong>嫩小瑶</strong>
-</span>
-<span class="keyword-btn STYLE17" onclick="copyKeyword(this.innerText)" style="margin-bottom: 10px; display: inline-block;">
-<strong>韩婧格</strong>
-</span>
-<span class="keyword-btn STYLE17" onclick="copyKeyword(this.innerText)" style="margin-bottom: 10px; display: inline-block;">
-<strong>诗颖</strong>
-</span>
-<span class="keyword-btn STYLE17" onclick="copyKeyword(this.innerText)" style="margin-bottom: 10px; display: inline-block;">
-<strong>康师傅矿泉水</strong>
-</span>
-<span class="keyword-btn STYLE17" onclick="copyKeyword(this.innerText)" style="margin-bottom: 10px; display: inline-block;">
-<strong style="color: #CC22AA; font-weight: bold;">小乔乔妈</strong>
-</span>
-<div><span class="color_font" style="color: rgb(224, 62, 45);"><strong>或者去搜你想看的瓜只要相关的视频都可以评论</strong></span>
-</div>
-</div>
-</div>                    </div>
-                </div>
-                <div class="step-card">
-                    <div class="step-header">
-                        <div class="step-number">2</div>
-                        <h3>第二步</h3>
-                    </div>
-                    <div class="search-keywords">
-<p><strong>随机复制下面 <span class="STYLE1">其中一句</span> 
-文案去抖音，快手评论：<span class="STYLE2">【点击复制】</span></strong></p>
-<div class="keyword-buttons">
-<span class="keyword-btn STYLE17" onclick="copyKeyword(this.innerText)"><strong>就为了气收费的
-ddk.mom</strong></span>
-<span class="keyword-btn STYLE17" onclick="copyKeyword(this.innerText)"><strong>刚看
-ddk.mom</strong></span>
-<span class="keyword-btn STYLE17" onclick="copyKeyword(this.innerText)"><strong>竟然还有人没吃到
-ddk.mom</strong></span>
-<span class="keyword-btn STYLE17" onclick="copyKeyword(this.innerText)"><strong>正在用
-ddk.mom</strong></span>
-<span class="keyword-btn STYLE17" onclick="copyKeyword(this.innerText)"><strong>
-ddk.mom</strong></span>
-<span class="keyword-btn STYLE17" onclick="copyKeyword(this.innerText)"><strong>免
-ddk.mom</strong></span>
-</div>
-</div>                </div>
-                <div class="step-card">
-                    <div class="step-header">
-                        <div class="step-number">3</div>
-                        <h3>第三步</h3>
-                    </div>
-                    <div class="comment-instructions">
-<p>
-<p><strong>打开<span class="warning-text">
-<span style="color: rgb(224, 62, 45);">抖音</span></span>搜索关键词，搜索后往下滑，选
-<span class="STYLE1">4个</span>评论少或者没有评论的视频</strong></p>
-<p><strong><span class="STYLE13">评论上面刚保存的文案，每个视频评论一张</span> </strong></p>
-<p><strong><span class="STYLE13">最后给自己<span class="STYLE1">点个赞</span> ，<span class="STYLE1">并截图</span></span></strong> </p>
-<br>
-<strong class="highlight STYLE1 STYLE14">👇如下图所示👇</strong>
-</div>                    <!-- 第三步图片 -->
-                    <img src="yibazhan/images/6b170e491258621fe92b5c2f0785b12d.jpg" class="example-image" alt="资源总站"><img src="yibazhan/images/b13c8f2cd929c469584bcb4f44875fdc.jpg" class="example-image" alt="资源总站">                </div>
-
-                <!-- 最后一步 -->
-                <div class="step-card">
-                    <div class="final-step">
-                        <div class="final-step-header">
-                            <svg t="1740121601896" class="icon" viewBox="0 0 1024 1024" version="1.1"
-                                 xmlns="http://www.w3.org/2000/svg" p-id="8273" width="24" height="24">
-                                <path
-                                        d="M512 68.191078c-245.204631 0-443.808922 198.60429-443.808922 443.808922 0 244.982574 198.60429 443.808922 443.808922 443.808922 244.982574 0 443.808922-198.826348 443.808922-443.808922C955.808922 266.795369 756.982574 68.191078 512 68.191078zM423.23842 733.903949l-221.903949-221.903949 62.799278-62.799278 159.105694 159.105694 336.628854-336.628854 62.799278 62.799278L423.23842 733.903949z"
-                                        p-id="8274" fill="#36ab60"></path>
-                            </svg>
-                            <span>最后一步</span>
-                            <div id="copy-popup">文案已复制剪贴板</div>
-                        </div>
-                        <p>
-<b>将你刚评论的截图发给右下侧的<strong class="highlight"><span> AI机器人<svg t="1740125275113" style="vertical-align: -3px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="18930" width="23" height="23"><path d="M830.58 810.45H188A149.56 149.56 0 0 0 337.52 960h354.41A144.1 144.1 0 0 0 836 815.9a5.45 5.45 0 0 0-5.42-5.45zM375.54 503.18a24.93 24.93 0 0 0-24.92 24.93V578a24.92 24.92 0 0 0 24.92 24.92A24.93 24.93 0 0 0 400.47 578v-49.89a24.93 24.93 0 0 0-24.93-24.93zM648.46 503.18a24.93 24.93 0 0 0-24.93 24.93V578a24.93 24.93 0 0 0 24.93 24.92A24.92 24.92 0 0 0 673.38 578v-49.89a24.93 24.93 0 0 0-24.92-24.93z" fill="#1296db" p-id="18931"></path>
-<path d="M859.71 203.53a74.84 74.84 0 0 0-136.52-22.12 75 75 0 0 0 5.31 86.25L690 329.93a324.13 324.13 0 0 0-356.08 0l-38.42-62.27a74.76 74.76 0 1 0-42.5 26.28l41.26 66.8A323.2 323.2 0 0 0 188 600.68v177h648v-177a323.2 323.2 0 0 0-106.22-239.94l41.22-66.8a74.41 74.41 0 0 0 15.69 1.68 75.49 75.49 0 0 0 17.35-2 74.85 74.85 0 0 0 55.63-90.06zM216 233.8a24.86 24.86 0 1 1 34.2 8.08 24.88 24.88 0 0 1-34.2-8.08zM764.52 494A272.35 272.35 0 0 1 786 600.68v127H238v-127A274.12 274.12 0 0 1 764.52 494zM808 233.8a24.84 24.84 0 1 1-8.08-34.2 24.88 24.88 0 0 1 8.08 34.2z" fill="#1296db" p-id="18932"></path><path d="M368.7 140.43c9.55 0 23.19-14.87 23.19-14.87a191.15 191.15 0 0 1 240.22 0s13.64 14.87 23.19 14.87 5.32-14.87 5.32-14.87a210.18 210.18 0 0 0-297.24 0s-4.23 14.87 5.32 14.87z" fill="#1296db" p-id="18933"></path><path d="M617.09 178.64c9.55 0 3-12.55 3-12.55a152.84 152.84 0 0 0-216.16 0s-6.56 12.55 3 12.55 26.28-12.55 26.28-12.55a133.86 133.86 0 0 1 157.62 0s16.7 12.55 26.26 12.55z" fill="#1296db" p-id="18934"></path><path d="M444.45 206.62s-10.24 10.23 0 10.23 31.76-10.23 31.76-10.23a76.64 76.64 0 0 1 71.58 0s21.53 10.23 31.76 10.23 0-10.23 0-10.23a95.53 95.53 0 0 0-135.1 0z" fill="#1296db" p-id="18935"></path></svg><span style="vertical-align: middle;"></span> </span></strong>
-<br><br>
-机器人会在（10）秒内审核完，然后会在聊天框自动弹出所有资源的跳转网盘链接
-<br><br>
-<strong class="highlight">注意：不规范截图和上传重复截图将重置进度！</strong>
-<br><br>已完成示例：👇👇👇</b>
-</p>                    </div>
-
-                    <div class="reward-slideshow-container">
-                        <!-- 轮播容器 -->
-                        <div class="reward-slideshow">
-                            <img src="yibazhan/images/a72f1d74ca8c088a3fa1a14976a9f9ac.png" class="reward-slide" alt="资源总站"><img src="yibazhan/images/8fe744633a6b5e1ad2189a1a0a793717.jpg" class="reward-slide" alt="资源总站">                        </div>
-
-                        <!-- 左右切换按钮 -->
-                        <button onclick="slideReward(-1)" class="reward-prev">❮</button>
-                        <button onclick="slideReward(1)" class="reward-next">❯</button>
+            <!-- 二维码区域 -->
+            <section class="qr-section">
+                <div class="qr-container">
+                    <p class="qr-text">一线吃瓜网</p>
+                    <div class="pr_wbnr">
+                        <h3 style="overflow: hidden; text-overflow:ellipsis; white-space: nowrap;">一线吃瓜网攻克各种资源难题，带来最新最快最全的吃瓜黑料啊啊啊啊</h3>	
+                        <h3 style="overflow: hidden; text-overflow:ellipsis; white-space: nowrap;">明星、网红、女神、校园…………</h3>	
+                        <h3 style="overflow: hidden; text-overflow:ellipsis; white-space: nowrap;">让您不错过任何一个热门大瓜</h3>	
+                        <p style="text-align: right; color: #ff0000;font-weight: bold; font-size: 12px; margin-top: 10px;">非法律允许地区以及18岁以下用户禁止访问！</p>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- 按钮容器 -->
+            </section>
+        </main>
 
-<!-- 悬浮AI机器人按钮 -->
-<div class="mini-btn" id="mini-btn" onclick="show_floatWindow();">
-    <div class="mini-btn-content">
-        <div class="monitor-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="white">
-                <path
-                        d="M20,3H4C2.34,3,1,4.34,1,6v10c0,1.66,1.34,3,3,3h16c1.66,0,3-1.34,3-3V6C23,4.34,21.66,3,20,3z M3,16V6c0-0.55,0.45-1,1-1h16c0.55,0,1,0.45,1,1v10c0,0.55-0.45,1-1,1H4C3.45,17,3,16.55,3,16z" />
-                <path
-                        d="M12,15c0.55,0,1-0.45,1-1v-4c0-0.55-0.45-1-1-1s-1,0.45-1,1v4C11,14.55,11.45,15,12,15z" />
-                <path d="M17,19H7v1c0,1.1,0.9,2,2,2h6c1.1,0,2-0.9,2-2V19z" />
-            </svg>
-        </div>
-        <div class="ai-text">AI机器人</div>
-        <div class="arrow-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none"
-                 stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M18 15l-6-6-6 6" />
-            </svg>
-        </div>
-        <span id="info-num"
-              style="display:none;position: absolute;top: 5px;right: 5px;z-index:10;height: 14px;min-width: 14px;line-height: 14px;border-radius: 7px;background: red;font-size: 12px;color: #FFFFFF;text-align: center;">0</span>
-    </div>
-</div>
-
-<!-- 添加AI机器人聊天悬浮窗 -->
-<div id="iframe_company_mini_div"
-     style="display: none; font-size: 0px; background-color: rgb(255, 255, 255); border-radius: 6px; overflow: hidden; width: 100%; height: 460px; box-shadow: rgba(0, 0, 0, 0.16) 0px 5px 50px !important; position: fixed; bottom: 20px; right: 1px; z-index: 2147483647; max-width: 400px; max-height: 80vh;">
-    <!-- 标题栏 -->
-    <h6 class="pc-visitor-header"
-        style="width:100%;box-sizing:border-box;background: #1798fc no-repeat 10px;margin:0;padding:0;padding-left: 10px;font-size: 14px;color: #fff;line-height: 36px;position: relative;font-weight: normal;padding-right: 72px;height:36px;cursor:move;">
-        <div style="float: left;height: 100%;box-sizing: border-box;padding: 6px 0;">
-            <svg onclick="show_about_box()" style="width:24px;height:24px;cursor:pointer;fill:#fff;"
-                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path
-                        d="M12,2C6.48,2 2,6.48 2,12C2,17.52 6.48,22 12,22C17.52,22 22,17.52 22,12C22,6.48 17.52,2 12,2M12,7C13.66,7 15,8.34 15,10C15,11.66 13.66,13 12,13C10.34,13 9,11.66 9,10C9,8.34 10.34,7 12,7M12,20C9.33,20 6.98,18.71 5.58,16.67C5.56,16.66 5.54,16.65 5.53,16.64C6.94,15.07 9.26,14 12,14C14.74,14 17.06,15.07 18.47,16.64C17.02,18.71 14.67,20 12,20Z">
-                </path>
-                <path
-                        d="M12,4C7.58,4 4,7.58 4,12C4,16.42 7.58,20 12,20C16.42,20 20,16.42 20,12C20,7.58 16.42,4 12,4M12,5C15.87,5 19,8.13 19,12C19,15.87 15.87,19 12,19C8.13,19 5,15.87 5,12C5,8.13 8.13,5 12,5M12,8C10.34,8 9,9.34 9,11C9,12.66 10.34,14 12,14C13.66,14 15,12.66 15,11C15,9.34 13.66,8 12,8M12,16C9.26,16 6.94,17.07 5.53,18.64C6.93,20.17 9.3,21 12,21C14.7,21 17.07,20.17 18.47,18.64C17.06,17.07 14.74,16 12,16Z">
-                </path>
-            </svg>
-        </div>
-        <div style="float: left;max-width: 78%;overflow: hidden;margin-left: 5px;">
-            <label
-                    style="width:100%;background: none; padding: 0; margin: 0; border: 0; line-height:36px;cursor:move;font-weight:normal;cursor:move;color: #fff;display: block;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;font-size: 14px;"
-                    class="header-company">AI机器人</label>
-        </div>
-        <span onclick="showEditProfile();" title="编辑个人信息" class="pc-new pc-title-btn" style="
-                position: absolute;
-                width: 36px;
-                height: 36px;
-                cursor: pointer;
-                right: 72px;
-                top: 0px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            ">
-					<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
-                         stroke-linecap="round" stroke-linejoin="round">
-						<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-						<path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-					</svg>
-				</span>
-        <span onclick="showVoiceCall();" title="语音通话" class="pc-new pc-title-btn" style="
-                position: absolute;
-                width: 36px;
-                height: 36px;
-                cursor: pointer;
-                right: 36px;
-                top: 0px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            ">
-					<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
-                         stroke-linecap="round" stroke-linejoin="round">
-						<path
-                                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
-						</path>
-					</svg>
-				</span>
-        <span onclick="hide_floatWindow();" title="最小化" class="kf-pc-hide pc-title-btn" style="
-                position: absolute;
-                width: 36px;
-                height: 36px;
-                cursor: pointer;
-                right: 0px;
-                top: 0px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            ">
-					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
-                         stroke-linecap="round" stroke-linejoin="round">
-						<line x1="18" y1="6" x2="6" y2="18"></line>
-						<line x1="6" y1="6" x2="18" y2="18"></line>
-					</svg>
-				</span>
-    </h6>
-
-    <!-- 添加编辑个人信息弹窗 -->
-    <div id="editProfileModal"
-         style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10000;">
-        <div
-                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 8px; width: 300px;">
-            <h3 style="margin: 0 0 20px 0; color: #333; font-size: 18px;">编辑个人信息</h3>
-            <div style="margin-bottom: 15px;">
-                <label style="display: block; margin-bottom: 5px; color: #666;">头像</label>
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <img id="previewAvatar" src="yibazhan/images/头像.png"
-                         style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
-                    <input type="file" id="avatarInput" accept="image/*" style="display: none;"
-                           onchange="previewImage(this)">
-                    <button onclick="document.getElementById('avatarInput').click()"
-                            style="padding: 8px 15px; background: #1798fc; color: white; border: none; border-radius: 4px; cursor: pointer;">选择图片</button>
-                </div>
-            </div>
-            <div style="margin-bottom: 20px;">
-                <label style="display: block; margin-bottom: 5px; color: #666;">昵称</label>
-                <input type="text" id="nicknameInput" placeholder="请输入昵称"
-                       style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box;">
-            </div>
-            <div style="display: flex; justify-content: center; gap: 15px;">
-                <button onclick="closeEditProfile()"
-                        style="padding: 8px 25px; background: #f5f5f5; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;">取消</button>
-                <button onclick="saveProfile()"
-                        style="padding: 8px 25px; background: #1798fc; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;">保存</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 修改聊天内容区域的样式 -->
-    <div id="chat_content" style="
-            height: 292px;
-            overflow-y: auto;
-            padding: 10px;
-            background: #f9f9f9;
-            font-size: 14px;
-            line-height: 1.5;
-            color: #333;
-            display: block;
-            margin-top: 0;
-            box-sizing: border-box;
-            width: 100%;
-        ">
-        <!-- 修改欢迎消息的样式 -->
-        <div style="margin: 10px 0;">
-            <div style="display: flex; align-items: flex-start; gap: 4px;">
-                <div style="position: relative; min-width: 36px;">
-                    <img src="yibazhan/images/头像.png"
-                         style="width: 36px; height: 36px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                    <span style="
-                            position: absolute;
-                            bottom: 0;
-                            right: 0;
-                            width: 10px;
-                            height: 10px;
-                            background: #4CAF50;
-                            border: 2px solid #fff;
-                            border-radius: 50%;
-                        "></span>
-                </div>
-                <div style="flex: 1; width: calc(100% - 40px);">
-                    <div style="
-                            display: flex;
-                            align-items: center;
-                            gap: 8px;
-                            margin-bottom: 4px;
-                        ">
-								<span style="
-                                font-size: 14px;
-                                color: #333;
-                                font-weight: 500;
-                            ">审核员：小雨</span>
-                        <span style="
-                                font-size: 12px;
-                                color: #4CAF50;
-                                background: rgba(76, 175, 80, 0.1);
-                                padding: 2px 6px;
-                                border-radius: 10px;
-                            ">在线中</span>
-                    </div>
-                    <div style="
-                            background: #fff;
-                            padding: 10px 12px;
-                            border-radius: 4px 12px 12px 12px;
-                            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-                            max-width: 98%;
-                            word-break: break-word;
-                        ">请将评论的规范截图都发送给我<br>审核通过后我会发送所有资源的跳转页链接~<br>注意：不规范截图和发送重复的截图将重置进度，所以是一定不能投机取巧的哦！
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 修改输入区域样式 -->
-        <div style="
-            display: flex;
-            padding: 10px;
-            background: #f5f5f5;
-            border-top: 1px solid #ddd;
-            position: absolute;
-            bottom: 60px;
-            left: 0;
-            right: 0;
-            height: 72px;
-            align-items: center;
-        ">
-            <!-- 添加图片上传按钮和隐藏的文件输入框 -->
-            <input type="file" id="kf_image_input" accept="image/*" style="display: none;"
-                   onchange="handleKfImageSelect(this)">
-            <button onclick="document.getElementById('kf_image_input').click()" style="
-                    padding: 8px;
-                    background: none;
-                    border: none;
-                    cursor: pointer;
-                    margin-right: 5px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                ">
-                <svg width="22" height="22" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22">
-                    <!-- 矩形框 -->
-                    <rect x="3" y="3" width="16" height="16" fill="none" stroke="#007BFF" stroke-width="1.5"
-                          rx="2"></rect>
-
-                    <!-- 风景图标 -->
-                    <path d="M5 14l3-4 3 4 4-6 3 6" fill="none" stroke="#007BFF" stroke-width="1.5"
-                          stroke-linecap="round" stroke-linejoin="round"></path>
-                    <circle cx="11" cy="8" r="1" fill="#007BFF"></circle>
-                </svg>
+        <!-- 底部工具栏 -->
+        <footer class="toolbar" style="z-index: 100;">
+            <button class="tool-btn" id="shareBtn">
+                <i class="fas fa-share-alt"></i>
+                <span>分享</span>
             </button>
-            <input type="text" id="kf_message_input" placeholder="👈︎ 评论截图发送" style="
-                    flex: 1;
-                    margin-right: 10px;
-                    padding: 8px 12px;
-                    border: 1px solid #ddd;
-                    border-radius: 4px;
-                    outline: none;
-                    height: 36px;
-                    font-size: 14px;
-                ">
-            <button onclick="sendKfMessage()" style="
-                    padding: 8px 20px;
-                    background: #1798fc;
-                    color: white;
-                    border: none;
-                    border-radius: 4px;
-                    cursor: pointer;
-                    height: 36px;
-                    font-size: 14px;
-                    transition: background 0.3s;
-                " onmouseover="this.style.background='#1483e0'"
-                    onmouseout="this.style.background='#1798fc'">发送</button>
+        </footer>
+
+        <!-- 分享模态框 -->
+        <div class="modal" id="shareModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>分享我的链接</h3>
+                    <button class="close-btn" id="closeShareModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="share-content">
+                    <div class="share-url">
+                        <input type="text" id="shareUrl" value="" readonly>
+                        <button class="copy-btn" id="copyUrlBtn">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 1. 小雨客服触发按钮 -->
+    <div class="service-trigger-btn" id="serviceTriggerBtn">
+        <i class="fas fa-comments"></i>
+    </div>
+
+    <!-- 2. 小雨客服弹窗（含头像的QQ式聊天） -->
+    <div class="service-popup" id="servicePopup">
+        <!-- 弹窗头部 -->
+        <div class="popup-header">
+            <div class="header-left">
+                <div class="service-name">小雨</div>
+                <div class="online-status"></div>
+                <div class="status-text">在线中</div>
+            </div>
+            <div class="popup-close" id="popupClose">
+                <i class="fas fa-times"></i>
+            </div>
         </div>
 
-        <!-- 添加底部快手和抖音按钮区域 -->
-        <!--<div style="-->
-        <!--        position: absolute;-->
-        <!--        bottom: 0;-->
-        <!--        left: 0;-->
-        <!--        right: 0;-->
-        <!--        padding: 10px;-->
-        <!--        background: #f5f5f5;-->
-        <!--        border-top: 1px solid #ddd;-->
-        <!--        display: flex;-->
-        <!--        align-items: center;-->
-        <!--        justify-content: space-between;-->
-        <!--        gap: 10px;-->
-        <!--        height: 60px;-->
-        <!--    ">-->
-        <!--    <button onclick="openKuaishou()"-->
-        <!--            style="flex: 1 1 0%; padding: 8px 20px; background: linear-gradient(135deg, rgb(254, 144, 0), rgb(255, 85, 0)); color: white; border: none; border-radius: 4px; cursor: pointer; height: 36px; font-size: 14px; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; transform: translateY(0px);"-->
-        <!--            onmouseover="this.style.transform='translateY(-2px)'"-->
-        <!--            onmouseout="this.style.transform='translateY(0)'">-->
-        <!--        <svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="20"-->
-        <!--             height="20">-->
-        <!--            <path-->
-        <!--                    d="M299.27936 624.43008v87.48544c0 14.64832 10.70592 21.24288 23.78752 14.65856l83.49696-42.01984v-32.76288L323.072 609.7664c-13.08672-6.58432-23.79264 0.01536-23.79264 14.66368z"-->
-        <!--                    fill="#FFFFFF"></path>-->
-        <!--            <path-->
-        <!--                    d="M654.42304 436.03456c36.72064 0 66.59584-29.87008 66.59584-66.59072s-29.8752-66.59584-66.59584-66.59584c-36.71552 0-66.5856 29.8752-66.5856 66.59584s29.87008 66.59072 66.5856 66.59072z"-->
-        <!--                    fill="#FFFFFF"></path>-->
-        <!--            <path-->
-        <!--                    d="M443.56096 435.65056c47.73376 0 86.56384-38.8352 86.56384-86.56896s-38.83008-86.56896-86.56384-86.56896-86.56896 38.8352-86.56896 86.56896 38.8352 86.56896 86.56896 86.56896z"-->
-        <!--                    fill="#FFFFFF"></path>-->
-        <!--            <path-->
-        <!--                    d="M849.92 51.2H174.08c-67.8656 0-122.88 55.0144-122.88 122.88v675.84c0 67.8656 55.0144 122.88 122.88 122.88h675.84c67.8656 0 122.88-55.0144 122.88-122.88V174.08c0-67.8656-55.0144-122.88-122.88-122.88zM443.56096 204.8c54.05184 0 101.22752 29.89056 125.93664 73.99936 22.24128-20.85376 52.11136-33.664 84.93056-33.664 68.54656 0 124.30848 55.76704 124.30848 124.30848s-55.76704 124.30336-124.30848 124.30336c-41.40544 0-78.12608-20.37248-100.73088-51.60448-26.48576 31.29856-66.01728 51.22048-110.13632 51.22048-79.55968 0-144.2816-64.72704-144.2816-144.2816S364.00128 204.8 443.56096 204.8z m336.65536 505.63584c0 59.97568-48.78848 108.76416-108.76416 108.76416H515.328c-47.05792 0-87.22432-30.04416-102.34368-71.96672l-87.81824 42.40384c-9.43616 4.5568-18.97984 6.8608-28.37504 6.8608h-0.00512c-30.70976 0-53.00224-24.3712-53.00224-57.9328v-140.5696c0-33.57696 22.29248-57.94304 53.00736-57.94304 9.3952 0 18.93888 2.30912 28.36992 6.86592l87.59808 42.29632c14.93504-42.26048 55.26528-72.63232 102.56896-72.63232h156.11904c59.97568 0 108.76416 48.7936 108.76416 108.76928v85.08416z"-->
-        <!--                    fill="#FFFFFF"></path>-->
-        <!--            <path-->
-        <!--                    d="M671.45216 574.28992H515.328c-28.14976 0-51.05664 22.90688-51.05664 51.05664v85.08928c0 28.14976 22.90688 51.05664 51.05664 51.05664h156.11904c28.14976 0 51.05664-22.90688 51.05664-51.05664v-85.08928c0-28.14976-22.90176-51.05664-51.05152-51.05664z"-->
-        <!--                    fill="#FFFFFF"></path>-->
-        <!--        </svg>-->
-        <!--        打开快手-->
-        <!--    </button>-->
-        <!--    <button onclick="openDouyin()"-->
-        <!--            style="flex: 1 1 0%; padding: 8px 20px; background: linear-gradient(135deg, rgb(0, 0, 0), rgb(51, 51, 51)); color: white; border: none; border-radius: 4px; cursor: pointer; height: 36px; font-size: 14px; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; transform: translateY(0px);"-->
-        <!--            onmouseover="this.style.transform='translateY(-2px)'"-->
-        <!--            onmouseout="this.style.transform='translateY(0)'">-->
-        <!--        <svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="20"-->
-        <!--             height="20">-->
-        <!--            <path-->
-        <!--                    d="M937.4 423.9c-84 0-166.8-27.9-233.8-78.7v356.6c0 178.4-144.5 322.9-322.9 322.9S57.8 880.2 57.8 701.8s144.5-322.9 322.9-322.9c18.5 0 36.5 1.7 54.1 4.7v210.4c-17.4-6.6-35.9-10.2-54.1-10.2-65.4 0-118.5 53.1-118.5 118.5s53.1 118.5 118.5 118.5 118.5-53.1 118.5-118.5V0H703c0 118.8 95.5 214.9 214 215.2v208.7z"-->
-        <!--                    fill="#FFFFFF"></path>-->
-        <!--        </svg>-->
-        <!--        打开抖音-->
-        <!--    </button>-->
-        <!--</div>-->
+        <!-- 消息区域：初始显示小雨的对话（带b1.png头像） -->
+        <div class="message-container" id="messageContainer">
+            <!-- 小雨的消息行：头像（b1.png）+ 气泡 -->
+            <div class="message-row service-message-row">
+                <!-- 小雨头像：b1.png（与a1-a20同目录） -->
+                <img src="b1.png" alt="小雨头像" class="service-avatar-img">
+                <!-- 消息气泡 -->
+                <div class="message-bubble service-bubble">
+                    请将评论的规范截图都发送给我，审核通过后我会发送所有资源的跳转页链接~<br>
+                    注意：不规范截图和发送重复的截图将重置进度，所以是一定不能投机取巧的哦。
+                </div>
+            </div>
+        </div>
+
+        <!-- 上传区域 -->
+        <div class="input-area">
+            <label for="img-input" class="img-upload">
+                <i class="fas fa-upload"></i> 选择截图（需4张）
+            </label>
+            <input type="file" id="img-input" accept="image/jpg,image/png,image/jpeg" multiple>
+            <div class="upload-tip" id="uploadTip">已选择：0/4张</div>
+            <div class="warning-tip" id="warningTip">⚠️ 不规范/重复截图，进度已重置！</div>
+        </div>
     </div>
-</div>
 
-<script>
-    // 获取所有有 data-keyword 属性的 span 元素
-    const spans = document.querySelectorAll('span[data-keyword]');
-    const copyPopup = document.getElementById('copy-popup');
-    spans.forEach(span => {
-        span.addEventListener('click', function() {
-            const keyword = this.dataset.keyword;
-            copyToClipboard(keyword);
+    <!-- 外部脚本引入 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+    <script src="swiper.min.js"></script>
+    <script src="simple-script.js"></script>
+
+    <!-- 轮播初始化脚本 -->
+    <script>
+        // 第一组
+        var swiper1 = new Swiper("#swiperGroup1", {
+            spaceBetween: 0,
+            centeredSlides: true,
+            loop:true,
+            autoplay: {delay: 2500, disableOnInteraction: false},
+            pagination: {el: "#swiperGroup1 .swiper-pagination", clickable: true},
+            navigation: {nextEl: "#swiperGroup1 .swiper-button-next", prevEl: "#swiperGroup1 .swiper-button-prev"},
         });
-    });
 
-    function copyToClipboard(text) {
-        if (navigator.clipboard) {
-            navigator.clipboard.writeText(text)
-                .then(() => {
-                    console.log(`已复制到剪贴板: ${text}`);
-                    showCopyPopup();
-                    triggerVibration();
-                })
-                .catch((err) => {
-                    console.error(`使用 Clipboard API 复制失败: ${err}`);
-                    fallbackCopy(text);
-                });
-        } else {
-            fallbackCopy(text);
-        }
-    }
+        // 第二组
+        var swiper2 = new Swiper("#swiperGroup2", {
+            spaceBetween: 0,
+            centeredSlides: true,
+            loop:true,
+            autoplay: {delay: 3000, disableOnInteraction: false},
+            pagination: {el: "#swiperGroup2 .swiper-pagination", clickable: true},
+            navigation: {nextEl: "#swiperGroup2 .swiper-button-next", prevEl: "#swiperGroup2 .swiper-button-prev"},
+        });
 
-    function fallbackCopy(text) {
-        const textarea = document.createElement('textarea');
-        textarea.value = text;
-        textarea.style.position = 'fixed';
-        textarea.style.left = '-9999px';
-        textarea.style.top = '-9999px';
-        document.body.appendChild(textarea);
-        textarea.select();
-        try {
-            const successful = document.execCommand('copy');
-            if (successful) {
-                console.log(`已复制到剪贴板: ${text}`);
-                showCopyPopup();
-                triggerVibration();
-            } else {
-                console.error('使用 document.execCommand 复制失败');
-            }
-        } catch (err) {
-            console.error(`使用 document.execCommand 复制时出错: ${err}`);
-        }
-        document.body.removeChild(textarea);
-    }
+        // 第三组
+        var swiper3 = new Swiper("#swiperGroup3", {
+            spaceBetween: 0,
+            centeredSlides: true,
+            loop:true,
+            autoplay: {delay: 3500, disableOnInteraction: false},
+            pagination: {el: "#swiperGroup3 .swiper-pagination", clickable: true},
+            navigation: {nextEl: "#swiperGroup3 .swiper-button-next", prevEl: "#swiperGroup3 .swiper-button-prev"},
+        });
 
-    function showCopyPopup() {
-        copyPopup.classList.add('show');
-        setTimeout(() => {
-            copyPopup.classList.remove('show');
-        }, 2000);
-    }
+        // 第四组
+        var swiper4 = new Swiper("#swiperGroup4", {
+            spaceBetween: 0,
+            centeredSlides: true,
+            loop:true,
+            autoplay: {delay: 4000, disableOnInteraction: false},
+            pagination: {el: "#swiperGroup4 .swiper-pagination", clickable: true},
+            navigation: {nextEl: "#swiperGroup4 .swiper-button-next", prevEl: "#swiperGroup4 .swiper-button-prev"},
+        });
+    </script>
 
-    function triggerVibration() {
-        if ('vibrate' in navigator) {
-            navigator.vibrate(200);
-        }
-    }
-</script>
-<script src="script.js?v=1758245798"></script>
-<!-- 引入Layui JS -->
-<script src="yibazhan/js/layui.js"></script>
-<script>
-    layui.use(['element', 'layer'], function() {
-        var element = layui.element;
-        var layer = layui.layer;
+    <!-- 3. 小雨客服核心逻辑（含头像消息渲染） -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM元素获取
+            const triggerBtn = document.getElementById('serviceTriggerBtn');
+            const servicePopup = document.getElementById('servicePopup');
+            const popupClose = document.getElementById('popupClose');
+            const messageContainer = document.getElementById('messageContainer');
+            const imgInput = document.getElementById('img-input');
+            const uploadTip = document.getElementById('uploadTip');
+            const warningTip = document.getElementById('warningTip');
 
-        window.showImageInLayer = function() {
-            layer.open({
-                type: 1,
-                title: '图片预览',
-                area: ['auto', 'auto'],
-                shadeClose: true,
-                content: '<img src="yibazhan/images/代发.jpg" alt="完整图片" style="max-width: 90vw; max-height: 90vh;">'
+            // 状态管理
+            let uploadedKeys = []; // 存储“文件名+大小”防重复
+            let currentCount = 0;
+            const needCount = 4; // 需上传4张图
+
+            // 1. 弹窗显示/隐藏
+            triggerBtn.addEventListener('click', () => {
+                servicePopup.style.display = 'flex';
+                triggerBtn.style.display = 'none';
+                messageContainer.scrollTop = messageContainer.scrollHeight;
             });
-        };
-    });
-</script>
-</body>
 
+            popupClose.addEventListener('click', () => {
+                servicePopup.style.display = 'none';
+                triggerBtn.style.display = 'flex';
+            });
+
+            // 2. 截图上传处理
+            imgInput.addEventListener('change', (e) => {
+                const selectedFiles = Array.from(e.target.files);
+                if (selectedFiles.length === 0) return;
+
+                // 检测剩余可上传数量
+                const remaining = needCount - currentCount;
+                if (selectedFiles.length > remaining) {
+                    showWarning(`最多只能上传${remaining}张（需共传4张）`);
+                    resetProgress();
+                    return;
+                }
+
+                // 检测重复截图
+                const hasDuplicate = selectedFiles.some(file => {
+                    const key = `${file.name}-${file.size}`;
+                    return uploadedKeys.includes(key);
+                });
+
+                // 检测不规范截图（非图片/小于10KB）
+                const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+                const hasInvalid = selectedFiles.some(file => {
+                    return !validTypes.includes(file.type) || file.size < 10240;
+                });
+
+                // 违规处理
+                if (hasDuplicate || hasInvalid) {
+                    const tip = hasDuplicate ? '重复截图' : '不规范截图（非图片/过小）';
+                    showWarning(tip);
+                    resetProgress();
+                    return;
+                }
+
+                // 合规处理：更新进度+显示用户截图
+                hideWarning();
+                selectedFiles.forEach(file => {
+                    uploadedKeys.push(`${file.name}-${file.size}`);
+                });
+                currentCount += selectedFiles.length;
+                uploadTip.textContent = `已选择：${currentCount}/${needCount}张`;
+
+                // 显示用户上传的截图（用户消息行，无头像）
+                showUserImages(selectedFiles);
+
+                // 上传满4张：触发小雨的回复（带头像）
+                if (currentCount === needCount) {
+                    setTimeout(() => {
+                        showServiceReply(`
+                            ✅ 宝子恭喜你获得资源（一共有3个获取入口，如果其中一个和谐或者没有想看的就换一个渠道）
+                            速度保存到自己网盘，因为链接随时失效，3个渠道建议全部保存到自己的网盘，因为每个网盘的资源都不一样。
+                            <br><br>
+                            1. <a href="https://f.wps.cn/g/mVSCm5ZJ/" target="_blank" style="color:#0084ff; text-decoration:underline;">热门吃瓜入口</a><br>
+                            2. <a href="https://f.wps.cn/g/mVSCm5ZJ/" target="_blank" style="color:#0084ff; text-decoration:underline;">反差女神入口</a><br>
+                            3. <a href="https://f.wps.cn/g/mVSCm5ZJ/" target="_blank" style="color:#0084ff; text-decoration:underline;">绅士游戏入口</a>
+                        `);
+                        // 5秒后重置进度
+                        setTimeout(resetProgress, 5000);
+                    }, 1500);
+                }
+
+                imgInput.value = '';
+            });
+
+            // 辅助函数：显示用户上传的图片
+            function showUserImages(files) {
+                // 用户消息行（无头像）
+                const userRow = document.createElement('div');
+                userRow.className = 'message-row user-message-row';
+
+                // 用户消息气泡（显示“我上传了X张截图”）
+                const userBubble = document.createElement('div');
+                userBubble.className = 'message-bubble user-bubble';
+                userBubble.textContent = `我上传了${files.length}张截图：`;
+
+                // 图片预览容器
+                const imgContainer = document.createElement('div');
+                imgContainer.className = 'user-images';
+                files.forEach(file => {
+                    const img = document.createElement('img');
+                    img.src = URL.createObjectURL(file);
+                    img.alt = `用户截图${currentCount - files.length + 1}`;
+                    imgContainer.appendChild(img);
+                });
+
+                // 组装用户消息行：气泡 + 图片
+                userRow.appendChild(userBubble);
+                messageContainer.appendChild(userRow);
+                messageContainer.appendChild(imgContainer);
+                messageContainer.scrollTop = messageContainer.scrollHeight;
+            }
+
+            // 辅助函数：显示小雨的回复（带b1.png头像）
+            function showServiceReply(content) {
+                // 小雨消息行：头像 + 气泡
+                const serviceRow = document.createElement('div');
+                serviceRow.className = 'message-row service-message-row';
+
+                // 小雨头像（b1.png）
+                const serviceAvatar = document.createElement('img');
+                serviceAvatar.src = 'b1.png';
+                serviceAvatar.alt = '小雨头像';
+                serviceAvatar.className = 'service-avatar-img';
+
+                // 小雨消息气泡
+                const serviceBubble = document.createElement('div');
+                serviceBubble.className = 'message-bubble service-bubble';
+                serviceBubble.innerHTML = content; // 支持HTML（如链接）
+
+                // 组装消息行并添加到容器
+                serviceRow.appendChild(serviceAvatar);
+                serviceRow.appendChild(serviceBubble);
+                messageContainer.appendChild(serviceRow);
+                messageContainer.scrollTop = messageContainer.scrollHeight;
+            }
+
+            // 辅助函数：显示/隐藏警告
+            function showWarning(text) {
+                warningTip.textContent = `⚠️ ${text}，进度已重置！`;
+                warningTip.style.display = 'block';
+                setTimeout(hideWarning, 3000);
+            }
+
+            function hideWarning() {
+                warningTip.style.display = 'none';
+            }
+
+            // 辅助函数：重置进度
+            function resetProgress() {
+                uploadedKeys = [];
+                currentCount = 0;
+                uploadTip.textContent = `已选择：0/${needCount}张`;
+                imgInput.value = '';
+            }
+
+            // 分享模态框逻辑
+            const shareBtn = document.getElementById('shareBtn');
+            const shareModal = document.getElementById('shareModal');
+            const closeShareModal = document.getElementById('closeShareModal');
+            const shareUrl = document.getElementById('shareUrl');
+            const copyUrlBtn = document.getElementById('copyUrlBtn');
+
+            // 填充默认分享链接
+            shareUrl.value = window.location.origin || 'https://www.636.icu';
+
+            shareBtn.addEventListener('click', () => shareModal.style.display = 'block');
+            closeShareModal.addEventListener('click', () => shareModal.style.display = 'none');
+            window.addEventListener('click', (e) => e.target === shareModal && (shareModal.style.display = 'none'));
+
+            // 复制链接反馈
+            copyUrlBtn.addEventListener('click', () => {
+                shareUrl.select();
+                document.execCommand('copy');
+                copyUrlBtn.innerHTML = '<i class="fas fa-check"></i>';
+                setTimeout(() => copyUrlBtn.innerHTML = '<i class="fas fa-copy"></i>', 1500);
+            });
+        });
+    </script>
+</body>
 </html>
