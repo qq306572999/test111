@@ -8,279 +8,21 @@
     <link rel="stylesheet" href="swiper.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <style>
-        /* 原页面轮播样式 */
-        .profile{
-            position: relative; 
-            overflow: hidden;
-            border: 4px solid rgba(255,255,255,.3);
-            border-radius: 10px;
-        }
-        .profile img{
-            width: 100% !important;
-            height: auto !important;
-            display: block;
-        }
-        .profile .swiper-button-next,
-        .profile .swiper-button-prev{
-            color: #fff;
-        }
-        .swiper-button-next:after, 
-        .swiper-button-prev:after{
-            font-size: 20px;
-        }
-        .fgt{height: 20px;}
-        .swiper{padding-bottom: 25px;}
-        .main-link{
-            width: 60%; 
-            margin:10px auto;
-            height: 45px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            text-decoration: none;
-        }
-        .pr_wbnr h3{
-            font-size: 12px; 
-            line-height: 22px; 
-            color: #333;
-            text-align: left;
-        }
-
-        /* 背景动画 */
-        .background-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
-        }
-        .floating-shape {
-            position: absolute;
-            border-radius: 50%;
-            opacity: 0.2;
-            animation: float 20s infinite ease-in-out;
-        }
-        .shape-1 {
-            width: 200px;
-            height: 200px;
-            background: #FF4560;
-            top: 10%;
-            left: 10%;
-            animation-delay: 0s;
-        }
-        .shape-2 {
-            width: 300px;
-            height: 300px;
-            background: #1E88E5;
-            top: 60%;
-            left: 70%;
-            animation-delay: 5s;
-        }
-        .shape-3 {
-            width: 150px;
-            height: 150px;
-            background: #34D399;
-            top: 40%;
-            left: 20%;
-            animation-delay: 2s;
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-50px) rotate(10deg); }
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        .profile-container {
-            background-color: rgba(255, 255, 255, 0.9);
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
-        
-        .profile-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .avatar-container {
-            position: relative;
-            width: 150px;
-            height: 150px;
-            margin: 0 auto 20px;
-        }
-        
-        .avatar {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 5px solid white;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .avatar-border {
-            position: absolute;
-            top: -10px;
-            left: -10px;
-            right: -10px;
-            bottom: -10px;
-            border-radius: 50%;
-            border: 2px dashed #1E88E5;
-            animation: rotate 10s linear infinite;
-        }
-        
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        
-        .decoration-dot {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background-color: #FF4560;
-            border-radius: 50%;
-        }
-        
-        .decoration-dot:nth-child(3) { top: 0; left: 50%; transform: translateX(-50%); }
-        .decoration-dot:nth-child(4) { bottom: 0; left: 50%; transform: translateX(-50%); }
-        .decoration-dot:nth-child(5) { left: 0; top: 50%; transform: translateY(-50%); }
-        .decoration-dot:nth-child(6) { right: 0; top: 50%; transform: translateY(-50%); }
-        
-        .profile-name {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 10px;
-            color: #1A202C;
-        }
-        
-        .profile-bio {
-            font-size: 16px;
-            color: #4A5568;
-            margin-bottom: 20px;
-        }
-        
-        .qr-section {
-            margin-top: 30px;
-            text-align: center;
-        }
-        
-        .qr-container {
-            display: inline-block;
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .qr-text {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: #1A202C;
-        }
-        
-        .gradient-1 {
-            background: linear-gradient(135deg, #FF4560, #F56565);
-        }
-        
-        .gradient-2 {
-            background: linear-gradient(135deg, #1E88E5, #4299E1);
-        }
-        
-        .gradient-3 {
-            background: linear-gradient(135deg, #38B2AC, #48BB78);
-        }
-        
-        .gradient-4 {
-            background: linear-gradient(135deg, #805AD5, #9F7AEA);
-        }
-        
-        .watermelon-icon, .penguin-icon {
-            margin-right: 8px;
-            font-size: 18px;
-        }
-        
-        .arrow {
-            margin-left: 10px;
-            transition: transform 0.3s ease;
-        }
-        
-        .main-link:hover .arrow {
-            transform: translateX(5px);
-        }
-        
-        .main-link b {
-            margin: 0 10px;
-            font-size: 12px;
-            line-height: 1.2;
-        }
-        
-        .shimmer-line {
-            height: 3px;
-            background: linear-gradient(90deg, transparent, #1E88E5, transparent);
-            margin-bottom: 30px;
-            animation: shimmer 2s infinite;
-        }
-        
-        @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
-        }
-        
-        .admin-secret-entry {
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 30px;
-            height: 30px;
-            background-color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-            opacity: 0.7;
-            transition: all 0.3s ease;
-        }
-        
-        .admin-secret-entry:hover {
-            opacity: 1;
-            transform: scale(1.1);
-        }
-        
-        @media (max-width: 768px) {
-            .profile-container {
-                padding: 15px;
-            }
-            
-            .avatar-container {
-                width: 120px;
-                height: 120px;
-            }
-            
-            .main-link {
-                width: 80%;
-            }
-            
-            .profile-name {
-                font-size: 24px;
-            }
-        }
-    </style>
 </head>
 <body>
+    <!-- ========================================
+         📝 超简单修改指南 - 对应修改指南.txt
+         ========================================
+         1️⃣ 修改个人信息：找到标记区域直接修改文字
+         2️⃣ 修改统计数据：修改关注者、点击量、链接数
+         3️⃣ 修改链接：修改 href 地址和显示文字
+         4️⃣ 添加新链接：复制链接代码并修改内容
+         5️⃣ 修改二维码：在 simple-script.js 中修改设置
+         6️⃣ 修改背景图：在 styles.css 中修改图片路径
+         7️⃣ 调整透明度：在 styles.css 中修改透明度数值
+         8️⃣ 保存文件后用浏览器打开查看效果
+         ======================================== -->
+
     <div class="container">
         <!-- 背景动画 -->
         <div class="background-animation">
@@ -295,24 +37,46 @@
         <main class="profile-container">
             <div class="shimmer-line"></div>
             
-            <!-- 个人信息区域 -->
+            <!-- ========================================
+                 👤 个人信息区域 - 修改指南 1️⃣
+                 ======================================== -->
             <section class="profile-header">
                 <div class="avatar-container">
-                    <img src="Tx.jpg" alt="头像" class="avatar" id="avatarImg">
+                    <!-- 🖼️ 修改头像：替换 Tx.jpg 文件，或修改下面的文件名 -->
+                    <img src="Tx.jpg" alt="头像" class="avatar" id="avatarImg">  <!-- ← 修改这里：头像文件名 -->
                     <div class="avatar-border"></div>
+                    <!-- 装饰点效果 -->
                     <div class="decoration-dot"></div>
                     <div class="decoration-dot"></div>
                     <div class="decoration-dot"></div>
                     <div class="decoration-dot"></div>
+                    <!-- 隐蔽的管理后台入口 -->
                     <div class="admin-secret-entry" id="adminSecretEntry">
                         <i class="fas fa-cog"></i>
                     </div>
                 </div>
                 
-                <h1 class="profile-name" id="profileName">www.636.icu</h1>
-                <p class="profile-bio" id="profileBio" style="font-size: 28px; color: #1A202C;">一线吃瓜网</p>
+                <!-- 📝 修改用户名：直接修改下面引号内的文字 -->
+                <h1 class="profile-name" id="profileName">www.636.icu</h1>  <!-- ← 修改这里：你的名字 -->
+                
+                <!-- 📝 修改个人简介：直接修改下面引号内的文字 -->
+                <p class="profile-bio" id="profileBio" style="font-size: 28px; color: #fff;">一线吃瓜网</p>  <!-- ← 修改这里：你的简介 -->
+                
+                <!-- ========================================
+                     📊 统计数据区域 - 修改指南 2️⃣
+                     ======================================== -->
+                <style type="text/css">
+                    .profile{position: relative; overflow: hidden;border: 4px solid rgba(255,255,255,.3);border-radius: 10px;}
+                    .profile img{width: 100% !important;height: auto !important;display: block;}
+                    .profile .swiper-button-next{color: #fff;}
+                    .profile .swiper-button-prev{color: #fff;}
+                    .swiper-button-next:after, .swiper-button-prev:after{font-size: 20px;}
+                    .fgt{height: 20px;}
+                    .swiper{padding-bottom: 25px;}
+                    .main-link{width: 60%; margin:10px auto;height: 45px;}
+                </style>
 
-                <!-- 第一组轮播（a1-a5）：链接更新为index1.html -->
+                <!-- 第一组：5张图（a1-a5） -->
                 <div class="profile">
                     <div class="swiper mySwiper" id="swiperGroup1">
                         <div class="swiper-wrapper">
@@ -325,7 +89,7 @@
                         <div class="swiper-button-next"></div>
                         <div class="swiper-button-prev"></div>
                         <div class="swiper-pagination"></div>
-                        <a href="index1.html" target="_blank" class="main-link gradient-1" data-analytics="官网">
+                        <a href="index1.html" class="main-link gradient-1" data-analytics="官网">
                             <span class="watermelon-icon">🍉</span>
                             <span>热门吃瓜</span>
                             <b>获取<br />资源</b> 
@@ -335,7 +99,7 @@
                 </div>
                 <div class="fgt"></div>
 
-                <!-- 第二组轮播（a6-a10）：链接更新为index1.html -->
+                <!-- 第二组：5张图（a6-a10） -->
                 <div class="profile">
                     <div class="swiper mySwiper" id="swiperGroup2">
                         <div class="swiper-wrapper">
@@ -345,7 +109,7 @@
                             <div class="swiper-slide"><img src="a9.png" style="width: 100%;" alt="第二组图4"/></div>
                             <div class="swiper-slide"><img src="a10.png" style="width: 100%;" alt="第二组图5"/></div>
                         </div>
-                        <a href="index1.html" target="_blank" class="main-link gradient-2" data-analytics="作品集">
+                        <a href="index1.html" class="main-link gradient-2" data-analytics="作品集">
                             <i class="fas fa-cloud"></i>
                             <span>反差女神</span>
                             <b>获取<br />资源</b> 
@@ -358,7 +122,7 @@
                 </div>
                 <div class="fgt"></div>
 
-                <!-- 第三组轮播（a11-a15）：链接更新为index1.html -->
+                <!-- 第三组：5张图（a11-a15） -->
                 <div class="profile">
                     <div class="swiper mySwiper" id="swiperGroup3">
                         <div class="swiper-wrapper">
@@ -368,7 +132,7 @@
                             <div class="swiper-slide"><img src="a14.png" style="width: 100%;" alt="第三组图4"/></div>
                             <div class="swiper-slide"><img src="a15.png" style="width: 100%;" alt="第三组图5"/></div>
                         </div>
-                        <a href="index1.html" target="_blank" class="main-link gradient-3" data-analytics="博客">
+                        <a href="index1.html" class="main-link gradient-3" data-analytics="博客">
                             <span class="penguin-icon">🧭</span>
                             <span>silk/女性向</span>
                             <b>获取<br />资源</b> 
@@ -381,19 +145,23 @@
                 </div>
                 <div class="fgt"></div>
 
-                <!-- 第四组轮播（a16-a20）：链接更新为index1.html -->
+                <!-- ========================================
+                     新增：第四组轮播（5张图，a16-a20）
+                     ======================================== -->
                 <div class="profile">
-                    <div class="swiper mySwiper" id="swiperGroup4">
+                    <div class="swiper mySwiper" id="swiperGroup4"> <!-- 新增唯一ID，避免冲突 -->
                         <div class="swiper-wrapper">
+                            <!-- 第四组5张图：需准备a16-a20，与HTML文件同目录 -->
                             <div class="swiper-slide"><img src="a16.png" style="width: 100%;" alt="第四组图1"/></div>
                             <div class="swiper-slide"><img src="a17.png" style="width: 100%;" alt="第四组图2"/></div>
                             <div class="swiper-slide"><img src="a18.png" style="width: 100%;" alt="第四组图3"/></div>
                             <div class="swiper-slide"><img src="a19.png" style="width: 100%;" alt="第四组图4"/></div>
                             <div class="swiper-slide"><img src="a20.png" style="width: 100%;" alt="第四组图5"/></div>
                         </div>
-                        <a href="index1.html" target="_blank" class="main-link gradient-4" data-analytics="往期">
-                            <i class="fas fa-history"></i>
-                            <span>绅士游戏</span>
+                        <!-- 可修改链接地址和按钮文字（如“往期回顾”可改为其他标题） -->
+                        <a href="index1.html" class="main-link gradient-4" data-analytics="往期"> <!-- gradient-4：可在styles.css中自定义颜色 -->
+                            <i class="fas fa-history"></i> <!-- 图标：历史记录图标，可替换为其他（如fas fa-archive） -->
+                            <span>绅士游戏</span> <!-- 按钮标题：可修改为“更多爆料”“独家合集”等 -->
                             <b>获取<br />资源</b> 
                             <i class="fas fa-arrow-right arrow"></i>
                         </a>
@@ -402,12 +170,17 @@
                         <div class="swiper-pagination"></div>
                     </div>
                 </div>
+                <!-- 新增第四组结束 -->
+
             </section>
 
             <!-- 二维码区域 -->
             <section class="qr-section">
                 <div class="qr-container">
-                    <p class="qr-text">一线吃瓜网</p>
+                    <p class="qr-text">一线吃瓜网</p>  <!-- ← 修改这里：二维码说明 -->
+                    <style type="text/css">
+                        .pr_wbnr h3{font-size: 12px; line-height: 22px; color: #333;text-align: left;}
+                    </style>
                     <div class="pr_wbnr">
                         <h3 style="overflow: hidden; text-overflow:ellipsis; white-space: nowrap;">一线吃瓜网攻克各种资源难题，带来最新最快最全的吃瓜黑料啊啊啊啊</h3>	
                         <h3 style="overflow: hidden; text-overflow:ellipsis; white-space: nowrap;">明星、网红、女神、校园…………</h3>	
@@ -417,14 +190,41 @@
                 </div>
             </section>
         </main>
+
+        <!-- 底部工具栏 -->
+        <footer class="toolbar" style="z-index: 100;">
+            <button class="tool-btn" id="shareBtn">
+                <i class="fas fa-share-alt"></i>
+                <span>分享</span>
+            </button>
+        </footer>
+
+        <!-- 分享模态框 -->
+        <div class="modal" id="shareModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>分享我的链接</h3>
+                    <button class="close-btn" id="closeShareModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="share-content">
+                    <div class="share-url">
+                        <input type="text" id="shareUrl" value="" readonly>
+                        <button class="copy-btn" id="copyUrlBtn">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <!-- 外部脚本引入 -->
+	
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
-    <script src="swiper.min.js"></script>
     <script src="simple-script.js"></script>
+    <script src="swiper.min.js"></script>
 
-    <!-- 轮播初始化脚本 -->
+    <!-- 轮播初始化：新增第四组（swiperGroup4） -->
     <script>
         // 第一组
         var swiper1 = new Swiper("#swiperGroup1", {
@@ -456,16 +256,15 @@
             navigation: {nextEl: "#swiperGroup3 .swiper-button-next", prevEl: "#swiperGroup3 .swiper-button-prev"},
         });
 
-        // 第四组
+        // 新增：第四组轮播初始化
         var swiper4 = new Swiper("#swiperGroup4", {
             spaceBetween: 0,
             centeredSlides: true,
             loop:true,
-            autoplay: {delay: 4000, disableOnInteraction: false},
+            autoplay: {delay: 4000, disableOnInteraction: false}, // 速度可调整（4000毫秒=4秒）
             pagination: {el: "#swiperGroup4 .swiper-pagination", clickable: true},
             navigation: {nextEl: "#swiperGroup4 .swiper-button-next", prevEl: "#swiperGroup4 .swiper-button-prev"},
         });
     </script>
 </body>
 </html>
-    
