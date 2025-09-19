@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>免费领取资源教程</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FF4560',
+                        secondary: '#1E88E5',
+                        dark: '#1A202C',
+                        light: '#F7FAFC'
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .transition-transform {
+                transition: transform 0.3s ease;
+            }
+            .hover-scale {
+                @apply hover:scale-105 transition-all duration-300;
+            }
+            .copy-btn {
+                @apply cursor-pointer text-secondary hover:text-primary transition-colors duration-300;
+            }
+            .card-shadow {
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            }
+            .img-hover {
+                @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+            }
+        }
+    </style>
+
+    <!-- AI机器人相关样式 -->
+    <style>
+        /* 1. AI机器人触发按钮：长条小框框样式 */
+        .service-trigger-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 120px; /* 长条宽度 */
+            height: 40px; /* 高度 */
+            background: #0084ff;
+            border-radius: 6px; /* 小圆角，非圆形 */
+            box-shadow: 0 2px 8px rgba(0,132,255,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 14px;
+            cursor: pointer;
+            z-index: 9998;
+            transition: all 0.3s;
+            gap: 6px; /* 图标与文字间距 */
+        }
+        .service-trigger-btn:hover {
+            background: #0073e6;
+            box-shadow: 0 3px 10px rgba(0,132,255,0.4);
+        }
+        .service-trigger-btn i {
+            font-size: 16px; /* AI机器人图标大小 */
+        }
+
+        /* 2. 客服弹窗 */
+        .service-popup {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 380px;
+            max-width: calc(100% - 40px);
+            border: 1px solid #eee;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background: #fff;
+            overflow: hidden;
+            font-family: "Microsoft YaHei", sans-serif;
+            display: none;
+            z-index: 9999;
+            flex-direction: column;
+        }
+
+        /* 3. 弹窗头部 */
+        .popup-header {
+            padding: 12px 16px;
+            background: #f5f5f5;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+        .service-name {
+            font-weight: 600;
+            color: #333;
+            margin-right: 8px;
+            font-size: 15px;
+        }
+        .online-status {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #4cd964;
+            margin-right: 4px;
+            animation: blink 1.5s infinite;
+        }
+        .status-text {
+            font-size: 12px;
+            color: #666;
+        }
+        .popup-close {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #999;
+            transition: all 0.2s;
+        }
+        .popup-close:hover {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        /* 4. QQ式聊天布局 */
+        .message-container {
+            height: 400px;
+            padding: 16px;
+            overflow-y: auto;
+            background: #fafafa;
+            flex: 1;
+        }
+        .message-row {
+            margin-bottom: 16px;
+            display: flex;
+            clear: both;
+        }
+        .service-message-row {
+            align-items: flex-start;
+        }
+        .user-message-row {
+            flex-direction: row-reverse;
+            align-items: flex-start;
+        }
+
+        /* 小雨头像（b1.png） */
+        .service-avatar-img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 8px;
+            border: 1px solid #eee;
+        }
+        .user-avatar-img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            margin-left: 8px;
+            border: 1px solid #eee;
+            display: none;
+        }
+
+        /* 消息气泡 */
+        .message-bubble {
+            max-width: 75%;
+            padding: 10px 14px;
+            border-radius: 18px;
+            line-height: 1.5;
+            font-size: 14px;
+            position: relative;
+        }
+        .service-bubble {
+            background: #e5f3ff;
+            color: #333;
+            border-top-left-radius: 4px;
+        }
+        .service-bubble::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 10px;
+            width: 0;
+            height: 0;
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+            border-right: 6px solid #e5f3ff;
+        }
+        .user-bubble {
+            background: #0084ff;
+            color: #fff;
+            border-top-right-radius: 4px;
+        }
+        .user-bubble::before {
+            content: '';
+            position: absolute;
+            right: -6px;
+            top: 10px;
+            width: 0;
+            height: 0;
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+            border-left: 6px solid #0084ff;
+        }
+
+        /* 5. 用户上传图片预览 */
+        .user-images {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+            max-width: 75%;
+            margin-left: auto;
+        }
+        .user-images img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 1px solid #eee;
+        }
+
+        /* 6. 底部上传区域 */
+        .input-area {
+            padding: 12px 16px;
+            border-top: 1px solid #eee;
+            background: #fff;
+        }
+        .img-upload {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #0084ff;
+            color: #fff;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+        .img-upload:hover {
+            background: #0073e6;
+        }
+        #img-input {
+            display: none;
+        }
+        .upload-tip {
+            font-size: 12px;
+            color: #999;
+            margin-top: 8px;
+            text-align: center;
+        }
+        .warning-tip {
+            font-size: 12px;
+            color: #ff4d4f;
+            margin-top: 4px;
+            text-align: center;
+            display: none;
+        }
+
+        /* 在线状态闪烁动画 */
+        @keyframes blink {
+            0%,100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body class="font-inter bg-gray-50 text-dark">
+    <!-- 顶部导航 -->
+    <header class="bg-white shadow-md sticky top-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="text-xl font-bold text-primary flex items-center">
+                <i class="fas fa-gift mr-2"></i>
+                <span>资源领取中心</span>
+            </div>
+            <a href="index.html" class="text-sm text-secondary hover:text-primary transition-colors duration-300 flex items-center">
+                <i class="fas fa-home mr-1"></i> 返回主页
+            </a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <!-- 标题区域 -->
+        <div class="text-center mb-10 mt-4">
+            <h1 class="text-[clamp(1.8rem,5vw,2.8rem)] font-bold mb-4 text-dark text-shadow">免费领取资源教程</h1>
+            <p class="text-lg md:text-xl text-gray-700 flex items-center justify-center">
+                <i class="fas fa-cat text-pink-400 mr-2"></i>
+                简单几步即可领取资源
+            </p>
+        </div>
+
+        <!-- 介绍区域 -->
+        <div class="bg-white rounded-xl p-6 md:p-8 mb-10 card-shadow transform transition-all duration-300 hover:shadow-lg">
+            <p class="text-gray-700 text-lg mb-4 leading-relaxed">
+                我们整理了全网吃瓜，黑料，同人动漫、黑白彩色漫画，动漫新番、3d同人绅士手游 全部免费！
+            </p>
+            
+            <p class="text-primary font-semibold text-lg mb-6 leading-relaxed">
+                资源整合不易，免费分享给大家，所以请大家帮忙宣传一下，设置了一个非常简单的小任务（30秒就可以搞定）
+            </p>
+            
+            <p class="text-gray-800 text-lg font-medium mb-6 leading-relaxed">
+                你可以免费得到全网热门瓜，黑料，同人动漫+漫画800G，+JM软件+多款3d同人绅士手游 免费畅玩！！
+            </p>
+            
+            <div class="mt-8 flex flex-col items-center">
+                <p class="text-gray-700 mb-4 text-center">不想做任务的土豪，也可以进付费！！</p>
+                <a href="https://www.taobao.com" target="_blank" class="flex items-center bg-primary text-white px-8 py-3 rounded-full font-medium hover:bg-primary/90 transition-all duration-300 hover-scale shadow-md">
+                    <i class="fas fa-shopping-cart mr-2"></i>
+                    直接购买
+                </a>
+            </div>
+        </div>
+
+        <!-- 图1、图2轮播 -->
+        <div class="mb-12 overflow-hidden rounded-xl card-shadow">
+            <div class="swiper-container h-[300px] md:h-[450px]">
+                <div class="swiper-wrapper" id="carousel1">
+                    <div class="swiper-slide">
+                        <img src="image/图1.jpg" alt="资源展示图1" class="w-full h-full object-cover">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="image/图2.jpg" alt="资源展示图2" class="w-full h-full object-cover">
+                    </div>
+                </div>
+                <!-- 轮播控制按钮 -->
+                <div class="swiper-button-prev text-white"></div>
+                <div class="swiper-button-next text-white"></div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+
+        <!-- 步骤说明 -->
+        <div class="mb-12">
+            <h2 class="text-2xl font-bold mb-8 text-center text-gray-800 relative inline-block mx-auto">
+                <span class="relative z-10">操作步骤</span>
+                <span class="absolute bottom-1 left-0 w-full h-3 bg-primary/20 -z-10"></span>
+            </h2>
+            
+            <!-- 第一步 -->
+            <div class="bg-white rounded-xl p-6 md:p-8 mb-8 card-shadow transform transition-all duration-300 hover:shadow-lg">
+                <div class="flex items-center mb-4">
+                    <div class="bg-primary text-white w-10 h-10 rounded-full flex items-center justify-center font-bold mr-3">①</div>
+                    <h3 class="text-xl font-semibold text-gray-800">第一步</h3>
+                </div>
+                
+                <p class="text-gray-700 mb-4">【打开抖音】【快手】搜索下面其中一个关键词【点击复制】↓↓</p>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 my-6">
+                    <div class="flex items-center p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-secondary transition-colors">
+                        <span class="text-secondary copy-text mr-2">抽屉变装隐藏款</span>
+                        <i class="fas fa-copy copy-btn" onclick="copyToClipboard(this)"></i>
+                    </div>
+                    <div class="flex items-center p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-secondary transition-colors">
+                        <span class="text-secondary copy-text mr-2">抽屉变装</span>
+                        <i class="fas fa-copy copy-btn" onclick="copyToClipboard(this)"></i>
+                    </div>
+                    <div class="flex items-center p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-secondary transition-colors">
+                        <span class="text-secondary copy-text mr-2">肖雅婷</span>
+                        <i class="fas fa-copy copy-btn" onclick="copyToClipboard(this)"></i>
+                    </div>
+                    <div class="flex items-center p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-secondary transition-colors">
+                        <span class="text-secondary copy-text mr-2">嫩小瑶</span>
+                        <i class="fas fa-copy copy-btn" onclick="copyToClipboard(this)"></i>
+                    </div>
+                    <div class="flex items-center p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-secondary transition-colors">
+                        <span class="text-secondary copy-text mr-2">韩婧格</span>
+                        <i class="fas fa-copy copy-btn" onclick="copyToClipboard(this)"></i>
+                    </div>
+                    <div class="flex items-center p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-secondary transition-colors">
+                        <span class="text-secondary copy-text mr-2">诗颖</span>
+                        <i class="fas fa-copy copy-btn" onclick="copyToClipboard(this)"></i>
+                    </div>
+                    <div class="flex items-center p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-secondary transition-colors">
+                        <span class="text-secondary copy-text mr-2">康师傅矿泉水</span>
+                        <i class="fas fa-copy copy-btn" onclick="copyToClipboard(this)"></i>
+                    </div>
+                    <div class="flex items-center p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-secondary transition-colors">
+                        <span class="text-secondary copy-text mr-2">小乔乔妈</span>
+                        <i class="fas fa-copy copy-btn" onclick="copyToClipboard(this)"></i>
+                    </div>
+                </div>
+                
+                <p class="text-gray-600 italic">或者去搜你想看的瓜只要相关的视频都可以评论</p>
+            </div>
+            
+            <!-- 第二步 -->
+            <div class="bg-white rounded-xl p-6 md:p-8 mb-8 card-shadow transform transition-all duration-300 hover:shadow-lg">
+                <div class="flex items-center mb-4">
+                    <div class="bg-primary text-white w-10 h-10 rounded-full flex items-center justify-center font-bold mr-3">②</div>
+                    <h3 class="text-xl font-semibold text-gray-800">第二步</h3>
+                </div>
+                
+                <p class="text-gray-700 mb-4">随机复制下面 其中一句 文案去抖音，快手评论：【点击复制】</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 my-6">
+                    <div class="flex items-center p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-secondary transition-colors">
+                        <span class="text-secondary copy-text mr-2">就为了气收费的 ddk.mom</span>
+                        <i class="fas fa-copy copy-btn" onclick="copyToClipboard(this)"></i>
+                    </div>
+                    <div class="flex items-center p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-secondary transition-colors">
+                        <span class="text-secondary copy-text mr-2">刚看 ddk.mom</span>
+                        <i class="fas fa-copy copy-btn" onclick="copyToClipboard(this)"></i>
+                    </div>
+                    <div class="flex items-center p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-secondary transition-colors">
+                        <span class="text-secondary copy-text mr-2">竟然还有人没吃到 ddk.mom</span>
+                        <i class="fas fa-copy copy-btn" onclick="copyToClipboard(this)"></i>
+                    </div>
+                    <div class="flex items-center p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-secondary transition-colors">
+                        <span class="text-secondary copy-text mr-2">正在用 ddk.mom</span>
+                        <i class="fas fa-copy copy-btn" onclick="copyToClipboard(this)"></i>
+                    </div>
+                    <div class="flex items-center p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-secondary transition-colors md:col-span-2">
+                        <span class="text-secondary copy-text mr-2">免 ddk.mom</span>
+                        <i class="fas fa-copy copy-btn" onclick="copyToClipboard(this)"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 第三步 -->
+            <div class="bg-white rounded-xl p-6 md:p-8 mb-12 card-shadow transform transition-all duration-300 hover:shadow-lg">
+                <div class="flex items-center mb-4">
+                    <div class="bg-primary text-white w-10 h-10 rounded-full flex items-center justify-center font-bold mr-3">③</div>
+                    <h3 class="text-xl font-semibold text-gray-800">第三步</h3>
+                </div>
+                
+                <ul class="list-disc pl-6 text-gray-700 space-y-2 mb-4">
+                    <li>打开抖音搜索关键词，搜索后往下滑，选4个评论少或者没有评论的视频</li>
+                    <li>评论上面刚保存的文案，每个视频评论一张</li>
+                    <li>最后给自己点个赞，并截图</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 图3-图5直接展示 -->
+        <div class="mb-12">
+            <h2 class="text-xl font-semibold mb-6 text-gray-800 text-center">👇操作示例👇</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="rounded-xl overflow-hidden card-shadow img-hover">
+                    <img src="image/图3.jpg" alt="操作示例图3" class="w-full h-full object-cover aspect-video">
+                </div>
+                <div class="rounded-xl overflow-hidden card-shadow img-hover">
+                    <img src="image/图4.jpg" alt="操作示例图4" class="w-full h-full object-cover aspect-video">
+                </div>
+                <div class="rounded-xl overflow-hidden card-shadow img-hover">
+                    <img src="image/图5.jpg" alt="操作示例图5" class="w-full h-full object-cover aspect-video">
+                </div>
+            </div>
+        </div>
+
+        <!-- 最后一步 -->
+        <div class="bg-white rounded-xl p-6 md:p-8 mb-12 card-shadow transform transition-all duration-300 hover:shadow-lg">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">最后一步</h3>
+            
+            <div class="bg-blue-50 border-l-4 border-secondary p-4 rounded mb-6">
+                <p class="text-gray-800 font-medium">文案已复制剪贴板</p>
+            </div>
+            
+            <p class="text-gray-700 mb-4">将你刚评论的截图发给右下侧的 AI机器人</p>
+            
+            <p class="text-gray-700 mb-4">机器人会在（10）秒内审核完，然后会在聊天框自动弹出所有资源的跳转网盘链接</p>
+            
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded">
+                <p class="text-gray-800 font-medium">注意：不规范截图和上传重复截图将重置进度！</p>
+            </div>
+        </div>
+
+        <!-- 图6、图7直接展示 -->
+        <div class="mb-12">
+            <h2 class="text-xl font-semibold mb-6 text-gray-800 text-center">👇已完成示例👇</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="rounded-xl overflow-hidden card-shadow img-hover">
+                    <img src="image/图6.jpg" alt="完成示例图6" class="w-full h-full object-cover aspect-video">
+                </div>
+                <div class="rounded-xl overflow-hidden card-shadow img-hover">
+                    <img src="image/图7.jpg" alt="完成示例图7" class="w-full h-full object-cover aspect-video">
+                </div>
+            </div>
+        </div>
+
+        <!-- 提示卡片 -->
+        <div class="bg-gradient-to-r from-secondary/10 to-primary/10 rounded-xl p-6 md:p-8 mb-8 border border-secondary/20 transform transition-all duration-300 hover:shadow-md">
+            <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                温馨提示
+            </h3>
+            <ul class="list-disc pl-6 text-gray-700 space-y-1">
+                <li>请确保评论内容与视频相关，否则可能无法通过审核</li>
+                <li>截图时请清晰展示评论内容和点赞状态</li>
+                <li>资源链接具有时效性，请及时保存到个人网盘</li>
+                <li>如有问题，请联系在线客服</li>
+            </ul>
+        </div>
+    </main>
+
+    <!-- 底部信息 -->
+    <footer class="bg-dark text-white py-8 mt-12">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-4">
+                <p class="text-gray-400 text-sm">免责声明：资源仅供学习交流使用，请勿用于商业用途</p>
+            </div>
+            <div class="text-center text-gray-500 text-xs">
+                <p>© 2023 一线吃瓜网 版权所有 | 非法律允许地区以及18岁以下用户禁止访问</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 1. AI机器人触发按钮：长条样式（图标+文字） -->
+    <div class="service-trigger-btn" id="serviceTriggerBtn">
+        <i class="fas fa-robot"></i> <!-- AI机器人图标 -->
+        <span>AI机器人</span> <!-- 文字 -->
+    </div>
+
+    <!-- 2. 小雨客服弹窗 -->
+    <div class="service-popup" id="servicePopup">
+        <!-- 弹窗头部 -->
+        <div class="popup-header">
+            <div class="header-left">
+                <div class="service-name">小雨</div>
+                <div class="online-status"></div>
+                <div class="status-text">在线中</div>
+            </div>
+            <div class="popup-close" id="popupClose">
+                <i class="fas fa-times"></i>
+            </div>
+        </div>
+
+        <!-- 消息区域：初始小雨对话（带b1.png头像） -->
+        <div class="message-container" id="messageContainer">
+            <div class="message-row service-message-row">
+                <img src="b1.png" alt="小雨头像" class="service-avatar-img">
+                <div class="message-bubble service-bubble">
+                    请将评论的规范截图都发送给我，审核通过后我会发送所有资源的跳转页链接~<br>
+                    注意：不规范截图和发送重复的截图将重置进度，所以是一定不能投机取巧的哦。
+                </div>
+            </div>
+        </div>
+
+        <!-- 上传区域 -->
+        <div class="input-area">
+            <label for="img-input" class="img-upload">
+                <i class="fas fa-upload"></i> 选择截图（可单次/多次上传，共需4张）
+            </label>
+            <input type="file" id="img-input" accept="image/jpg,image/png,image/jpeg" multiple>
+            <div class="upload-tip" id="uploadTip">已选择：0/4张</div>
+            <div class="warning-tip" id="warningTip">⚠️ 不规范/重复截图，进度已重置！</div>
+        </div>
+    </div>
+
+    <script>
+        // 复制功能实现
+        function copyToClipboard(element) {
+            // 获取要复制的文本
+            const textElement = element.previousElementSibling;
+            const text = textElement.textContent;
+            
+            // 创建临时输入框用于复制
+            const tempInput = document.createElement('input');
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            
+            // 显示复制成功的反馈
+            const originalIcon = element.className;
+            element.className = 'fas fa-check text-green-500';
+            
+            setTimeout(() => {
+                element.className = originalIcon;
+            }, 2000);
+        }
+
+        // 轮播图初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 第一个轮播图（图1、图2）
+            const swiper1 = new Swiper('#carousel1', {
+                loop: true,
+                autoplay: {
+                    delay: 3000,
+                    disableOnInteraction: false,
+                },
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+                // 响应式调整
+                breakpoints: {
+                    640: {
+                        slidesPerView: 1,
+                        spaceBetween: 0,
+                    }
+                }
+            });
+
+            // 页面滚动动画
+            window.addEventListener('scroll', function() {
+                const header = document.querySelector('header');
+                if (window.scrollY > 50) {
+                    header.classList.add('py-2', 'shadow-lg');
+                    header.classList.remove('py-4', 'shadow-md');
+                } else {
+                    header.classList.add('py-4', 'shadow-md');
+                    header.classList.remove('py-2', 'shadow-lg');
+                }
+            });
+
+            // AI机器人功能实现
+            // DOM元素
+            const triggerBtn = document.getElementById('serviceTriggerBtn');
+            const servicePopup = document.getElementById('servicePopup');
+            const popupClose = document.getElementById('popupClose');
+            const messageContainer = document.getElementById('messageContainer');
+            const imgInput = document.getElementById('img-input');
+            const uploadTip = document.getElementById('uploadTip');
+            const warningTip = document.getElementById('warningTip');
+
+            // 状态管理
+            let uploadedKeys = []; // 防重复：文件名+大小
+            let currentCount = 0;
+            const needCount = 4; // 总需4张
+
+            // 1. 弹窗控制
+            triggerBtn.addEventListener('click', () => {
+                servicePopup.style.display = 'flex';
+                triggerBtn.style.display = 'none';
+                messageContainer.scrollTop = messageContainer.scrollHeight;
+            });
+
+            popupClose.addEventListener('click', () => {
+                servicePopup.style.display = 'none';
+                triggerBtn.style.display = 'flex';
+            });
+
+            // 2. 核心：单张上传进度回复
+            imgInput.addEventListener('change', (e) => {
+                const selectedFiles = Array.from(e.target.files);
+                if (selectedFiles.length === 0) return;
+
+                // 计算剩余可上传数量
+                const remaining = needCount - currentCount;
+                // 若单次上传超过剩余数量，只取前remaining张
+                const validFiles = selectedFiles.slice(0, remaining);
+                if (validFiles.length === 0) {
+                    showWarning('已上传4张，无需再传');
+                    return;
+                }
+
+                // 检测重复/不规范
+                let hasDuplicate = false;
+                let hasInvalid = false;
+                const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+                
+                validFiles.forEach(file => {
+                    const key = `${file.name}-${file.size}`;
+                    if (uploadedKeys.includes(key)) hasDuplicate = true;
+                    if (!validTypes.includes(file.type) || file.size < 10240) hasInvalid = true;
+                });
+
+                // 违规处理：重置进度
+                if (hasDuplicate || hasInvalid) {
+                    const tip = hasDuplicate ? '包含重复截图' : '包含不规范截图（非图片/过小）';
+                    showWarning(tip);
+                    resetProgress();
+                    return;
+                }
+
+                // 合规处理：更新进度+显示用户图片+客服进度回复
+                hideWarning();
+                validFiles.forEach(file => {
+                    uploadedKeys.push(`${file.name}-${file.size}`);
+                });
+                // 计算新进度
+                const newCount = currentCount + validFiles.length;
+                const newRemaining = needCount - newCount;
+
+                // 2.1 显示用户上传的图片
+                showUserImages(validFiles);
+
+                // 2.2 客服实时进度回复（每张对应一条回复）
+                validFiles.forEach((_, index) => {
+                    const currentStep = currentCount + index + 1;
+                    const stepRemaining = needCount - currentStep;
+                    setTimeout(() => {
+                        showServiceReply(`
+                            图片上传成功，审核通过！当前已上传 ${currentStep} 张图片，请继续上传剩余 ${stepRemaining} 张图片。
+                        `);
+                    }, index * 500); // 每张间隔0.5秒，避免回复重叠
+                });
+
+                // 2.3 更新进度状态
+                currentCount = newCount;
+                uploadTip.textContent = `已选择：${currentCount}/${needCount}张`;
+
+                // 2.4 若传满4张：先提示“获取链接中”，再显示最终回复
+                if (currentCount === needCount) {
+                    setTimeout(() => {
+                        // 第一步：显示“正在获取链接”
+                        showServiceReply('正在获取游戏链接，请稍候...');
+                        // 第二步：2秒后显示最终链接回复
+                        setTimeout(() => {
+                            showServiceReply(`
+                                ✅ 宝子恭喜你获得资源（一共有3个获取入口，如果其中一个和谐或者没有想看的就换一个渠道）
+                                速度保存到自己网盘，因为链接随时失效，3个渠道建议全部保存到自己的网盘，因为每个网盘的资源都不一样。
+                                <br><br>
+                                1. <a href="https://f.wps.cn/g/mVSCm5ZJ/" target="_blank" style="color:#0084ff; text-decoration:underline;">热门吃瓜入口</a><br>
+                                2. <a href="https://f.wps.cn/g/mVSCm5ZJ/" target="_blank" style="color:#0084ff; text-decoration:underline;">反差女神入口</a><br>
+                                3. <a href="https://f.wps.cn/g/mVSCm5ZJ/" target="_blank" style="color:#0084ff; text-decoration:underline;">绅士游戏入口</a>
+                            `);
+                            // 5秒后重置进度，允许重新上传
+                            setTimeout(resetProgress, 5000);
+                        }, 2000);
+                    }, validFiles.length * 500); // 等所有进度回复完成后再触发
+                }
+
+                imgInput.value = '';
+            });
+
+            // 辅助函数：显示用户上传图片
+            function showUserImages(files) {
+                const userRow = document.createElement('div');
+                userRow.className = 'message-row user-message-row';
+
+                const userBubble = document.createElement('div');
+                userBubble.className = 'message-bubble user-bubble';
+                userBubble.textContent = `我上传了${files.length}张截图：`;
+
+                const imgContainer = document.createElement('div');
+                imgContainer.className = 'user-images';
+                files.forEach(file => {
+                    const img = document.createElement('img');
+                    img.src = URL.createObjectURL(file);
+                    img.alt = `用户截图${currentCount + imgContainer.children.length + 1}`;
+                    imgContainer.appendChild(img);
+                });
+
+                userRow.appendChild(userBubble);
+                messageContainer.appendChild(userRow);
+                messageContainer.appendChild(imgContainer);
+                messageContainer.scrollTop = messageContainer.scrollHeight;
+            }
+
+            // 辅助函数：显示小雨回复（带b1.png头像）
+            function showServiceReply(content) {
+                const serviceRow = document.createElement('div');
+                serviceRow.className = 'message-row service-message-row';
+
+                const serviceAvatar = document.createElement('img');
+                serviceAvatar.src = 'b1.png';
+                serviceAvatar.alt = '小雨头像';
+                serviceAvatar.className = 'service-avatar-img';
+
+                const serviceBubble = document.createElement('div');
+                serviceBubble.className = 'message-bubble service-bubble';
+                serviceBubble.innerHTML = content;
+
+                serviceRow.appendChild(serviceAvatar);
+                serviceRow.appendChild(serviceBubble);
+                messageContainer.appendChild(serviceRow);
+                messageContainer.scrollTop = messageContainer.scrollHeight;
+            }
+
+            // 辅助函数：警告提示
+            function showWarning(text) {
+                warningTip.textContent = `⚠️ ${text}，进度已重置！`;
+                warningTip.style.display = 'block';
+                setTimeout(hideWarning, 3000);
+            }
+
+            function hideWarning() {
+                warningTip.style.display = 'none';
+            }
+
+            // 辅助函数：重置进度
+            function resetProgress() {
+                uploadedKeys = [];
+                currentCount = 0;
+                uploadTip.textContent = `已选择：0/${needCount}张`;
+                imgInput.value = '';
+                // 可选：添加进度重置的客服提示
+                showServiceReply('进度已重置，请重新上传合规的截图（共需4张）。');
+            }
+        });
+    </script>
+</body>
+</html>
+    
