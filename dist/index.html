@@ -9,7 +9,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- 整合所有样式：轮播 + 小雨客服（含QQ式头像布局） -->
+    <!-- 整合所有样式：长条触发按钮 + QQ式聊天 -->
     <style>
         /* 原页面轮播样式 */
         .profile{
@@ -50,29 +50,32 @@
             text-align: left;
         }
 
-        /* 小雨客服样式：QQ式聊天布局（头像+气泡） */
-        /* 1. 触发按钮 */
+        /* 1. AI机器人触发按钮：长条小框框样式 */
         .service-trigger-btn {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            width: 60px;
-            height: 60px;
+            width: 120px; /* 长条宽度 */
+            height: 40px; /* 高度 */
             background: #0084ff;
-            border-radius: 50%;
-            box-shadow: 0 4px 12px rgba(0,132,255,0.4);
+            border-radius: 6px; /* 小圆角，非圆形 */
+            box-shadow: 0 2px 8px rgba(0,132,255,0.3);
             display: flex;
             align-items: center;
             justify-content: center;
             color: #fff;
-            font-size: 24px;
+            font-size: 14px;
             cursor: pointer;
             z-index: 9998;
             transition: all 0.3s;
+            gap: 6px; /* 图标与文字间距 */
         }
         .service-trigger-btn:hover {
-            transform: scale(1.1);
             background: #0073e6;
+            box-shadow: 0 3px 10px rgba(0,132,255,0.4);
+        }
+        .service-trigger-btn i {
+            font-size: 16px; /* AI机器人图标大小 */
         }
 
         /* 2. 客服弹窗 */
@@ -140,7 +143,7 @@
             color: #333;
         }
 
-        /* 4. 聊天消息区域：核心QQ式布局 */
+        /* 4. QQ式聊天布局 */
         .message-container {
             height: 400px;
             padding: 16px;
@@ -148,77 +151,67 @@
             background: #fafafa;
             flex: 1;
         }
-        /* 消息行容器：头像+气泡 */
         .message-row {
             margin-bottom: 16px;
-            display: flex; /* 横向排列：头像+气泡 */
+            display: flex;
             clear: both;
         }
-        /* 客服消息：头像居左，气泡在右 */
         .service-message-row {
-            align-items: flex-start; /* 气泡顶部与头像顶部对齐 */
+            align-items: flex-start;
         }
-        /* 用户消息：头像居右，气泡在左（如需用户头像可启用） */
         .user-message-row {
-            flex-direction: row-reverse; /* 反转顺序：气泡左，头像右 */
+            flex-direction: row-reverse;
             align-items: flex-start;
         }
 
-        /* 小雨头像样式（b1.png） */
+        /* 小雨头像（b1.png） */
         .service-avatar-img {
             width: 36px;
             height: 36px;
             border-radius: 50%;
             object-fit: cover;
-            margin-right: 8px; /* 头像与气泡间距 */
+            margin-right: 8px;
             border: 1px solid #eee;
         }
-        /* 用户头像（如需可启用） */
         .user-avatar-img {
             width: 36px;
             height: 36px;
             border-radius: 50%;
-            object-fit: cover;
             margin-left: 8px;
             border: 1px solid #eee;
-            display: none; /* 暂不显示用户头像，如需显示改为block */
+            display: none;
         }
 
-        /* 消息气泡样式 */
+        /* 消息气泡 */
         .message-bubble {
-            max-width: 75%; /* 气泡最大宽度，避免过宽 */
+            max-width: 75%;
             padding: 10px 14px;
             border-radius: 18px;
             line-height: 1.5;
             font-size: 14px;
             position: relative;
         }
-        /* 客服气泡：浅蓝色背景，左侧小三角 */
         .service-bubble {
             background: #e5f3ff;
             color: #333;
-            border-top-left-radius: 4px; /* 左上角圆角减小，更像QQ */
+            border-top-left-radius: 4px;
         }
-        /* 客服气泡左侧小三角（伪元素） */
         .service-bubble::before {
             content: '';
             position: absolute;
-            left: -6px; /* 气泡左侧外部 */
-            top: 10px; /* 三角垂直位置 */
+            left: -6px;
+            top: 10px;
             width: 0;
             height: 0;
             border-top: 6px solid transparent;
             border-bottom: 6px solid transparent;
-            border-right: 6px solid #e5f3ff; /* 与气泡背景同色 */
+            border-right: 6px solid #e5f3ff;
         }
-
-        /* 用户气泡：蓝色背景，右侧小三角 */
         .user-bubble {
             background: #0084ff;
             color: #fff;
             border-top-right-radius: 4px;
         }
-        /* 用户气泡右侧小三角 */
         .user-bubble::before {
             content: '';
             position: absolute;
@@ -238,7 +231,7 @@
             gap: 8px;
             margin-top: 8px;
             max-width: 75%;
-            margin-left: auto; /* 跟随用户消息右对齐 */
+            margin-left: auto;
         }
         .user-images img {
             width: 50px;
@@ -429,41 +422,18 @@
             </section>
         </main>
 
-        <!-- 底部工具栏 -->
-        <footer class="toolbar" style="z-index: 100;">
-            <button class="tool-btn" id="shareBtn">
-                <i class="fas fa-share-alt"></i>
-                <span>分享</span>
-            </button>
-        </footer>
+        <!-- 已删除：底部工具栏的分享按钮 -->
 
-        <!-- 分享模态框 -->
-        <div class="modal" id="shareModal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3>分享我的链接</h3>
-                    <button class="close-btn" id="closeShareModal">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                <div class="share-content">
-                    <div class="share-url">
-                        <input type="text" id="shareUrl" value="" readonly>
-                        <button class="copy-btn" id="copyUrlBtn">
-                            <i class="fas fa-copy"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!-- 已删除：分享模态框 -->
     </div>
 
-    <!-- 1. 小雨客服触发按钮 -->
+    <!-- 1. AI机器人触发按钮：长条样式（图标+文字） -->
     <div class="service-trigger-btn" id="serviceTriggerBtn">
-        <i class="fas fa-comments"></i>
+        <i class="fas fa-robot"></i> <!-- AI机器人图标 -->
+        <span>AI机器人</span> <!-- 文字 -->
     </div>
 
-    <!-- 2. 小雨客服弹窗（含头像的QQ式聊天） -->
+    <!-- 2. 小雨客服弹窗 -->
     <div class="service-popup" id="servicePopup">
         <!-- 弹窗头部 -->
         <div class="popup-header">
@@ -477,13 +447,10 @@
             </div>
         </div>
 
-        <!-- 消息区域：初始显示小雨的对话（带b1.png头像） -->
+        <!-- 消息区域：初始小雨对话（带b1.png头像） -->
         <div class="message-container" id="messageContainer">
-            <!-- 小雨的消息行：头像（b1.png）+ 气泡 -->
             <div class="message-row service-message-row">
-                <!-- 小雨头像：b1.png（与a1-a20同目录） -->
                 <img src="b1.png" alt="小雨头像" class="service-avatar-img">
-                <!-- 消息气泡 -->
                 <div class="message-bubble service-bubble">
                     请将评论的规范截图都发送给我，审核通过后我会发送所有资源的跳转页链接~<br>
                     注意：不规范截图和发送重复的截图将重置进度，所以是一定不能投机取巧的哦。
@@ -494,7 +461,7 @@
         <!-- 上传区域 -->
         <div class="input-area">
             <label for="img-input" class="img-upload">
-                <i class="fas fa-upload"></i> 选择截图（需4张）
+                <i class="fas fa-upload"></i> 选择截图（可单次/多次上传，共需4张）
             </label>
             <input type="file" id="img-input" accept="image/jpg,image/png,image/jpeg" multiple>
             <div class="upload-tip" id="uploadTip">已选择：0/4张</div>
@@ -550,10 +517,10 @@
         });
     </script>
 
-    <!-- 3. 小雨客服核心逻辑（含头像消息渲染） -->
+    <!-- 3. 客服核心逻辑：单张上传进度回复 + 链接获取提示 -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // DOM元素获取
+            // DOM元素
             const triggerBtn = document.getElementById('serviceTriggerBtn');
             const servicePopup = document.getElementById('servicePopup');
             const popupClose = document.getElementById('popupClose');
@@ -563,11 +530,11 @@
             const warningTip = document.getElementById('warningTip');
 
             // 状态管理
-            let uploadedKeys = []; // 存储“文件名+大小”防重复
+            let uploadedKeys = []; // 防重复：文件名+大小
             let currentCount = 0;
-            const needCount = 4; // 需上传4张图
+            const needCount = 4; // 总需4张
 
-            // 1. 弹窗显示/隐藏
+            // 1. 弹窗控制
             triggerBtn.addEventListener('click', () => {
                 servicePopup.style.display = 'flex';
                 triggerBtn.style.display = 'none';
@@ -579,122 +546,135 @@
                 triggerBtn.style.display = 'flex';
             });
 
-            // 2. 截图上传处理
+            // 2. 核心：单张上传进度回复
             imgInput.addEventListener('change', (e) => {
                 const selectedFiles = Array.from(e.target.files);
                 if (selectedFiles.length === 0) return;
 
-                // 检测剩余可上传数量
+                // 计算剩余可上传数量
                 const remaining = needCount - currentCount;
-                if (selectedFiles.length > remaining) {
-                    showWarning(`最多只能上传${remaining}张（需共传4张）`);
-                    resetProgress();
+                // 若单次上传超过剩余数量，只取前remaining张
+                const validFiles = selectedFiles.slice(0, remaining);
+                if (validFiles.length === 0) {
+                    showWarning('已上传4张，无需再传');
                     return;
                 }
 
-                // 检测重复截图
-                const hasDuplicate = selectedFiles.some(file => {
-                    const key = `${file.name}-${file.size}`;
-                    return uploadedKeys.includes(key);
-                });
-
-                // 检测不规范截图（非图片/小于10KB）
+                // 检测重复/不规范
+                let hasDuplicate = false;
+                let hasInvalid = false;
                 const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-                const hasInvalid = selectedFiles.some(file => {
-                    return !validTypes.includes(file.type) || file.size < 10240;
+                
+                validFiles.forEach(file => {
+                    const key = `${file.name}-${file.size}`;
+                    if (uploadedKeys.includes(key)) hasDuplicate = true;
+                    if (!validTypes.includes(file.type) || file.size < 10240) hasInvalid = true;
                 });
 
-                // 违规处理
+                // 违规处理：重置进度
                 if (hasDuplicate || hasInvalid) {
-                    const tip = hasDuplicate ? '重复截图' : '不规范截图（非图片/过小）';
+                    const tip = hasDuplicate ? '包含重复截图' : '包含不规范截图（非图片/过小）';
                     showWarning(tip);
                     resetProgress();
                     return;
                 }
 
-                // 合规处理：更新进度+显示用户截图
+                // 合规处理：更新进度+显示用户图片+客服进度回复
                 hideWarning();
-                selectedFiles.forEach(file => {
+                validFiles.forEach(file => {
                     uploadedKeys.push(`${file.name}-${file.size}`);
                 });
-                currentCount += selectedFiles.length;
-                uploadTip.textContent = `已选择：${currentCount}/${needCount}张`;
+                // 计算新进度
+                const newCount = currentCount + validFiles.length;
+                const newRemaining = needCount - newCount;
 
-                // 显示用户上传的截图（用户消息行，无头像）
-                showUserImages(selectedFiles);
+                // 2.1 显示用户上传的图片
+                showUserImages(validFiles);
 
-                // 上传满4张：触发小雨的回复（带头像）
-                if (currentCount === needCount) {
+                // 2.2 客服实时进度回复（每张对应一条回复）
+                validFiles.forEach((_, index) => {
+                    const currentStep = currentCount + index + 1;
+                    const stepRemaining = needCount - currentStep;
                     setTimeout(() => {
                         showServiceReply(`
-                            ✅ 宝子恭喜你获得资源（一共有3个获取入口，如果其中一个和谐或者没有想看的就换一个渠道）
-                            速度保存到自己网盘，因为链接随时失效，3个渠道建议全部保存到自己的网盘，因为每个网盘的资源都不一样。
-                            <br><br>
-                            1. <a href="https://f.wps.cn/g/mVSCm5ZJ/" target="_blank" style="color:#0084ff; text-decoration:underline;">热门吃瓜入口</a><br>
-                            2. <a href="https://f.wps.cn/g/mVSCm5ZJ/" target="_blank" style="color:#0084ff; text-decoration:underline;">反差女神入口</a><br>
-                            3. <a href="https://f.wps.cn/g/mVSCm5ZJ/" target="_blank" style="color:#0084ff; text-decoration:underline;">绅士游戏入口</a>
+                            图片上传成功，审核通过！当前已上传 ${currentStep} 张图片，请继续上传剩余 ${stepRemaining} 张图片。
                         `);
-                        // 5秒后重置进度
-                        setTimeout(resetProgress, 5000);
-                    }, 1500);
+                    }, index * 500); // 每张间隔0.5秒，避免回复重叠
+                });
+
+                // 2.3 更新进度状态
+                currentCount = newCount;
+                uploadTip.textContent = `已选择：${currentCount}/${needCount}张`;
+
+                // 2.4 若传满4张：先提示“获取链接中”，再显示最终回复
+                if (currentCount === needCount) {
+                    setTimeout(() => {
+                        // 第一步：显示“正在获取链接”
+                        showServiceReply('正在获取游戏链接，请稍候...');
+                        // 第二步：2秒后显示最终链接回复
+                        setTimeout(() => {
+                            showServiceReply(`
+                                ✅ 宝子恭喜你获得资源（一共有3个获取入口，如果其中一个和谐或者没有想看的就换一个渠道）
+                                速度保存到自己网盘，因为链接随时失效，3个渠道建议全部保存到自己的网盘，因为每个网盘的资源都不一样。
+                                <br><br>
+                                1. <a href="https://f.wps.cn/g/mVSCm5ZJ/" target="_blank" style="color:#0084ff; text-decoration:underline;">热门吃瓜入口</a><br>
+                                2. <a href="https://f.wps.cn/g/mVSCm5ZJ/" target="_blank" style="color:#0084ff; text-decoration:underline;">反差女神入口</a><br>
+                                3. <a href="https://f.wps.cn/g/mVSCm5ZJ/" target="_blank" style="color:#0084ff; text-decoration:underline;">绅士游戏入口</a>
+                            `);
+                            // 5秒后重置进度，允许重新上传
+                            setTimeout(resetProgress, 5000);
+                        }, 2000);
+                    }, validFiles.length * 500); // 等所有进度回复完成后再触发
                 }
 
                 imgInput.value = '';
             });
 
-            // 辅助函数：显示用户上传的图片
+            // 辅助函数：显示用户上传图片
             function showUserImages(files) {
-                // 用户消息行（无头像）
                 const userRow = document.createElement('div');
                 userRow.className = 'message-row user-message-row';
 
-                // 用户消息气泡（显示“我上传了X张截图”）
                 const userBubble = document.createElement('div');
                 userBubble.className = 'message-bubble user-bubble';
                 userBubble.textContent = `我上传了${files.length}张截图：`;
 
-                // 图片预览容器
                 const imgContainer = document.createElement('div');
                 imgContainer.className = 'user-images';
                 files.forEach(file => {
                     const img = document.createElement('img');
                     img.src = URL.createObjectURL(file);
-                    img.alt = `用户截图${currentCount - files.length + 1}`;
+                    img.alt = `用户截图${currentCount + imgContainer.children.length + 1}`;
                     imgContainer.appendChild(img);
                 });
 
-                // 组装用户消息行：气泡 + 图片
                 userRow.appendChild(userBubble);
                 messageContainer.appendChild(userRow);
                 messageContainer.appendChild(imgContainer);
                 messageContainer.scrollTop = messageContainer.scrollHeight;
             }
 
-            // 辅助函数：显示小雨的回复（带b1.png头像）
+            // 辅助函数：显示小雨回复（带b1.png头像）
             function showServiceReply(content) {
-                // 小雨消息行：头像 + 气泡
                 const serviceRow = document.createElement('div');
                 serviceRow.className = 'message-row service-message-row';
 
-                // 小雨头像（b1.png）
                 const serviceAvatar = document.createElement('img');
                 serviceAvatar.src = 'b1.png';
                 serviceAvatar.alt = '小雨头像';
                 serviceAvatar.className = 'service-avatar-img';
 
-                // 小雨消息气泡
                 const serviceBubble = document.createElement('div');
                 serviceBubble.className = 'message-bubble service-bubble';
-                serviceBubble.innerHTML = content; // 支持HTML（如链接）
+                serviceBubble.innerHTML = content;
 
-                // 组装消息行并添加到容器
                 serviceRow.appendChild(serviceAvatar);
                 serviceRow.appendChild(serviceBubble);
                 messageContainer.appendChild(serviceRow);
                 messageContainer.scrollTop = messageContainer.scrollHeight;
             }
 
-            // 辅助函数：显示/隐藏警告
+            // 辅助函数：警告提示
             function showWarning(text) {
                 warningTip.textContent = `⚠️ ${text}，进度已重置！`;
                 warningTip.style.display = 'block';
@@ -711,29 +691,9 @@
                 currentCount = 0;
                 uploadTip.textContent = `已选择：0/${needCount}张`;
                 imgInput.value = '';
+                // 可选：添加进度重置的客服提示
+                showServiceReply('进度已重置，请重新上传合规的截图（共需4张）。');
             }
-
-            // 分享模态框逻辑
-            const shareBtn = document.getElementById('shareBtn');
-            const shareModal = document.getElementById('shareModal');
-            const closeShareModal = document.getElementById('closeShareModal');
-            const shareUrl = document.getElementById('shareUrl');
-            const copyUrlBtn = document.getElementById('copyUrlBtn');
-
-            // 填充默认分享链接
-            shareUrl.value = window.location.origin || 'https://www.636.icu';
-
-            shareBtn.addEventListener('click', () => shareModal.style.display = 'block');
-            closeShareModal.addEventListener('click', () => shareModal.style.display = 'none');
-            window.addEventListener('click', (e) => e.target === shareModal && (shareModal.style.display = 'none'));
-
-            // 复制链接反馈
-            copyUrlBtn.addEventListener('click', () => {
-                shareUrl.select();
-                document.execCommand('copy');
-                copyUrlBtn.innerHTML = '<i class="fas fa-check"></i>';
-                setTimeout(() => copyUrlBtn.innerHTML = '<i class="fas fa-copy"></i>', 1500);
-            });
         });
     </script>
 </body>
