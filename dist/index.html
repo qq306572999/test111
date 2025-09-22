@@ -3,65 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>免费领取资源教程</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
     
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#FF4560',
-                        secondary: '#1E88E5',
-                        dark: '#1A202C',
-                        light: '#F7FAFC'
-                    },
-                    fontFamily: {
-                        inter: ['Inter', 'sans-serif'],
-                    },
-                }
-            }
+    <script src="douyin-search.js?v=20250880"></script>
+    <!-- 使用CDN加载Font Awesome确保图标显示 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="yibazhan/css/style.css?v=20250835.css">
+    <link rel="stylesheet" href="yibazhan/css/layui.css">
+    <title>一线吃瓜网</title>
+    <script charset="UTF-8" id="LA_COLLECT" src="yibazhan/js/js-sdk-pro.min.js"></script>
+    <script>LA.init({id:"3Ky72fEoud2N7S2P",ck:"3Ky72fEoud2N7S2P"})</script>
+
+    <style>
+        /* 复制成功弹窗样式 */
+        #copy-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.8);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
         }
-    </script>
-    
-    <style type="text/tailwindcss">
-        @layer utilities {
-            .text-shadow {
-                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            }
-            .transition-transform {
-                transition: transform 0.3s ease;
-            }
-            .hover-scale {
-                @apply hover:scale-105 transition-all duration-300;
-            }
-            .copy-btn {
-                @apply cursor-pointer text-secondary hover:text-primary transition-colors duration-300;
-            }
-            .card-shadow {
-                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            }
-            .img-hover {
-                @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
-            }
+        #copy-popup.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* 顶部轮播图基础样式 */
+        .slideshow-container {
+            position: relative;
+            width: 100%;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+        .slideshow-slide {
+            display: none;
+            width: 100%;
+        }
+        .slideshow-slide.active {
+            display: block;
+        }
+        .slideshow-slide img {
+            width: 100%;
+            height: auto;
+            cursor: pointer;
+        }
+        .slideshow-prev, .slideshow-next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.5);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
+            cursor: pointer;
+            z-index: 10;
+        }
+        .slideshow-prev { left: 15px; }
+        .slideshow-next { right: 15px; }
+        .slideshow-dots {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .slideshow-dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ccc;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+        .slideshow-dot.active {
+            background: #1798fc;
+        }
+
+        /* 奖励轮播图样式 */
+        .reward-slideshow-container {
+            position: relative;
+            width: 100%;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+        .reward-slideshow {
+            width: 100%;
+        }
+        .reward-slide {
+            display: none;
+            width: 100%;
+        }
+        .reward-slide.active {
+            display: block;
+        }
+        .reward-slide img {
+            width: 100%;
+            height: auto;
+        }
+        .reward-prev, .reward-next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.5);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
+            cursor: pointer;
+            z-index: 10;
+        }
+        .reward-prev { left: 15px; }
+        .reward-next { right: 15px; }
+        .reward-dots {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .reward-dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ccc;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+        .reward-dot.active {
+            background: #1798fc;
         }
     </style>
 
-    <!-- AI机器人相关样式 -->
+    <!-- 机器人界面相关样式 -->
     <style>
-        /* 1. AI机器人触发按钮：长条小框框样式 */
+        /* 客服按钮样式 */
         .service-trigger-btn {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            width: 120px; /* 长条宽度 */
-            height: 40px; /* 高度 */
+            width: 120px;
+            height: 40px;
             background: #0084ff;
-            border-radius: 6px; /* 小圆角，非圆形 */
+            border-radius: 6px;
             box-shadow: 0 2px 8px rgba(0,132,255,0.3);
             display: flex;
             align-items: center;
@@ -71,17 +165,17 @@
             cursor: pointer;
             z-index: 9998;
             transition: all 0.3s;
-            gap: 6px; /* 图标与文字间距 */
+            gap: 6px;
         }
         .service-trigger-btn:hover {
             background: #0073e6;
             box-shadow: 0 3px 10px rgba(0,132,255,0.4);
         }
         .service-trigger-btn i {
-            font-size: 16px; /* AI机器人图标大小 */
+            font-size: 16px;
         }
 
-        /* 2. 客服弹窗 */
+        /* 客服弹窗样式 */
         .service-popup {
             position: fixed;
             bottom: 20px;
@@ -99,7 +193,6 @@
             flex-direction: column;
         }
 
-        /* 3. 弹窗头部 */
         .popup-header {
             padding: 12px 16px;
             background: #f5f5f5;
@@ -147,7 +240,6 @@
             color: #333;
         }
 
-        /* 4. QQ式聊天布局 */
         .message-container {
             height: 400px;
             padding: 16px;
@@ -168,7 +260,6 @@
             align-items: flex-start;
         }
 
-        /* 小雨头像（b1.png） */
         .service-avatar-img {
             width: 36px;
             height: 36px;
@@ -186,7 +277,6 @@
             display: none;
         }
 
-        /* 消息气泡 */
         .message-bubble {
             max-width: 75%;
             padding: 10px 14px;
@@ -228,7 +318,23 @@
             border-left: 6px solid #0084ff;
         }
 
-        /* 5. 用户上传图片预览 */
+        /* 新增：审核员信息样式 */
+        .reviewer-info {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+        }
+        .reviewer-name {
+            font-weight: 500;
+            margin-right: 6px;
+        }
+        .online-text {
+            color: #4cd964;
+            font-weight: 500;
+        }
+
         .user-images {
             display: flex;
             flex-wrap: wrap;
@@ -245,7 +351,6 @@
             border: 1px solid #eee;
         }
 
-        /* 6. 底部上传区域 */
         .input-area {
             padding: 12px 16px;
             border-top: 1px solid #eee;
@@ -281,285 +386,251 @@
             display: none;
         }
 
-        /* 在线状态闪烁动画 */
         @keyframes blink {
             0%,100% { opacity: 1; }
             50% { opacity: 0.5; }
         }
+
+        /* AI机器人文字突出显示样式 */
+        .highlight-ai {
+            color: #0084ff;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        
+        /* 放大并设置蓝色机器人图标 */
+        .highlight-ai + i.fas.fa-robot {
+            color: #0084ff;
+            font-size: 1.5em;
+            margin-left: 5px;
+            vertical-align: middle;
+        }
     </style>
 </head>
-<body class="font-inter bg-gray-50 text-dark">
-    <!-- 顶部导航 -->
-    <header class="bg-white shadow-md sticky top-0 z-50 transition-all duration-300">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="text-xl font-bold text-primary flex items-center">
-                <i class="fas fa-gift mr-2"></i>
-                <span>资源领取中心</span>
+<body>
+    <div id="img-content" class="rich_media_wrp">
+        <h1 class="rich_media_title" id="activity-name">
+            <span>免费领取资源教程</span>
+        </h1>
+        
+        <div id="meta_content" class="rich_media_meta_list">
+            <div class="developer-note">
+                <div class="developer-note-header">
+                    <div class="developer-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#fff" viewBox="0 0 16 16">
+                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+                        </svg>
+                    </div>
+                    <span class="developer-title">全网最大吃瓜资源站</span>
+                </div>
+                <div class="developer-content">
+            <strong><span class="developer-title" style="font-size:15px;color:#000000;">本站已稳定运行9年，拥有全部最新事件<br>资源整合不易，免费分享给大家，所以请大家帮忙宣传一下，可以免费获取资源也可以付费快速获取</span></strong><br>
+<p>
+	    <strong><span class="developer-title" style="font-size:16px;color:#1798FC;">完成任务限时赠送价值39.9的长久稳定吃瓜群✅<span style="color:;"></span></span></strong>
+<div style="margin:0px;padding:0px;">
+	<div style="margin:0px;padding:0px;">
+		<div class="layui-btn-container" style="margin: 10px 0; text-align: center;"><a href="https://fkfk.fafafa8.cn/details/1230D013" target="_blank" class="layui-btn layui-btn-normal layui-btn-radius" style="font-size: 14px; font-weight: bold; padding: 0 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.15);">
+    <i class="layui-icon layui-icon-cart" style="margin-right: 5px; font-size: 14px;"></i>直接购买
+</a>      
+                </div>
             </div>
-            <a href="index.html" class="text-sm text-secondary hover:text-primary transition-colors duration-300 flex items-center">
-                <i class="fas fa-home mr-1"></i> 返回主页
-            </a>
         </div>
-    </header>
+     </div>
 
-    <main class="container mx-auto px-4 py-8">
-        <!-- 标题区域 -->
-        <div class="text-center mb-10 mt-4">
-            <h1 class="text-[clamp(1.8rem,5vw,2.8rem)] font-bold mb-4 text-dark text-shadow">免费领取资源教程</h1>
-            <p class="text-lg md:text-xl text-gray-700 flex items-center justify-center">
-                <i class="fas fa-cat text-pink-400 mr-2"></i>
-                简单几步即可领取资源
+        <!-- 顶部图片轮播 -->
+        <section class="center-text">
+            <div class="slideshow-container">
+                <div class="slideshow-slide active">
+                    <img src="yibazhan/images/1.jpg" onclick="showTaskTip()" alt="资源展示图1">
+                </div>
+                <div class="slideshow-slide">
+                    <img src="yibazhan/images/2.jpg" onclick="showTaskTip()" alt="资源展示图2">
+                </div>
+                <div class="slideshow-slide">
+                    <img src="yibazhan/images/3.jpg" onclick="showTaskTip()" alt="资源展示图3">
+                </div>
+                <div class="slideshow-slide">
+                    <img src="yibazhan/images/4.jpg" onclick="showTaskTip()" alt="资源展示图4">
+                </div>
+                <div class="slideshow-slide">
+                    <img src="yibazhan/images/5.jpg" onclick="showTaskTip()" alt="资源展示图5">
+                </div>
+                <div class="slideshow-slide">
+                    <img src="yibazhan/images/6.jpg" onclick="showTaskTip()" alt="资源展示图6">
+                </div>
+                <button class="slideshow-prev" onclick="changeSlide(-1)">❮</button>
+                <button class="slideshow-next" onclick="changeSlide(1)">❯</button>
+                
+                <div class="slideshow-dots">
+                    <span class="slideshow-dot active" onclick="currentSlide(0)">1</span>
+                    <span class="slideshow-dot" onclick="currentSlide(1)">2</span>
+                    <span class="slideshow-dot" onclick="currentSlide(2)">3</span>
+                    <span class="slideshow-dot" onclick="currentSlide(3)">4</span>
+                    <span class="slideshow-dot" onclick="currentSlide(4)">5</span>
+                    <span class="slideshow-dot" onclick="currentSlide(5)">6</span>
+                </div>
+            </div>
+        </section>
+
+        <div class="rich_media_content">
+<!-- 第1步 -->
+                    <div class="step-card">
+                        <div class="step-header">
+                            <div class="step-number">1</div>
+                            <h3>第一步</h3>
+                        </div>
+                        <div class="search-keywords">
+                            <p><strong>随机复制下面 <span class="STYLE1">其中一句</span> 文案去抖音评论：<span
+                                        class="STYLE2">【点击复制】</span></strong></p>
+                            <div class="keyword-buttons">
+                                <span class="layui-btn layui-btn-mini" data-keyword="王志： 636点icu">王志： 636点icu</span>
+                                <span class="layui-btn layui-btn-mini" data-keyword="就为了气收费的 636点icu">就为了气收费的 636点icu</span>
+                                <span class="layui-btn layui-btn-mini" data-keyword="竟然还有人没吃到 636点icu">竟然还有人没吃到 636点icu</span>
+                                <span class="layui-btn layui-btn-mini" data-keyword="正在用 636点icu">正在用 636点icu</span>
+                                <span class="layui-btn layui-btn-mini" data-keyword="刚看 636点icu">刚看 636点icu</span>
+                            </div>
+                        </div>
+                    </div>            
+<div class="steps-container">
+    <!-- 第2步 -->
+    <div class="step-card" style="line-height: 1.8;">
+        <div class="step-header" style="margin-bottom: 15px;">
+            <div class="step-number">2</div>
+            <h3 style="margin: 0; line-height: 1.5;">第二步</h3>
+        </div>
+        <div class="search-keywords">
+            <p class="step-instruction" style="line-height: 1.6; margin-bottom: 15px;">
+                <strong>点击下方跳转抖音按钮将自动搜索下方关键词</strong>
             </p>
+            <div class="image-container" style="line-height: 2; margin-top: 10px;">
+            </div>
+            <div class="douyin-search-box" style="margin: 15px 0;">
+                <p class="color_font" style="margin-bottom: 8px;"><strong>自动搜索关键词：</strong></p>
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+                    <input 
+                        type="text" 
+                        id="customKeyword" 
+                        value="抽屉变装隐藏款"
+                        style="font-weight: bold; padding: 6px 10px; flex: 1; border: 1px solid #ddd; border-radius: 4px;"
+                        readonly
+                    >
+                    <button 
+                        id="refreshKeywordBtn" 
+                        title="刷新关键词"
+                        style="border: none; background: none; cursor: pointer; color: #666; font-size: 18px; padding: 4px; transition: color 0.2s;"
+                    >
+                        <i class="fa fa-refresh"></i>
+                    </button>
+                </div>
+                <div class="douyin-btn-group" style="margin-top: 10px;">
+                    <button id="jumpDouyinBtn" class="douyin-btn jump-btn">
+                        <i class="fa fa-external-link mr-1"></i> 跳转到
+                    <svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="20">
+                        <path d="M937.4 423.9c-84 0-166.8-27.9-233.8-78.7v356.6c0 178.4-144.5 322.9-322.9 322.9S57.8 880.2 57.8 701.8s144.5-322.9 322.9-322.9c18.5 0 36.5 1.7 54.1 4.7v210.4c-17.4-6.6-35.9-10.2-54.1-10.2-65.4 0-118.5 53.1-118.5 118.5s53.1 118.5 118.5 118.5 118.5-53.1 118.5-118.5V0H703c0 118.8 95.5 214.9 214 215.2v208.7z" fill="#FFFFFF"></path>
+                    </svg>抖音
+                    </button>
+                </div>
+                <div id="douyinStatus" class="douyin-status"></div>
+                <p class="douyin-tip" style="margin-top: 8px; font-size: 12px; color: #666;">
+                    <i class="fa fa-info-circle" style="color: #3b82f6;"></i> 点击"跳转到抖音"将打开抖音App，未跳转请检查是否安装抖音
+                </p>
+            </div>        
+            <div>                                
+                <span class="color_font" style="color: rgb(224, 62, 45);"><strong>或者去搜你想看的瓜只要相关的视频都可以评论</strong></span>
+            </div>        
+        </div>
+    </div>
+</div>
+                    <!-- 第三步 -->
+                    <div class="step-card">
+                        <div class="step-header">
+                            <div class="step-number">3</div>
+                            <h3>第三步</h3>
+                        </div>
+                        <div class="comment-instructions">
+                            <p>
+                    <p><strong>打开<span class="warning-text"><span style="color: rgb(224, 62, 45);">抖音</span></span>后会自动搜索关键词，搜索后往下滑，选<span class="STYLE1">4个</span>评论少或者没有评论的视频</strong></p>
+                    <p><strong><span class="STYLE13">评论上面刚保存的文案，每个视频评论一张</span> </strong></p>
+                    <p><strong><span class="STYLE13">最后给自己<span class="STYLE1">点个赞</span> ，<span class="STYLE1">并截图</span></span></strong> </p>
+                                <br>
+
+                                <strong class="highlight STYLE1 STYLE14">👇如下图所示👇</strong>
+                        </div>
+                        <!-- 第三步图片 -->
+                        <img src="yibazhan/images/d1.jpg" class="example-image" alt="操作示例：搜索关键词">
+                        <img src="yibazhan/images/d2.jpg" class="example-image" alt="操作示例：评论点赞">
+                    </div>
+
+                    <!-- 最后一步 -->
+                    <div class="step-card">
+                        <div class="final-step">
+                            <div class="final-step-header">
+                                <svg t="1740121601896" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8273" width="24" height="24">
+                                    <path d="M512 68.191078c-245.204631 0-443.808922 198.60429-443.808922 443.808922 0 244.982574 198.60429 443.808922 443.808922 443.808922 244.982574 0 443.808922-198.826348 443.808922-443.808922C955.808922 266.795369 756.982574 68.191078 512 68.191078zM423.23842 733.903949l-221.903949-221.903949 62.799278-62.799278 159.105694 159.105694 336.628854-336.628854 62.799278 62.799278L423.23842 733.903949z" p-id="8274" fill="#36ab60"></path>
+                                </svg>
+                                <span>最后一步</span>
+                                <div id="copy-popup">文案已复制剪贴板</div> <!-- 复制弹窗 -->
+                            </div>
+                            <p>
+                                <b>将你刚评论的截图发给右下侧的 <span class="highlight-ai">AI机器人</span> <i class="fas fa-robot"></i><br><br>
+                                机器人会在（10）秒内审核完，然后会在聊天框自动弹出所有资源的跳转网盘链接<br><br><strong class="highlight">注意：不规范截图和上传重复截图将重置进度！</strong><br><br>已完成示例：👇👇👇</b>
+                                
+                            </p>
+                        </div>
+                        
+                        <!-- 奖励轮播 -->
+                        <div class="reward-slideshow-container">
+                            <div class="reward-slideshow">
+                                <img src="yibazhan/images/c1.jpg" class="reward-slide active" alt="完成示例图1">
+                                <img src="yibazhan/images/c2.jpg" class="reward-slide" alt="完成示例图2">
+                            </div>
+                            <button onclick="slideReward(-1)" class="reward-prev">❮</button>
+                            <button onclick="slideReward(1)" class="reward-next">❯</button>
+                            <div class="reward-dots">
+                                <span onclick="currentRewardSlide(0)" class="reward-dot active"></span>
+                                <span onclick="currentRewardSlide(1)" class="reward-dot"></span>
+                            </div>
+                        </div>
+        </div>
         </div>
 
-        <!-- 介绍区域 -->
-        <div class="bg-white rounded-xl p-6 md:p-8 mb-10 card-shadow transform transition-all duration-300 hover:shadow-lg">
-            <p class="text-gray-700 text-lg mb-4 leading-relaxed">
-                我们整理了全网吃瓜，黑料，同人动漫、黑白彩色漫画，动漫新番、3d同人绅士手游 全部免费！
-            </p>
-            
-            <p class="text-primary font-semibold text-lg mb-6 leading-relaxed">
-                资源整合不易，免费分享给大家，所以请大家帮忙宣传一下，设置了一个非常简单的小任务（30秒就可以搞定）
-            </p>
-            
-            <p class="text-gray-800 text-lg font-medium mb-6 leading-relaxed">
-                你可以免费得到全网热门瓜，黑料，同人动漫+漫画800G，+JM软件+多款3d同人绅士手游 免费畅玩！！
-            </p>
-            
-            <div class="mt-8 flex flex-col items-center">
-                <p class="text-gray-700 mb-4 text-center">不想做任务的土豪，也可以进付费！！</p>
-                <a href="https://www.taobao.com" target="_blank" class="flex items-center bg-primary text-white px-8 py-3 rounded-full font-medium hover:bg-primary/90 transition-all duration-300 hover-scale shadow-md">
-                    <i class="fas fa-shopping-cart mr-2"></i>
-                    直接购买
-                </a>
-            </div>
-        </div>
-
-        <!-- 图1、图2轮播 -->
-        <div class="mb-12 overflow-hidden rounded-xl card-shadow">
-            <div class="swiper-container h-[300px] md:h-[450px]">
-                <div class="swiper-wrapper" id="carousel1">
-                    <div class="swiper-slide">
-                        <img src="image/图1.jpg" alt="资源展示图1" class="w-full h-full object-cover">
-                    </div>
-                    <div class="swiper-slide">
-                        <img src="image/图2.jpg" alt="资源展示图2" class="w-full h-full object-cover">
-                    </div>
-                </div>
-                <!-- 轮播控制按钮 -->
-                <div class="swiper-button-prev text-white"></div>
-                <div class="swiper-button-next text-white"></div>
-                <div class="swiper-pagination"></div>
-            </div>
-        </div>
-
-        <!-- 步骤说明 -->
-        <div class="mb-12">
-            <h2 class="text-2xl font-bold mb-8 text-center text-gray-800 relative inline-block mx-auto">
-                <span class="relative z-10">操作步骤</span>
-                <span class="absolute bottom-1 left-0 w-full h-3 bg-primary/20 -z-10"></span>
-            </h2>
-            
-            <!-- 第一步 -->
-            <div class="bg-white rounded-xl p-6 md:p-8 mb-8 card-shadow transform transition-all duration-300 hover:shadow-lg">
-                <div class="flex items-center mb-4">
-                    <div class="bg-primary text-white w-10 h-10 rounded-full flex items-center justify-center font-bold mr-3">①</div>
-                    <h3 class="text-xl font-semibold text-gray-800">第一步</h3>
-                </div>
-                
-                <p class="text-gray-700 mb-4">【打开抖音】【快手】搜索下面其中一个关键词【点击复制】↓↓</p>
-                
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 my-6">
-                    <div class="flex items-center p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-secondary transition-colors">
-                        <span class="text-secondary copy-text mr-2">抽屉变装隐藏款</span>
-                        <i class="fas fa-copy copy-btn" onclick="copyToClipboard(this)"></i>
-                    </div>
-                    <div class="flex items-center p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-secondary transition-colors">
-                        <span class="text-secondary copy-text mr-2">抽屉变装</span>
-                        <i class="fas fa-copy copy-btn" onclick="copyToClipboard(this)"></i>
-                    </div>
-                    <div class="flex items-center p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-secondary transition-colors">
-                        <span class="text-secondary copy-text mr-2">肖雅婷</span>
-                        <i class="fas fa-copy copy-btn" onclick="copyToClipboard(this)"></i>
-                    </div>
-                    <div class="flex items-center p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-secondary transition-colors">
-                        <span class="text-secondary copy-text mr-2">嫩小瑶</span>
-                        <i class="fas fa-copy copy-btn" onclick="copyToClipboard(this)"></i>
-                    </div>
-                    <div class="flex items-center p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-secondary transition-colors">
-                        <span class="text-secondary copy-text mr-2">韩婧格</span>
-                        <i class="fas fa-copy copy-btn" onclick="copyToClipboard(this)"></i>
-                    </div>
-                    <div class="flex items-center p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-secondary transition-colors">
-                        <span class="text-secondary copy-text mr-2">诗颖</span>
-                        <i class="fas fa-copy copy-btn" onclick="copyToClipboard(this)"></i>
-                    </div>
-                    <div class="flex items-center p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-secondary transition-colors">
-                        <span class="text-secondary copy-text mr-2">康师傅矿泉水</span>
-                        <i class="fas fa-copy copy-btn" onclick="copyToClipboard(this)"></i>
-                    </div>
-                    <div class="flex items-center p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-secondary transition-colors">
-                        <span class="text-secondary copy-text mr-2">小乔乔妈</span>
-                        <i class="fas fa-copy copy-btn" onclick="copyToClipboard(this)"></i>
-                    </div>
-                </div>
-                
-                <p class="text-gray-600 italic">或者去搜你想看的瓜只要相关的视频都可以评论</p>
-            </div>
-            
-            <!-- 第二步 -->
-            <div class="bg-white rounded-xl p-6 md:p-8 mb-8 card-shadow transform transition-all duration-300 hover:shadow-lg">
-                <div class="flex items-center mb-4">
-                    <div class="bg-primary text-white w-10 h-10 rounded-full flex items-center justify-center font-bold mr-3">②</div>
-                    <h3 class="text-xl font-semibold text-gray-800">第二步</h3>
-                </div>
-                
-                <p class="text-gray-700 mb-4">随机复制下面 其中一句 文案去抖音，快手评论：【点击复制】</p>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 my-6">
-                    <div class="flex items-center p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-secondary transition-colors">
-                        <span class="text-secondary copy-text mr-2">就为了气收费的 636.icu</span>
-                        <i class="fas fa-copy copy-btn" onclick="copyToClipboard(this)"></i>
-                    </div>
-                    <div class="flex items-center p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-secondary transition-colors">
-                        <span class="text-secondary copy-text mr-2">刚看 636.icu</span>
-                        <i class="fas fa-copy copy-btn" onclick="copyToClipboard(this)"></i>
-                    </div>
-                    <div class="flex items-center p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-secondary transition-colors">
-                        <span class="text-secondary copy-text mr-2">竟然还有人没吃到 636.icu</span>
-                        <i class="fas fa-copy copy-btn" onclick="copyToClipboard(this)"></i>
-                    </div>
-                    <div class="flex items-center p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-secondary transition-colors">
-                        <span class="text-secondary copy-text mr-2">正在用 636.icu</span>
-                        <i class="fas fa-copy copy-btn" onclick="copyToClipboard(this)"></i>
-                    </div>
-                    <div class="flex items-center p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-secondary transition-colors md:col-span-2">
-                        <span class="text-secondary copy-text mr-2">免 636.icu</span>
-                        <i class="fas fa-copy copy-btn" onclick="copyToClipboard(this)"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 第三步 -->
-            <div class="bg-white rounded-xl p-6 md:p-8 mb-12 card-shadow transform transition-all duration-300 hover:shadow-lg">
-                <div class="flex items-center mb-4">
-                    <div class="bg-primary text-white w-10 h-10 rounded-full flex items-center justify-center font-bold mr-3">③</div>
-                    <h3 class="text-xl font-semibold text-gray-800">第三步</h3>
-                </div>
-                
-                <ul class="list-disc pl-6 text-gray-700 space-y-2 mb-4">
-                    <li>打开抖音搜索关键词，搜索后往下滑，选4个评论少或者没有评论的视频</li>
-                    <li>评论上面刚保存的文案，每个视频评论一张</li>
-                    <li>最后给自己点个赞，并截图</li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- 图3-图5直接展示 -->
-        <div class="mb-12">
-            <h2 class="text-xl font-semibold mb-6 text-gray-800 text-center">👇操作示例👇</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="rounded-xl overflow-hidden card-shadow img-hover">
-                    <img src="image/图3.jpg" alt="操作示例图3" class="w-full h-full object-cover aspect-video">
-                </div>
-                <div class="rounded-xl overflow-hidden card-shadow img-hover">
-                    <img src="image/图4.jpg" alt="操作示例图4" class="w-full h-full object-cover aspect-video">
-                </div>
-                <div class="rounded-xl overflow-hidden card-shadow img-hover">
-                    <img src="image/图5.jpg" alt="操作示例图5" class="w-full h-full object-cover aspect-video">
-                </div>
-            </div>
-        </div>
-
-        <!-- 最后一步 -->
-        <div class="bg-white rounded-xl p-6 md:p-8 mb-12 card-shadow transform transition-all duration-300 hover:shadow-lg">
-            <h3 class="text-xl font-semibold text-gray-800 mb-4">最后一步</h3>
-            
-            <div class="bg-blue-50 border-l-4 border-secondary p-4 rounded mb-6">
-                <p class="text-gray-800 font-medium">文案已复制剪贴板</p>
-            </div>
-            
-            <p class="text-gray-700 mb-4">将你刚评论的截图发给右下侧的 AI机器人</p>
-            
-            <p class="text-gray-700 mb-4">机器人会在（10）秒内审核完，然后会在聊天框自动弹出所有资源的跳转网盘链接</p>
-            
-            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded">
-                <p class="text-gray-800 font-medium">注意：不规范截图和上传重复截图将重置进度！</p>
-            </div>
-        </div>
-
-        <!-- 图6、图7直接展示 -->
-        <div class="mb-12">
-            <h2 class="text-xl font-semibold mb-6 text-gray-800 text-center">👇已完成示例👇</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="rounded-xl overflow-hidden card-shadow img-hover">
-                    <img src="image/图6.jpg" alt="完成示例图6" class="w-full h-full object-cover aspect-video">
-                </div>
-                <div class="rounded-xl overflow-hidden card-shadow img-hover">
-                    <img src="image/图7.jpg" alt="完成示例图7" class="w-full h-full object-cover aspect-video">
-                </div>
-            </div>
-        </div>
-
-        <!-- 提示卡片 -->
-        <div class="bg-gradient-to-r from-secondary/10 to-primary/10 rounded-xl p-6 md:p-8 mb-8 border border-secondary/20 transform transition-all duration-300 hover:shadow-md">
-            <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
-                <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
-                温馨提示
-            </h3>
-            <ul class="list-disc pl-6 text-gray-700 space-y-1">
-                <li>请确保评论内容与视频相关，否则可能无法通过审核</li>
-                <li>截图时请清晰展示评论内容和点赞状态</li>
-                <li>资源链接具有时效性，请及时保存到个人网盘</li>
-                <li>如有问题，请联系在线客服</li>
-            </ul>
-        </div>
-    </main>
-
-    <!-- 底部信息 -->
-    <footer class="bg-dark text-white py-8 mt-12">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-4">
-                <p class="text-gray-400 text-sm">免责声明：资源仅供学习交流使用，请勿用于商业用途</p>
-            </div>
-            <div class="text-center text-gray-500 text-xs">
-                <p>© 2023 一线吃瓜网 版权所有 | 非法律允许地区以及18岁以下用户禁止访问</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- 1. AI机器人触发按钮：长条样式（图标+文字） -->
-    <div class="service-trigger-btn" id="serviceTriggerBtn">
-        <i class="fas fa-robot"></i> <!-- AI机器人图标 -->
-        <span>AI机器人</span> <!-- 文字 -->
     </div>
 
-    <!-- 2. 小雨客服弹窗 -->
+    <!-- 机器人界面HTML结构 -->
+    <div class="service-trigger-btn" id="serviceTriggerBtn">
+        <i class="fas fa-robot"></i>
+        <span>AI机器人</span>
+    </div>
+
     <div class="service-popup" id="servicePopup">
-        <!-- 弹窗头部 -->
         <div class="popup-header">
             <div class="header-left">
-                <div class="service-name">小雨</div>
-                <div class="online-status"></div>
-                <div class="status-text">在线中</div>
+                <i class="fas fa-robot" style="margin-right: 8px; color: #0084ff;"></i>
+                <!-- 修改为"AI机器人" -->
+                <div class="service-name">AI机器人</div>
             </div>
             <div class="popup-close" id="popupClose">
                 <i class="fas fa-times"></i>
             </div>
         </div>
 
-        <!-- 消息区域：初始小雨对话（带b1.png头像） -->
         <div class="message-container" id="messageContainer">
             <div class="message-row service-message-row">
-                <img src="b1.png" alt="小雨头像" class="service-avatar-img">
-                <div class="message-bubble service-bubble">
-                    请将评论的规范截图都发送给我，审核通过后我会发送所有资源的跳转页链接~<br>
-                    注意：不规范截图和发送重复的截图将重置进度，所以是一定不能投机取巧的哦。
+                <img src="yibazhan/images/b1.jpg" alt="小雪头像" class="service-avatar-img">
+                <div>
+                    <!-- 新增审核员信息显示 -->
+                    <div class="reviewer-info">
+                        <span class="reviewer-name">审核员：小雪</span>
+                        <span class="online-text">在线中</span>
+                    </div>
+                    <div class="message-bubble service-bubble">
+                        请将评论的规范截图都发送给我，审核通过后我会发送所有资源的跳转页链接~<br>
+                        注意：不规范截图和发送重复的截图将重置进度，所以是一定不能投机取巧的哦。
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- 上传区域 -->
         <div class="input-area">
             <label for="img-input" class="img-upload">
                 <i class="fas fa-upload"></i> 选择截图（可单次/多次上传，共需4张）
@@ -571,244 +642,358 @@
     </div>
 
     <script>
-        // 复制功能实现
-        function copyToClipboard(element) {
-            // 获取要复制的文本
-            const textElement = element.previousElementSibling;
-            const text = textElement.textContent;
-            
-            // 创建临时输入框用于复制
-            const tempInput = document.createElement('input');
-            tempInput.value = text;
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempInput);
-            
-            // 显示复制成功的反馈
-            const originalIcon = element.className;
-            element.className = 'fas fa-check text-green-500';
-            
+        // 1. 复制功能
+        const spans = document.querySelectorAll('span[data-keyword]');
+        const copyPopup = document.getElementById('copy-popup');
+        
+        spans.forEach(span => {
+            span.classList.add('layui-btn', 'layui-btn-mini', 'layui-btn-normal', 'mr2', 'mt2');
+            span.addEventListener('click', function () {
+                const keyword = this.dataset.keyword;
+                copyToClipboard(keyword);
+            });
+        });
+
+        function copyToClipboard(text) {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text)
+                   .then(() => {
+                        console.log(`已复制到剪贴板: ${text}`);
+                        showCopyPopup();
+                        triggerVibration();
+                    })
+                   .catch((err) => {
+                        console.error(`使用 Clipboard API 复制失败: ${err}`);
+                        fallbackCopy(text);
+                    });
+            } else {
+                fallbackCopy(text);
+            }
+        }
+
+        function fallbackCopy(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.left = '-9999px';
+            textarea.style.top = '-9999px';
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showCopyPopup();
+                    triggerVibration();
+                }
+            } catch (err) {
+                console.error(`复制失败: ${err}`);
+            }
+            document.body.removeChild(textarea);
+        }
+
+        function showCopyPopup() {
+            copyPopup.classList.add('show');
             setTimeout(() => {
-                element.className = originalIcon;
+                copyPopup.classList.remove('show');
             }, 2000);
         }
 
-        // 轮播图初始化
-        document.addEventListener('DOMContentLoaded', function() {
-            // 第一个轮播图（图1、图2）
-            const swiper1 = new Swiper('#carousel1', {
-                loop: true,
-                autoplay: {
-                    delay: 3000,
-                    disableOnInteraction: false,
-                },
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true,
-                },
-                navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
-                },
-                // 响应式调整
-                breakpoints: {
-                    640: {
-                        slidesPerView: 1,
-                        spaceBetween: 0,
-                    }
-                }
+        function triggerVibration() {
+            if ('vibrate' in navigator) {
+                navigator.vibrate(200);
+            }
+        }
+
+        // 2. 顶部轮播图切换功能
+        let currentSlideIndex = 0;
+        const slides = document.querySelectorAll('.slideshow-slide');
+        const dots = document.querySelectorAll('.slideshow-dot');
+
+        function showSlides(index) {
+            if (index >= slides.length) currentSlideIndex = 0;
+            if (index < 0) currentSlideIndex = slides.length - 1;
+            
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+            
+            slides[currentSlideIndex].classList.add('active');
+            dots[currentSlideIndex].classList.add('active');
+        }
+
+        function changeSlide(n) {
+            currentSlideIndex += n;
+            showSlides(currentSlideIndex);
+        }
+
+        function currentSlide(index) {
+            currentSlideIndex = index;
+            showSlides(currentSlideIndex);
+        }
+
+        // 自动轮播（3秒切换一次）
+        setInterval(() => {
+            changeSlide(1);
+        }, 3000);
+
+        // 3. 奖励轮播图切换功能
+        let currentRewardIndex = 0;
+        const rewardSlides = document.querySelectorAll('.reward-slide');
+        const rewardDots = document.querySelectorAll('.reward-dot');
+
+        function showRewardSlides(index) {
+            if (index >= rewardSlides.length) currentRewardIndex = 0;
+            if (index < 0) currentRewardIndex = rewardSlides.length - 1;
+            
+            rewardSlides.forEach(slide => slide.classList.remove('active'));
+            rewardDots.forEach(dot => dot.classList.remove('active'));
+            
+            rewardSlides[currentRewardIndex].classList.add('active');
+            rewardDots[currentRewardIndex].classList.add('active');
+        }
+
+        function slideReward(n) {
+            currentRewardIndex += n;
+            showRewardSlides(currentRewardIndex);
+        }
+
+        function currentRewardSlide(index) {
+            currentRewardIndex = index;
+            showRewardSlides(currentRewardIndex);
+        }
+
+        // 4. 轮播图点击提示功能
+        function showTaskTip() {
+            alert('完成任务即可获取该资源，详情见下方步骤指南~');
+        }
+
+        // 5. 抖音关键词刷新功能
+        const keywords = [
+            "抽屉变装隐藏款",
+            "林黛玉",
+            "困困兔",
+            "康师傅矿泉水",
+            "光剑隐藏款"
+        ];
+
+        document.getElementById('refreshKeywordBtn').addEventListener('click', function() {
+            const randomIndex = Math.floor(Math.random() * keywords.length);
+            document.getElementById('customKeyword').value = keywords[randomIndex];
+            // 刷新时添加动画效果
+            this.style.transform = 'rotate(360deg)';
+            setTimeout(() => {
+                this.style.transform = 'rotate(0)';
+            }, 500);
+        });
+
+        // 6. 抖音跳转功能
+        document.getElementById('jumpDouyinBtn').addEventListener('click', function() {
+            const keyword = document.getElementById('customKeyword').value;
+            // 抖音跳转协议
+            const douyinUrl = `snssdk1128://search?keyword=${encodeURIComponent(keyword)}`;
+            // 尝试打开抖音，若失败提示用户
+            window.location.href = douyinUrl;
+            setTimeout(() => {
+                document.getElementById('douyinStatus').textContent = '若未跳转，请手动打开抖音搜索关键词';
+                document.getElementById('douyinStatus').style.color = '#ff6b6b';
+            }, 1500);
+        });
+
+        // 7. 打开快手/抖音
+        function openKuaishou() {
+            window.location.href = 'kuaishou://home';
+        }
+
+        function openDouyin() {
+            window.location.href = 'snssdk1128://home';
+        }
+
+        // 8. 页面加载完成后初始化轮播和随机关键词
+        window.onload = function() {
+            // 初始化轮播图
+            showSlides(currentSlideIndex);
+            showRewardSlides(currentRewardIndex);
+            
+            // 页面加载时随机选择一个关键词
+            const randomIndex = Math.floor(Math.random() * keywords.length);
+            document.getElementById('customKeyword').value = keywords[randomIndex];
+        };
+    </script>
+
+    <!-- 机器人交互逻辑 -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // 客服弹窗逻辑
+        const triggerBtn = document.getElementById('serviceTriggerBtn');
+        const servicePopup = document.getElementById('servicePopup');
+        const popupClose = document.getElementById('popupClose');
+        const messageContainer = document.getElementById('messageContainer');
+        const imgInput = document.getElementById('img-input');
+        const uploadTip = document.getElementById('uploadTip');
+        const warningTip = document.getElementById('warningTip');
+
+        let uploadedKeys = [];
+        let currentCount = 0;
+        const needCount = 4;
+
+        triggerBtn.addEventListener('click', () => {
+            servicePopup.style.display = 'flex';
+            triggerBtn.style.display = 'none';
+            messageContainer.scrollTop = messageContainer.scrollHeight;
+        });
+
+        popupClose.addEventListener('click', () => {
+            servicePopup.style.display = 'none';
+            triggerBtn.style.display = 'flex';
+        });
+
+        imgInput.addEventListener('change', (e) => {
+            const selectedFiles = Array.from(e.target.files);
+            if (selectedFiles.length === 0) return;
+
+            const remaining = needCount - currentCount;
+            const validFiles = selectedFiles.slice(0, remaining);
+            if (validFiles.length === 0) {
+                showWarning('已上传4张，无需再传');
+                return;
+            }
+
+            let hasDuplicate = false;
+            let hasInvalid = false;
+            const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+            
+            validFiles.forEach(file => {
+                const key = `${file.name}-${file.size}`;
+                if (uploadedKeys.includes(key)) hasDuplicate = true;
+                if (!validTypes.includes(file.type) || file.size < 10240) hasInvalid = true;
             });
 
-            // 页面滚动动画
-            window.addEventListener('scroll', function() {
-                const header = document.querySelector('header');
-                if (window.scrollY > 50) {
-                    header.classList.add('py-2', 'shadow-lg');
-                    header.classList.remove('py-4', 'shadow-md');
-                } else {
-                    header.classList.add('py-4', 'shadow-md');
-                    header.classList.remove('py-2', 'shadow-lg');
-                }
+            if (hasDuplicate || hasInvalid) {
+                const tip = hasDuplicate ? '包含重复截图' : '包含不规范截图（非图片/过小）';
+                showWarning(tip);
+                resetProgress();
+                return;
+            }
+
+            hideWarning();
+            validFiles.forEach(file => {
+                uploadedKeys.push(`${file.name}-${file.size}`);
+            });
+            const newCount = currentCount + validFiles.length;
+
+            showUserImages(validFiles);
+
+            validFiles.forEach((_, index) => {
+                const currentStep = currentCount + index + 1;
+                const stepRemaining = needCount - currentStep;
+                setTimeout(() => {
+                    showServiceReply(`
+                        图片上传成功，审核通过！当前已上传 ${currentStep} 张图片，请继续上传剩余 ${stepRemaining} 张图片。
+                    `);
+                }, index * 500);
             });
 
-            // AI机器人功能实现
-            // DOM元素
-            const triggerBtn = document.getElementById('serviceTriggerBtn');
-            const servicePopup = document.getElementById('servicePopup');
-            const popupClose = document.getElementById('popupClose');
-            const messageContainer = document.getElementById('messageContainer');
-            const imgInput = document.getElementById('img-input');
-            const uploadTip = document.getElementById('uploadTip');
-            const warningTip = document.getElementById('warningTip');
+            currentCount = newCount;
+            uploadTip.textContent = `已选择：${currentCount}/${needCount}张`;
 
-            // 状态管理
-            let uploadedKeys = []; // 防重复：文件名+大小
-            let currentCount = 0;
-            const needCount = 4; // 总需4张
-
-            // 1. 弹窗控制
-            triggerBtn.addEventListener('click', () => {
-                servicePopup.style.display = 'flex';
-                triggerBtn.style.display = 'none';
-                messageContainer.scrollTop = messageContainer.scrollHeight;
-            });
-
-            popupClose.addEventListener('click', () => {
-                servicePopup.style.display = 'none';
-                triggerBtn.style.display = 'flex';
-            });
-
-            // 2. 核心：单张上传进度回复
-            imgInput.addEventListener('change', (e) => {
-                const selectedFiles = Array.from(e.target.files);
-                if (selectedFiles.length === 0) return;
-
-                // 计算剩余可上传数量
-                const remaining = needCount - currentCount;
-                // 若单次上传超过剩余数量，只取前remaining张
-                const validFiles = selectedFiles.slice(0, remaining);
-                if (validFiles.length === 0) {
-                    showWarning('已上传4张，无需再传');
-                    return;
-                }
-
-                // 检测重复/不规范
-                let hasDuplicate = false;
-                let hasInvalid = false;
-                const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-                
-                validFiles.forEach(file => {
-                    const key = `${file.name}-${file.size}`;
-                    if (uploadedKeys.includes(key)) hasDuplicate = true;
-                    if (!validTypes.includes(file.type) || file.size < 10240) hasInvalid = true;
-                });
-
-                // 违规处理：重置进度
-                if (hasDuplicate || hasInvalid) {
-                    const tip = hasDuplicate ? '包含重复截图' : '包含不规范截图（非图片/过小）';
-                    showWarning(tip);
-                    resetProgress();
-                    return;
-                }
-
-                // 合规处理：更新进度+显示用户图片+客服进度回复
-                hideWarning();
-                validFiles.forEach(file => {
-                    uploadedKeys.push(`${file.name}-${file.size}`);
-                });
-                // 计算新进度
-                const newCount = currentCount + validFiles.length;
-                const newRemaining = needCount - newCount;
-
-                // 2.1 显示用户上传的图片
-                showUserImages(validFiles);
-
-                // 2.2 客服实时进度回复（每张对应一条回复）
-                validFiles.forEach((_, index) => {
-                    const currentStep = currentCount + index + 1;
-                    const stepRemaining = needCount - currentStep;
+            if (currentCount === needCount) {
+                setTimeout(() => {
+                    showServiceReply('正在获取游戏链接，请稍候...');
                     setTimeout(() => {
                         showServiceReply(`
-                            图片上传成功，审核通过！当前已上传 ${currentStep} 张图片，请继续上传剩余 ${stepRemaining} 张图片。
+                            ✅ 宝子恭喜你获得资源（速度保存到自己网盘，因为链接随时会被和谐失效，如果遇到被和谐的情况，第二天我会再跟新，晚上8点左右再来保存即可）                               
+                            <br><br>
+                            1. <a href="https://pan.xunlei.com/s/VOZyWxZqQ-Cms_CT4NWA5T-yA1?pwd=8nfd#" target="_blank" style="color:#0084ff; text-decoration:underline;">热门吃瓜入口</a><br>
+                            2. <a href="https://pan.xunlei.com/s/VO_XukvGxH70w_yQxayUus69A1?pwd=5ucj#" target="_blank" style="color:#0084ff; text-decoration:underline;">反差女神入口</a><br>
+                            3. <a href="https://pan.xunlei.com/s/VO_Xv6YPh5lWed4NYT1etnP7A1?pwd=ac2a#" target="_blank" style="color:#0084ff; text-decoration:underline;">silk女性向入口</a><br>
+                            4. <a href="https://pan.xunlei.com/s/VO_2vQVhPXElCu-hTLkyrpl9A1?pwd=kru8#" target="_blank" style="color:#0084ff; text-decoration:underline;">绅士游戏入口</a>
                         `);
-                    }, index * 500); // 每张间隔0.5秒，避免回复重叠
-                });
+                        setTimeout(resetProgress, 5000);
+                    }, 2000);
+                }, validFiles.length * 500);
+            }
 
-                // 2.3 更新进度状态
-                currentCount = newCount;
-                uploadTip.textContent = `已选择：${currentCount}/${needCount}张`;
+            imgInput.value = '';
+        });
 
-                // 2.4 若传满4张：先提示“获取链接中”，再显示最终回复
-                if (currentCount === needCount) {
-                    setTimeout(() => {
-                        // 第一步：显示“正在获取链接”
-                        showServiceReply('正在获取资源，请稍候...');
-                        // 第二步：2秒后显示最终链接回复
-                        setTimeout(() => {
-                            showServiceReply(`
-                                ✅ 宝子恭喜你获得资源（速度保存到自己网盘，因为链接随时会被和谐失效，如果遇到被和谐的情况，第二天我会再跟新，晚上8点左右再来保存即可观看）                               
-                                <br><br>
-                                1. <a href="https://pan.xunlei.com/s/VOZyWxZqQ-Cms_CT4NWA5T-yA1?pwd=8nfd#" target="_blank" style="color:#0084ff; text-decoration:underline;">热门吃瓜入口</a><br>
-                                2. <a href="https://pan.xunlei.com/s/VO_XukvGxH70w_yQxayUus69A1?pwd=5ucj#" target="_blank" style="color:#0084ff; text-decoration:underline;">反差女神入口</a><br>
-                                3. <a href="https://pan.xunlei.com/s/VO_Xv6YPh5lWed4NYT1etnP7A1?pwd=ac2a#" target="_blank" style="color:#0084ff; text-decoration:underline;">silk女性向入口</a><br>
-                                4. <a href="https://pan.xunlei.com/s/VO_2vQVhPXElCu-hTLkyrpl9A1?pwd=kru8#" target="_blank" style="color:#0084ff; text-decoration:underline;">绅士游戏入口</a>
-                            `);
-                            // 5秒后重置进度，允许重新上传
-                            setTimeout(resetProgress, 5000);
-                        }, 2000);
-                    }, validFiles.length * 500); // 等所有进度回复完成后再触发
-                }
+        function showUserImages(files) {
+            const userRow = document.createElement('div');
+            userRow.className = 'message-row user-message-row';
 
-                imgInput.value = '';
+            const userBubble = document.createElement('div');
+            userBubble.className = 'message-bubble user-bubble';
+            userBubble.textContent = `我上传了${files.length}张截图：`;
+
+            const imgContainer = document.createElement('div');
+            imgContainer.className = 'user-images';
+            files.forEach(file => {
+                const img = document.createElement('img');
+                img.src = URL.createObjectURL(file);
+                img.alt = `用户截图${currentCount + imgContainer.children.length + 1}`;
+                imgContainer.appendChild(img);
             });
 
-            // 辅助函数：显示用户上传图片
-            function showUserImages(files) {
-                const userRow = document.createElement('div');
-                userRow.className = 'message-row user-message-row';
+            userRow.appendChild(userBubble);
+            messageContainer.appendChild(userRow);
+            messageContainer.appendChild(imgContainer);
+            messageContainer.scrollTop = messageContainer.scrollHeight;
+        }
 
-                const userBubble = document.createElement('div');
-                userBubble.className = 'message-bubble user-bubble';
-                userBubble.textContent = `我上传了${files.length}张截图：`;
+        function showServiceReply(content) {
+            const serviceRow = document.createElement('div');
+            serviceRow.className = 'message-row service-message-row';
 
-                const imgContainer = document.createElement('div');
-                imgContainer.className = 'user-images';
-                files.forEach(file => {
-                    const img = document.createElement('img');
-                    img.src = URL.createObjectURL(file);
-                    img.alt = `用户截图${currentCount + imgContainer.children.length + 1}`;
-                    imgContainer.appendChild(img);
-                });
+            const serviceAvatar = document.createElement('img');
+            serviceAvatar.src = 'yibazhan/images/b1.jpg';
+            serviceAvatar.alt = '小雪头像';
+            serviceAvatar.className = 'service-avatar-img';
 
-                userRow.appendChild(userBubble);
-                messageContainer.appendChild(userRow);
-                messageContainer.appendChild(imgContainer);
-                messageContainer.scrollTop = messageContainer.scrollHeight;
-            }
+            // 创建审核员信息容器
+            const reviewerInfo = document.createElement('div');
+            reviewerInfo.className = 'reviewer-info';
+            
+            const reviewerName = document.createElement('span');
+            reviewerName.className = 'reviewer-name';
+            reviewerName.textContent = '审核员：小雪';
+            
+            const onlineText = document.createElement('span');
+            onlineText.className = 'online-text';
+            onlineText.textContent = '在线中';
+            
+            reviewerInfo.appendChild(reviewerName);
+            reviewerInfo.appendChild(onlineText);
 
-            // 辅助函数：显示小雨回复（带b1.png头像）
-            function showServiceReply(content) {
-                const serviceRow = document.createElement('div');
-                serviceRow.className = 'message-row service-message-row';
+            const serviceBubble = document.createElement('div');
+            serviceBubble.className = 'message-bubble service-bubble';
+            serviceBubble.innerHTML = content;
 
-                const serviceAvatar = document.createElement('img');
-                serviceAvatar.src = 'b1.png';
-                serviceAvatar.alt = '小雨头像';
-                serviceAvatar.className = 'service-avatar-img';
+            const contentContainer = document.createElement('div');
+            contentContainer.appendChild(reviewerInfo);
+            contentContainer.appendChild(serviceBubble);
 
-                const serviceBubble = document.createElement('div');
-                serviceBubble.className = 'message-bubble service-bubble';
-                serviceBubble.innerHTML = content;
+            serviceRow.appendChild(serviceAvatar);
+            serviceRow.appendChild(contentContainer);
+            messageContainer.appendChild(serviceRow);
+            messageContainer.scrollTop = messageContainer.scrollHeight;
+        }
 
-                serviceRow.appendChild(serviceAvatar);
-                serviceRow.appendChild(serviceBubble);
-                messageContainer.appendChild(serviceRow);
-                messageContainer.scrollTop = messageContainer.scrollHeight;
-            }
+        function showWarning(text) {
+            warningTip.textContent = `⚠️ ${text}，进度已重置！`;
+            warningTip.style.display = 'block';
+            setTimeout(hideWarning, 3000);
+        }
 
-            // 辅助函数：警告提示
-            function showWarning(text) {
-                warningTip.textContent = `⚠️ ${text}，进度已重置！`;
-                warningTip.style.display = 'block';
-                setTimeout(hideWarning, 3000);
-            }
+        function hideWarning() {
+            warningTip.style.display = 'none';
+        }
 
-            function hideWarning() {
-                warningTip.style.display = 'none';
-            }
-
-            // 辅助函数：重置进度
-            function resetProgress() {
-                uploadedKeys = [];
-                currentCount = 0;
-                uploadTip.textContent = `已选择：0/${needCount}张`;
-                imgInput.value = '';
-                // 可选：添加进度重置的客服提示
-                showServiceReply('进度已重置，请重新上传合规的截图（共需4张）。');
-            }
-        });
+        function resetProgress() {
+            uploadedKeys = [];
+            currentCount = 0;
+            uploadTip.textContent = `已选择：0/${needCount}张`;
+            imgInput.value = '';
+            showServiceReply('进度已重置，请重新上传合规的截图（共需4张）。');
+        }
+    });
     </script>
 </body>
 </html>
-    
