@@ -258,7 +258,7 @@
         }
         
         /* 红色文字关键词样式 - 修复优先级问题 */
-        .step-card:nth-of-type(1) .keyword-buttons span.red-text-keyword {
+        .step-card:nth-of-type(2) .keyword-buttons span.red-text-keyword {
             color: #ff0000 !important; /* 红色文字 - 使用更具体的选择器确保生效 */
         }
         
@@ -613,6 +613,68 @@
         .warning-text {
             color: #e03e2d;
         }
+
+        /* 第一步随机图片样式 */
+        .random-image-container {
+            text-align: center;
+        }
+        .random-image {
+            width: 100%;
+            border-radius: 4px;
+            border: 1px solid #eee;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .random-image:hover {
+            opacity: 0.9;
+        }
+
+        /* Lightbox 样式 */
+        .lightbox-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 10000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+        .lightbox-overlay.active {
+            display: flex;
+        }
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border: 3px solid #fff;
+            border-radius: 4px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 10001;
+            background: rgba(0,0,0,0.3);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        .lightbox-close:hover {
+            background: rgba(255,255,255,0.2);
+        }
     </style>
 </head>
 <body>
@@ -636,7 +698,7 @@
                 </div>
                 <div class="developer-content">
 <span class="developer-title" style="font-size:14px;color:#165dff;font-weight:normal;"><strong>本站已稳定运行9年，拥有全网最新最全资源……</strong><br>
-<span style="color:#000000;">我们整理了童锣烧、霜降、抽屉变装隐藏版、康师傅矿泉水事件、小乔母女、一个板栗栗、童锣烧、小宁、霜降、女王妹妹、台球女孩、羽毛球变装、花臂夫夫、困熊、困困兔、诗颖、韩婧格、王思诺……等全网全部黑料！</span><br>
+<span style="color:#000000;">我们整理了沈阳肘击大王、童锣烧、霜降、抽屉变装隐藏版、康师傅矿泉水事件、小乔母女、一个板栗栗、童锣烧、小宁、霜降、女王妹妹、台球女孩、羽毛球变装、花臂夫夫、困熊、困困兔、诗颖、韩婧格、王思诺……等全网全部黑料！</span><br>
 <span style="font-size:14px;color:red;"><strong>资源整合不易，免费分享给大家，所以请大家帮忙宣传一下，设置了一个非常简单的小任务（30秒就可以搞定）</strong><span style="font-size:12px;"></span></span><br>
 <div style="text-align:center;margin-bottom:-15px;"><span style="color:#FFD700;">★</span><strong>不想做任务的<span style="color:#FFD700; font-weight:bold;">土豪</span>可直接购买至尊版✈️</strong><span style="color:#FFD700;">★</span></div>
 </span></strong>
@@ -687,118 +749,120 @@
         </section>
 
         <div class="rich_media_content">
-<!-- 第1步（修改后内容） -->
-                    <div class="step-card">
-                        <div class="step-header">
-                            <div class="step-number">1</div>
-                            <h3>第一步</h3>
-                        </div>
-                        <div class="search-keywords">
-                            <p><strong>【打开抖音】搜索下面其中一个关键词【<span class="blue-bold-text">点击一下蓝色文字即可复制上↓</span>】 </strong></p>
-                            <div class="keyword-buttons">
-                                <span class="layui-btn layui-btn-mini red-text-keyword" data-keyword="困熊">困熊</span>
-                                <span class="layui-btn layui-btn-mini red-text-keyword" data-keyword="霜降">霜降</span>
-                                <span class="layui-btn layui-btn-mini red-text-keyword" data-keyword="羽毛球变装">羽毛球变装</span>
-                                <span class="layui-btn layui-btn-mini red-text-keyword" data-keyword="童锣烧">童锣烧</span>
-                                <span class="layui-btn layui-btn-mini" data-keyword="南方宇和杨美美">南方宇和杨美美</span>
-                                <span class="layui-btn layui-btn-mini red-text-keyword" data-keyword="花臂凉太">花臂凉太</span>
-                                <span class="layui-btn layui-btn-mini red-text-keyword" data-keyword="一个板栗栗">一个板栗栗</span>
-                                <span class="layui-btn layui-btn-mini" data-keyword="花臂夫夫">花臂夫夫</span>
-                                <span class="layui-btn layui-btn-mini red-text-keyword" data-keyword="抽屉变装隐藏版">抽屉变装隐藏版</span>
-                                <span class="layui-btn layui-btn-mini" data-keyword="女王妹妹">女王妹妹</span>
-                            </div>
-                            <div style="margin-top: 15px;">                                
-                                <span class="color_font" style="color: rgb(224, 62, 45);"><strong>或者去搜你想看的瓜只要相关的视频都可以评论</strong></span>
-                            </div>
-                        </div>
-                    </div>            
-<div class="steps-container">
-    <!-- 第2步（原第一步内容） -->
-    <div class="step-card" style="line-height: 1.8;">
-        <div class="step-header" style="margin-bottom: 15px;">
-            <div class="step-number">2</div>
-            <h3 style="margin: 0; line-height: 1.5;">第二步</h3>
-        </div>
-        <div class="search-keywords">
-            <p><strong>随机复制下面 <span class="STYLE1">其中一句</span> 文案去抖音评论<span
-                        class="blue-bold-text">【点击一下蓝色文字即可复制上↓】</span></strong></p>
-            <div class="keyword-buttons">
-                <span class="layui-btn layui-btn-mini" data-keyword="仝系列   ➎➌➎丶 i͜͡  c͜͡  u͜͡">仝系列   ➎➌➎丶 i͜͡  c͜͡  u͜͡</span>
-                <span class="layui-btn layui-btn-mini" data-keyword="直接送要的取[看]    
-ⓑⓣⓚ.ⓜⓞⓜ">直接送要的取🐵ⓑⓣⓚ.ⓜⓞⓜ</span>
-                <span class="layui-btn layui-btn-mini" data-keyword="这是我拥过最好的啦   BTk . mom  [摊手]">这是我拥过最好的拉BTk . mom</span>
-				<span class="layui-btn layui-btn-mini" data-keyword="啫喱勉飞啊    B͟  T͟   K͟      .  m͟   o͟  m͟">啫喱勉飞啊B͟T͟K͟. m͟o͟m͟</span>
-				<span class="layui-btn layui-btn-mini" data-keyword="才看完😀  ⓑⓣⓚ.ⓜⓞⓜ 有导航你还能迷路吗？">才看完😀ⓑⓣⓚ.ⓜⓞⓜ 有导航能迷路吗</span>                                                               			</div>
-            
-            <!-- 新增抖音跳转区域 - 移动到第二步并缩小 -->
-            <div class="douyin-jump-section">
-                <div class="douyin-jump-title">一键跳转抖音搜索</div>
-                <div class="jump-keyword-display" id="jumpKeyword">霜降</div>
-                <div class="jump-buttons">
-                    <button class="jump-btn" id="jumpDouyinBtn">
-                        <i class="fab fa-tiktok"></i> 跳转抖音
-                    </button>
-                    <button class="refresh-btn" id="refreshJumpKeywordBtn">
-                        <i class="fas fa-sync-alt"></i> 刷新词
-                    </button>
+            <!-- ========== 第一步卡片 - 随机单图，点击弹出Lightbox ========== -->
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">1</div>
+                    <h3>第一步</h3>
                 </div>
-                <div style="font-size: 11px; color: #999; text-align: center; margin-top: 6px;">
-                    点击跳转抖音会自动搜索上方关键词
+                <div class="step1-content">
+                    <p style="margin-bottom: 15px; font-weight: 500;">点开下方任意一张图片保存到相册， 或者点开图片截图。</p>
+                    <div class="random-image-container">
+                        <img src="yibazhan/images/a1.jpg" alt="保存图片" class="random-image" id="randomImage" onclick="openLightbox(this.src)">
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
-                    <!-- 第三步 -->
-                    <div class="step-card">
-                        <div class="step-header">
-                            <div class="step-number">3</div>
-                            <h3>第三步</h3>
-                        </div>
-                        <div class="comment-instructions">
-                            <p>
-                    <p><strong>打开<span class="warning-text"><span style="color: rgb(224, 62, 45);">抖音或小红书或快手</span></span>后搜索第一步的关键词，搜索后往下滑，选<span class="STYLE1">4个</span>评论少或者没有评论的视频</strong></p>
-                    <p><strong><span class="STYLE13">评论上面刚保存的文案，每个视频评论一条</span> </strong></p>
-                    <p><strong><span class="STYLE13">最后给自己<span class="STYLE1" style="color: red;">点个赞</span> ，<span class="STYLE1" style="color: blue;">并截图</span></span></strong> </p>
-                                <br>
 
-                                <strong class="highlight STYLE1 STYLE14">👇如下图所示👇</strong>
-                        </div>
-                        <!-- 第三步图片 -->
-                        <img src="yibazhan/images/d1.jpg" class="example-image" alt="操作示例：搜索关键词">
-                        <img src="yibazhan/images/d2.jpg" class="example-image" alt="操作示例：评论点赞">
+            <!-- steps-container 开始，内部包含第二步、第三步、最后一步 -->
+            <div class="steps-container">
+                <!-- ========== 第二步卡片 (内部第一个) - 内容为原第一步关键词 + 抖音跳转区域，保留步骤2 ========== -->
+                <div class="step-card">
+                    <div class="step-header">
+                        <div class="step-number">2</div>
+                        <h3>第二步</h3>
                     </div>
-
-                    <!-- 最后一步 -->
-                    <div class="step-card">
-                        <div class="step-header">
-                            <div class="step-number">3</div>
-                            <h3>最后一步</h3>
+                    <div class="search-keywords">
+                        <p><strong>【打开抖音】搜索下面其中一个关键词【<span class="blue-bold-text">点击一下蓝色文字即可复制上↓</span>】 </strong></p>
+                        <div class="keyword-buttons">
+                            <span class="layui-btn layui-btn-mini red-text-keyword" data-keyword="沈阳肘击大王">沈阳肘击大王</span>
+                            <span class="layui-btn layui-btn-mini red-text-keyword" data-keyword="霜降">霜降</span>
+                            <span class="layui-btn layui-btn-mini red-text-keyword" data-keyword="羽毛球变装">羽毛球变装</span>
+                            <span class="layui-btn layui-btn-mini red-text-keyword" data-keyword="童锣烧">童锣烧</span>
+                            <span class="layui-btn layui-btn-mini" data-keyword="南方宇和杨美美">南方宇和杨美美</span>
+                            <span class="layui-btn layui-btn-mini red-text-keyword" data-keyword="困熊">困熊</span>
+                            <span class="layui-btn layui-btn-mini red-text-keyword" data-keyword="一个板栗栗">一个板栗栗</span>
+                            <span class="layui-btn layui-btn-mini" data-keyword="花臂夫夫">花臂夫夫</span>
+                            <span class="layui-btn layui-btn-mini red-text-keyword" data-keyword="抽屉变装隐藏版">抽屉变装隐藏版</span>
+                            <span class="layui-btn layui-btn-mini" data-keyword="女王妹妹">女王妹妹</span>
                         </div>
-                        <div class="final-step">
-                            <p>
-                                <b>将你刚评论的截图发给右下侧的 <span class="highlight-ai">AI机器人</span> <i class="fas fa-robot"></i><br><br>
-                                机器人会在（10）秒内审核完，然后会在聊天框自动弹出所有资源的跳转网盘链接<br><br><strong class="highlight">注意：不规范截图和上传重复截图将重置进度！</strong><br><br>已完成示例：👇👇👇</b>
-                                
-                            </p>
+                        <div style="margin-top: 15px;">                                
+                            <span class="color_font" style="color: rgb(224, 62, 45);"><strong>或者去搜你想看的瓜只要相关的视频都可以评论</strong></span>
                         </div>
-                        
-                        <!-- 奖励轮播 -->
-                        <div class="reward-slideshow-container">
-                            <div class="reward-slideshow">
-                                <img src="yibazhan/images/c1.jpg" class="reward-slide active" alt="完成示例图1">
-                                <img src="yibazhan/images/c2.jpg" class="reward-slide" alt="完成示例图2">
+                        <!-- 抖音跳转区域 - 按要求保留在第二步板块中 -->
+                        <div class="douyin-jump-section">
+                            <div class="douyin-jump-title">一键跳转抖音搜索</div>
+                            <div class="jump-keyword-display" id="jumpKeyword">沈阳肘击大王</div>
+                            <div class="jump-buttons">
+                                <button class="jump-btn" id="jumpDouyinBtn">
+                                    <i class="fab fa-tiktok"></i> 跳转抖音
+                                </button>
+                                <button class="refresh-btn" id="refreshJumpKeywordBtn">
+                                    <i class="fas fa-sync-alt"></i> 刷新词
+                                </button>
                             </div>
-                            <button onclick="slideReward(-1)" class="reward-prev">❮</button>
-                            <button onclick="slideReward(1)" class="reward-next">❯</button>
-                            <div class="reward-dots">
-                                <span onclick="currentRewardSlide(0)" class="reward-dot active"></span>
-                                <span onclick="currentRewardSlide(1)" class="reward-dot"></span>
+                            <div style="font-size: 11px; color: #999; text-align: center; margin-top: 6px;">
+                                点击跳转抖音会自动搜索上方关键词
                             </div>
                         </div>
-        </div>
-        </div>
+                    </div>
+                </div>
 
+                <!-- 第三步（保持不变） -->
+                <div class="step-card">
+                    <div class="step-header">
+                        <div class="step-number">3</div>
+                        <h3>第三步</h3>
+                    </div>
+                    <div class="comment-instructions">
+                        <p>
+                            <p><strong>打开<span class="warning-text"><span style="color: rgb(224, 62, 45);">抖音或小红书或快手</span></span>后搜索第一步的关键词，搜索后往下滑，选<span class="STYLE1">4个</span>评论少或者没有评论的视频</strong></p>
+                            <p><strong><span class="STYLE13">评论上面刚保存的文案，每个视频评论一条</span> </strong></p>
+                            <p><strong><span class="STYLE13">最后给自己<span class="STYLE1" style="color: red;">点个赞</span> ，<span class="STYLE1" style="color: blue;">并截图</span></span></strong> </p>
+                            <br>
+                            <strong class="highlight STYLE1 STYLE14">👇如下图所示👇</strong>
+                        </p>
+                    </div>
+                    <!-- 第三步图片 -->
+                    <img src="yibazhan/images/d1.jpg" class="example-image" alt="操作示例：搜索关键词">
+                    <img src="yibazhan/images/d2.jpg" class="example-image" alt="操作示例：评论点赞">
+                </div>
+
+                <!-- 最后一步（保持不变） -->
+                <div class="step-card">
+                    <div class="step-header">
+                        <div class="step-number">3</div>
+                        <h3>最后一步</h3>
+                    </div>
+                    <div class="final-step">
+                        <p>
+                            <b>将你刚评论的截图发给右下侧的 <span class="highlight-ai">AI机器人</span> <i class="fas fa-robot"></i><br><br>
+                            机器人会在（10）秒内审核完，然后会在聊天框自动弹出所有资源的跳转网盘链接<br><br><strong class="highlight">注意：不规范截图和上传重复截图将重置进度！</strong><br><br>已完成示例：👇👇👇</b>
+                            
+                        </p>
+                    </div>
+                    
+                    <!-- 奖励轮播 -->
+                    <div class="reward-slideshow-container">
+                        <div class="reward-slideshow">
+                            <img src="yibazhan/images/c1.jpg" class="reward-slide active" alt="完成示例图1">
+                            <img src="yibazhan/images/c2.jpg" class="reward-slide" alt="完成示例图2">
+                        </div>
+                        <button onclick="slideReward(-1)" class="reward-prev">❮</button>
+                        <button onclick="slideReward(1)" class="reward-next">❯</button>
+                        <div class="reward-dots">
+                            <span onclick="currentRewardSlide(0)" class="reward-dot active"></span>
+                            <span onclick="currentRewardSlide(1)" class="reward-dot"></span>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- steps-container 结束 -->
+        </div> <!-- rich_media_content 结束 -->
+    </div> <!-- rich_media_wrp 结束 -->
+
+    <!-- Lightbox 结构 -->
+    <div class="lightbox-overlay" id="lightboxOverlay" onclick="closeLightbox()">
+        <span class="lightbox-close" onclick="closeLightbox(event)">&times;</span>
+        <img class="lightbox-content" id="lightboxImage" src="" alt="">
     </div>
 
     <!-- 机器人界面HTML结构 -->
@@ -1018,14 +1082,49 @@
             });
         }
 
-        // 6. 页面加载完成后初始化轮播和随机关键词
+        // 6. 第一步随机图片功能
+        function setRandomImage() {
+            const images = ['a1.jpg', 'a2.jpg', 'a3.jpg', 'a4.jpg'];
+            const randomIndex = Math.floor(Math.random() * images.length);
+            const imagePath = 'yibazhan/images/' + images[randomIndex];
+            const imgElement = document.getElementById('randomImage');
+            if (imgElement) {
+                imgElement.src = imagePath;
+            }
+        }
+
+        // 7. Lightbox 功能
+        function openLightbox(src) {
+            const overlay = document.getElementById('lightboxOverlay');
+            const lightboxImg = document.getElementById('lightboxImage');
+            lightboxImg.src = src;
+            overlay.classList.add('active');
+        }
+
+        function closeLightbox(event) {
+            // 如果事件存在且是点击关闭按钮或背景，则关闭；如果无事件（直接调用）也关闭
+            const overlay = document.getElementById('lightboxOverlay');
+            overlay.classList.remove('active');
+            if (event) {
+                event.stopPropagation();
+            }
+        }
+
+        // 点击overlay背景关闭（已在HTML中通过onclick实现）
+        // 阻止点击图片时关闭（事件冒泡）
+        document.getElementById('lightboxImage').addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+
+        // 8. 页面加载完成后初始化所有轮播和随机图片
         window.onload = function() {
             showSlides(currentSlideIndex);
             showRewardSlides(currentRewardIndex);
+            setRandomImage(); // 设置第一步随机图片
         };
     </script>
 
-    <!-- 修复后的机器人交互逻辑 - 重点修复图片上传问题 -->
+    <!-- 机器人交互逻辑 - 保持不变 -->
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         const triggerBtn = document.getElementById('serviceTriggerBtn');
@@ -1040,7 +1139,6 @@
         let currentCount = 0;
         const needCount = 4;
 
-        // 确保机器人按钮点击后显示弹窗
         triggerBtn.addEventListener('click', () => {
             servicePopup.style.display = 'flex';
             triggerBtn.style.display = 'none';
@@ -1052,7 +1150,6 @@
             triggerBtn.style.display = 'flex';
         });
 
-        // 修复图片上传处理逻辑 - 确保所有图片都能正确显示
         imgInput.addEventListener('change', (e) => {
             const selectedFiles = Array.from(e.target.files);
             if (selectedFiles.length === 0) return;
@@ -1069,7 +1166,6 @@
             let hasInvalid = false;
             const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
             
-            // 检查文件是否重复或无效
             validFiles.forEach(file => {
                 const key = `${file.name}-${file.size}`;
                 if (uploadedKeys.includes(key)) hasDuplicate = true;
@@ -1093,19 +1189,15 @@
 
             hideWarning();
             
-            // 显示用户上传的图片 - 修复了多张图片显示问题
             showUserImages(validFiles);
             
-            // 添加文件到已上传列表
             validFiles.forEach(file => {
                 uploadedKeys.push(`${file.name}-${file.size}`);
             });
             
-            // 更新计数
             currentCount += validFiles.length;
             uploadTip.textContent = `已选择：${currentCount}/${needCount}张`;
 
-            // 模拟审核过程 - 修复：为每张图片都显示审核消息
             validFiles.forEach((file, index) => {
                 const currentStep = currentCount - validFiles.length + index + 1;
                 const stepRemaining = needCount - currentStep;
@@ -1116,7 +1208,6 @@
                 }, index * 500);
             });
 
-            // 如果达到4张，显示资源链接
             if (currentCount === needCount) {
                 setTimeout(() => {
                     showServiceReply('正在获取资源链接，请稍候...');
@@ -1129,7 +1220,6 @@
                             3. <a href="https://pan.xunlei.com/s/VO_Xv6YPh5lWed4NYT1etnP7A1?pwd=ac2a#" target="_blank" style="color:#0084ff; text-decoration:underline;">silk女性向入口</a><br>
                             4. <a href="https://pan.xunlei.com/s/VO_2vQVhPXElCu-hTLkyrpl9A1?pwd=kru8#" target="_blank" style="color:#0084ff; text-decoration:underline;">绅士游戏入口</a>
                         `);
-                        // 添加最后一条提示消息
                         setTimeout(() => {
                             showServiceReply('资源已发送，请及时保存，以免被和谐！');
                         }, 500);
@@ -1142,20 +1232,16 @@
         });
 
         function showUserImages(files) {
-            // 创建用户消息行
             const userRow = document.createElement('div');
             userRow.className = 'message-row user-message-row';
 
-            // 创建用户消息气泡
             const userBubble = document.createElement('div');
             userBubble.className = 'message-bubble user-bubble';
             userBubble.textContent = `我上传了${files.length}张截图：`;
 
-            // 创建图片容器
             const imgContainer = document.createElement('div');
             imgContainer.className = 'user-images';
             
-            // 为每张图片创建img元素 - 修复：确保所有图片都显示
             files.forEach((file, index) => {
                 const img = document.createElement('img');
                 img.src = URL.createObjectURL(file);
@@ -1163,16 +1249,9 @@
                 imgContainer.appendChild(img);
             });
 
-            // 将图片容器添加到用户消息气泡中
             userBubble.appendChild(imgContainer);
-            
-            // 将用户消息气泡添加到用户消息行
             userRow.appendChild(userBubble);
-            
-            // 将用户消息行添加到消息容器
             messageContainer.appendChild(userRow);
-            
-            // 滚动到底部
             messageContainer.scrollTop = messageContainer.scrollHeight;
         }
 
