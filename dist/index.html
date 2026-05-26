@@ -325,6 +325,23 @@
             background: #e00046;
             transform: translateY(-1px);
         }
+        .xiaohongshu-btn {
+            padding: 6px 12px;
+            background: #ff2442;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.3s;
+        }
+        .xiaohongshu-btn:hover {
+            background: #e01f3a;
+            transform: translateY(-1px);
+        }
         .refresh-btn {
             padding: 6px 12px;
             background: #1798fc;
@@ -732,18 +749,21 @@ p s  3  。  L i  v  e ">直接送要的取🐵p s  3  。  L i  v  e </span>
             
             <!-- 新增抖音跳转区域 - 移动到第二步并缩小 -->
             <div class="douyin-jump-section">
-                <div class="douyin-jump-title">一键跳转抖音搜索</div>
+                <div class="douyin-jump-title">一键跳转抖音/小红书搜索</div>
                 <div class="jump-keyword-display" id="jumpKeyword">霜降</div>
                 <div class="jump-buttons">
                     <button class="jump-btn" id="jumpDouyinBtn">
                         <i class="fab fa-tiktok"></i> 跳转抖音
+                    </button>
+                    <button class="xiaohongshu-btn" id="jumpXiaohongshuBtn">
+                        <i class="fas fa-book"></i> 跳转小红书
                     </button>
                     <button class="refresh-btn" id="refreshJumpKeywordBtn">
                         <i class="fas fa-sync-alt"></i> 刷新词
                     </button>
                 </div>
                 <div style="font-size: 11px; color: #999; text-align: center; margin-top: 6px;">
-                    点击跳转抖音会自动搜索上方关键词
+                    点击跳转抖音/小红书会自动搜索上方关键词
                 </div>
             </div>
         </div>
@@ -789,7 +809,7 @@ p s  3  。  L i  v  e ">直接送要的取🐵p s  3  。  L i  v  e </span>
                                 <img src="yibazhan/images/c1.jpg" class="reward-slide active" alt="完成示例图1">
                                 <img src="yibazhan/images/c2.jpg" class="reward-slide" alt="完成示例图2">
                             </div>
-                            <button onclick="slideReward(-1)" class="reward-prev">❮</button>
+                            <button onclick="slideReward(-1)" class="reward-prev">❯</button>
                             <button onclick="slideReward(1)" class="reward-next">❯</button>
                             <div class="reward-dots">
                                 <span onclick="currentRewardSlide(0)" class="reward-dot active"></span>
@@ -974,11 +994,12 @@ p s  3  。  L i  v  e ">直接送要的取🐵p s  3  。  L i  v  e </span>
             alert('完成任务即可获取该资源，详情见下方步骤指南~');
         }
 
-        // 5. 抖音跳转功能
+        // 5. 抖音/小红书跳转功能
         function initDouyinJump() {
             const jumpKeywords = ["困熊", "童锣烧", "网红霜降"];
             const jumpKeywordDisplay = document.getElementById('jumpKeyword');
             const jumpDouyinBtn = document.getElementById('jumpDouyinBtn');
+            const jumpXiaohongshuBtn = document.getElementById('jumpXiaohongshuBtn');
             const refreshJumpKeywordBtn = document.getElementById('refreshJumpKeywordBtn');
             
             // 随机选择一个关键词
@@ -1005,6 +1026,18 @@ p s  3  。  L i  v  e ">直接送要的取🐵p s  3  。  L i  v  e </span>
                 // 备用提示
                 setTimeout(() => {
                     alert('若未自动跳转抖音，请手动打开抖音搜索: ' + currentKeyword);
+                }, 1500);
+            });
+
+            // 跳转小红书
+            jumpXiaohongshuBtn.addEventListener('click', function() {
+                // 小红书App Scheme
+                const xiaohongshuUrl = `xhsdiscover://search/result?keyword=${encodeURIComponent(currentKeyword)}`;
+                window.location.href = xiaohongshuUrl;
+                
+                // 备用提示
+                setTimeout(() => {
+                    alert('若未自动跳转小红书，请手动打开小红书搜索: ' + currentKeyword);
                 }, 1500);
             });
             
