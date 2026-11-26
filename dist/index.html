@@ -7,7 +7,6 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     
-    <script src="douyin-search.js?v=20250880"></script>
     <!-- 使用CDN加载Font Awesome确保图标显示 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="yibazhan/css/style.css?v=20250835.css">
@@ -630,11 +629,121 @@
         .warning-text {
             color: #e03e2d;
         }
-    </style>
+    
+        /* ===== 图片截留改造：第一步保存图片 + 四平台跳转 ===== */
+        .step1-content { line-height: 1.8; }
+        .random-image-container { text-align: center; margin: 12px 0 6px; }
+        .random-image {
+            width: 100%;
+            max-width: 420px;
+            border-radius: 10px;
+            border: 1px solid #eee;
+            cursor: zoom-in;
+            transition: transform .2s, box-shadow .2s;
+            box-shadow: 0 6px 18px rgba(0,0,0,.08);
+        }
+        .random-image:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,0,0,.12); }
+        .image-hint { font-size: 12px; color: #888; margin-top: 8px; }
+        .tieba-lead {
+            margin: 14px 0 4px;
+            padding: 10px 12px;
+            background: #eef5ff;
+            border-left: 4px solid #2d6cdf;
+            border-radius: 6px;
+            color: #1b4fa8;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .keyword-divider {
+            flex-basis: 100%;
+            font-size: 12px;
+            color: #8a94a6;
+            margin: 6px 0 0;
+        }
+        .platform-jump-section {
+            margin-top: 16px;
+            padding: 12px;
+            background: #f8faff;
+            border: 1px solid #e3ecff;
+            border-radius: 10px;
+        }
+        .platform-jump-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1f2d4d;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        .platform-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            align-items: center;
+        }
+        .platform-btn {
+            padding: 9px 14px;
+            border: none;
+            border-radius: 22px;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: transform .2s, box-shadow .2s, opacity .2s;
+            box-shadow: 0 3px 8px rgba(0,0,0,.12);
+        }
+        .platform-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 14px rgba(0,0,0,.18); }
+        .platform-btn:active { transform: translateY(0); }
+        .platform-btn.primary {
+            padding: 11px 20px;
+            font-size: 14px;
+            box-shadow: 0 5px 14px rgba(45,108,223,.35);
+        }
+        .tieba-btn { background: #2d6cdf; }
+        .xhs-btn { background: #ff2442; }
+        .kuaishou-btn { background: #ff4906; }
+        .douyin-btn { background: #111827; }
+        .jump-fallback { text-align: center; font-size: 12px; color: #999; margin-top: 10px; }
+        .jump-fallback a { color: #2d6cdf; text-decoration: underline; font-weight: 600; }
+        .jump-tip { font-size: 11px; color: #999; text-align: center; margin-top: 6px; }
+
+        /* Lightbox 看大图 */
+        .lightbox-overlay {
+            position: fixed; inset: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,.92);
+            z-index: 10000; display: none;
+            justify-content: center; align-items: center;
+            cursor: zoom-out;
+        }
+        .lightbox-overlay.active { display: flex; }
+        .lightbox-content {
+            max-width: 92%; max-height: 88%;
+            object-fit: contain;
+            border: 3px solid #fff;
+            border-radius: 6px;
+            box-shadow: 0 0 24px rgba(0,0,0,.55);
+        }
+        .lightbox-close {
+            position: absolute; top: 18px; right: 26px;
+            color: #fff; font-size: 38px; line-height: 1;
+            cursor: pointer; z-index: 10001;
+            width: 46px; height: 46px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(255,255,255,.12);
+        }
+        /* 贴吧主色覆盖旧的抖音红 */
+        .jump-keyword-display {
+            color: #2d6cdf;
+            border: 1px dashed #2d6cdf;
+            background: #fff;
+        }</style>
 </head>
 <body>
     <!-- 复制成功弹窗 -->
-    <div id="copy-popup">文案已复制到剪贴板</div>
+    <div id="copy-popup">关键词已复制到剪贴板</div>
 
     <div id="img-content" class="rich_media_wrp">
         <h1 class="rich_media_title" id="activity-name">
@@ -653,19 +762,9 @@
                 </div>
                 <div class="developer-content">
 <span class="developer-title" style="font-size:14px;color:#165dff;font-weight:normal;"><strong>本站已稳定运行9年，拥有全网最新最全资源……</strong><br>
-<span style="color:#000000;">我们整理了小远vlog、台球厅2v5助教、咯咯哒vlog、孕夫日记全集、南京温莎、丸崽vlog、silk全系列、童锣烧、霜降、抽屉变装隐藏版、康师傅矿泉水事件、小乔母女、一个板栗栗、童锣烧、小宁、霜降、女王妹妹、台球女孩、羽毛球变装、花臂夫夫、困熊、困困兔、诗颖、韩婧格、王思诺……等全网全部黑料！</span><br>
+<span style="color:#000000;">我们整理了小远vlog、小小绘、咯咯哒vlog、、南京温莎、丸崽vlog、silk全系列、童锣烧、霜降、小乔母女、一个板栗栗、童锣烧、小宁、霜降、女王妹妹、台球女孩、羽毛球变装、花臂夫夫、困熊、困困兔、诗颖、韩婧格、王思诺……等全网全部黑料！</span><br>
 <span style="font-size:14px;color:red;"><strong>资源整合不易，免费分享给大家，所以请大家帮忙宣传一下，设置了一个非常简单的小任务（30秒就可以搞定）</strong><span style="font-size:12px;"></span></span><br>
-<div style="text-align:center;margin-bottom:-15px;"><span style="color:#FFD700;">★</span><strong>不想做任务的<span style="color:#FFD700; font-weight:bold;">土豪</span>可直接购买至尊版✈️</strong><span style="color:#FFD700;">★</span></div>
 </span></strong>
-<p style="margin-top:20px;">
-    <div style="margin:0px;padding:0px;">
-	<div style="margin:0px;padding:0px;">
-		<div class="layui-btn-container" style="margin: 0 auto; text-align: center;"><a href="https://zxmomo.com/item/6wmlhs" target="_blank" class="layui-btn layui-btn-normal layui-btn-radius" style="font-size: 14px; font-weight: bold; padding: 0 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.15);">
-    <i class="layui-icon layui-icon-cart" style="margin-right: 5px; font-size: 14px;"></i>直接购买
-</a>      
-                </div>
-            </div>
-        </div>
      </div>
 
         <!-- 顶部图片轮播 -->
@@ -704,82 +803,93 @@
         </section>
 
         <div class="rich_media_content">
-<!-- 第1步（修改后内容） -->
+<!-- ================= 第一步：保存图片（图片截留） ================= -->
                     <div class="step-card">
                         <div class="step-header">
                             <div class="step-number">1</div>
-                            <h3>第一步</h3>
+                            <h3>第一步 · 保存图片</h3>
                         </div>
-                        <div class="search-keywords">
-                            <p><strong>【打开小红书】搜索下面其中一个关键词【<span class="blue-bold-text">点击一下蓝色文字即可复制上↓</span>】 </strong></p>
-                            <div class="keyword-buttons">
-                                <span class="layui-btn layui-btn-mini red-text-keyword" data-keyword="咯咯哒vlog">咯咯哒vlog</span>
-                                <span class="layui-btn layui-btn-mini red-text-keyword" data-keyword="丸崽vlog">丸崽vlog</span>
-                                <span class="layui-btn layui-btn-mini red-text-keyword" data-keyword="小远VLOG">小远VLOG</span>
-                                <span class="layui-btn layui-btn-mini red-text-keyword" data-keyword="台球厅2v5助教">台球厅2v5</span>
-                                <span class="layui-btn layui-btn-mini" data-keyword="孕夫日记全集">孕夫日记</span>
-                                <span class="layui-btn layui-btn-mini red-text-keyword" data-keyword="南京温莎">南京温莎</span>
-                                <span class="layui-btn layui-btn-mini red-text-keyword" data-keyword="一个板栗栗">一个板栗栗</span>
-                                <span class="layui-btn layui-btn-mini" data-keyword="silk编号">silk编号</span>
-                                <span class="layui-btn layui-btn-mini red-text-keyword" data-keyword="silk">silk</span>
-                                <span class="layui-btn layui-btn-mini" data-keyword="沙发女孩壁纸12张">沙发女孩壁纸</span>
+                        <div class="step1-content">
+                            <p><strong>点开下方图片，<span class="STYLE1">长按保存到相册</span> 或 <span class="STYLE1">截图</span>。后面去评论区直接发这张图片。</strong></p>
+                            <div class="random-image-container">
+                                <img src="yibazhan/images/a1.jpg" alt="保存这张图片" class="random-image" id="randomImage" onclick="openLightbox(this.src)" onerror="this.onerror=null;this.src='yibazhan/images/1.jpg';">
+                                <div class="image-hint">👆 点一下看大图，长按保存 / 截图</div>
                             </div>
-                            <div style="margin-top: 15px;">                                
-                                <span class="color_font" style="color: rgb(224, 62, 45);"><strong>或者去搜你想看的瓜只要相关的视频都可以评论</strong></span>
+                            <p class="tieba-lead"><i class="fas fa-comments"></i> 主阵地：<strong>百度贴吧</strong> —— 优先去贴吧发图片评论，成功率最高。</p>
+                        </div>
+                    </div>
+
+                    <div class="steps-container">
+                        <!-- ================= 第二步：选平台 + 搜关键词 ================= -->
+                        <div class="step-card" style="line-height: 1.8;">
+                            <div class="step-header" style="margin-bottom: 15px;">
+                                <div class="step-number">2</div>
+                                <h3 style="margin: 0; line-height: 1.5;">第二步 · 选平台搜关键词</h3>
+                            </div>
+                            <div class="search-keywords">
+                                <p><strong>【首选贴吧】搜索下面任意一个关键词【<span class="blue-bold-text">点一下蓝色文字即可复制上↓</span>】</strong></p>
+                                <div class="keyword-buttons">
+                                    <span class="layui-btn layui-btn-mini red-text-keyword" data-keyword="咯咯哒vlog">咯咯哒vlog</span>
+                                    <span class="layui-btn layui-btn-mini red-text-keyword" data-keyword="丸崽vlog">丸崽vlog</span>
+                                    <span class="layui-btn layui-btn-mini red-text-keyword" data-keyword="小远VLOG">小远VLOG</span>
+                                    <span class="layui-btn layui-btn-mini red-text-keyword" data-keyword="台球厅2v5助教">台球厅2v5</span>
+                                    <span class="layui-btn layui-btn-mini" data-keyword="孕夫日记全集">孕夫日记</span>
+                                    <span class="layui-btn layui-btn-mini red-text-keyword" data-keyword="南京温莎">南京温莎</span>
+                                    <span class="layui-btn layui-btn-mini red-text-keyword" data-keyword="一个板栗栗">一个板栗栗</span>
+                                    <span class="layui-btn layui-btn-mini" data-keyword="silk编号">silk编号</span>
+                                    <span class="layui-btn layui-btn-mini red-text-keyword" data-keyword="silk">silk</span>
+                                    <span class="layui-btn layui-btn-mini" data-keyword="沙发女孩壁纸12张">沙发女孩壁纸</span>
+                                    <div class="keyword-divider">贴吧补充热词（优先搜这些）</div>
+                                    <span class="layui-btn layui-btn-mini red-text-keyword" data-keyword="沈阳肘击大王">沈阳肘击大王</span>
+                                    <span class="layui-btn layui-btn-mini red-text-keyword" data-keyword="霜降">霜降</span>
+                                    <span class="layui-btn layui-btn-mini red-text-keyword" data-keyword="困熊">困熊</span>
+                                    <span class="layui-btn layui-btn-mini red-text-keyword" data-keyword="童锣烧">童锣烧</span>
+                                    <span class="layui-btn layui-btn-mini red-text-keyword" data-keyword="抽屉变装隐藏版">抽屉变装隐藏版</span>
+                                </div>
+                                <div style="margin-top: 15px;">
+                                    <span class="color_font" style="color: rgb(224, 62, 45);"><strong>也可以搜你想看的瓜，只要相关的帖子/视频都可以发图片评论</strong></span>
+                                </div>
+
+                                <!-- 四平台跳转：贴吧 → 小红书 → 快手 → 抖音 -->
+                                <div class="platform-jump-section">
+                                    <div class="platform-jump-title">一键跳转到对应平台搜索</div>
+                                    <div class="jump-keyword-display" id="jumpKeyword">困熊</div>
+                                    <div class="jump-buttons platform-buttons">
+                                        <button class="platform-btn tieba-btn primary" id="jumpTiebaBtn">
+                                            <i class="fas fa-comments"></i> ① 贴吧（主）
+                                        </button>
+                                        <button class="platform-btn xhs-btn" id="jumpXiaohongshuBtn">
+                                            <i class="fas fa-book"></i> ② 小红书
+                                        </button>
+                                        <button class="platform-btn kuaishou-btn" id="jumpKuaishouBtn">
+                                            <i class="fas fa-video"></i> ③ 快手
+                                        </button>
+                                        <button class="platform-btn douyin-btn" id="jumpDouyinBtn">
+                                            <i class="fab fa-tiktok"></i> ④ 抖音
+                                        </button>
+                                        <button class="refresh-btn" id="refreshJumpKeywordBtn">
+                                            <i class="fas fa-sync-alt"></i> 刷新词
+                                        </button>
+                                    </div>
+                                    <div class="jump-fallback" id="jumpFallback">
+                                        打不开 App？<a href="#" id="jumpWebFallback">用网页版搜索</a>
+                                    </div>
+                                    <div class="jump-tip">点关键词可同步到上方，再点平台跳转；优先用贴吧。</div>
+                                </div>
                             </div>
                         </div>
-                    </div>            
-<div class="steps-container">
-    <!-- 第2步（原第一步内容） -->
-    <div class="step-card" style="line-height: 1.8;">
-        <div class="step-header" style="margin-bottom: 15px;">
-            <div class="step-number">2</div>
-            <h3 style="margin: 0; line-height: 1.5;">第二步</h3>
-        </div>
-        <div class="search-keywords">
-            <p><strong>随机复制下面 <span class="STYLE1">其中一句</span> 文案去抖音评论<span
-                        class="blue-bold-text">【点击一下蓝色文字即可复制上↓】</span></strong></p>
-            <div class="keyword-buttons">
-                <span class="layui-btn layui-btn-mini" data-keyword="刚刚看完 43.156.43.119">刚刚看完 43.156.43.119</span>
-                <span class="layui-btn layui-btn-mini" data-keyword="直接送要的取[看]    
-p s  3  。  L i  v  e ">直接送要的取🐵p s  3  。  L i  v  e </span>
-                <span class="layui-btn layui-btn-mini" data-keyword="ps3  好喜欢  Live     把好喜欢换成  .">ps3好喜欢Live 把好喜欢换成  .</span>
-				<span class="layui-btn layui-btn-mini" data-keyword="p s  3  直接坎  L i  v  e     把“直接坎”换成   .">ps3直接坎Live  把"直接坎"换成 .</span>
-				<span class="layui-btn layui-btn-mini" data-keyword="p s  3  圈都有  L i  v  e     把圈都有换成   .">ps3圈都有Live，把圈都有换成 .</span>                                                               			</div>
-            
-            <!-- 新增抖音跳转区域 - 移动到第二步并缩小 -->
-            <div class="douyin-jump-section">
-                <div class="douyin-jump-title">一键跳转抖音/小红书搜索</div>
-                <div class="jump-keyword-display" id="jumpKeyword">小远vlog</div>
-                <div class="jump-buttons">
-                    <button class="jump-btn" id="jumpDouyinBtn">
-                        <i class="fab fa-tiktok"></i> 跳转抖音
-                    </button>
-                    <button class="xiaohongshu-btn" id="jumpXiaohongshuBtn">
-                        <i class="fas fa-book"></i> 跳转小红书
-                    </button>
-                    <button class="refresh-btn" id="refreshJumpKeywordBtn">
-                        <i class="fas fa-sync-alt"></i> 刷新词
-                    </button>
-                </div>
-                <div style="font-size: 11px; color: #999; text-align: center; margin-top: 6px;">
-                    点击跳转抖音/小红书会自动搜索上方关键词
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+                    </div>
                     <!-- 第三步 -->
                     <div class="step-card">
                         <div class="step-header">
                             <div class="step-number">3</div>
-                            <h3>第三步</h3>
+                            <h3>第三步 · 图片评论</h3>
                         </div>
                         <div class="comment-instructions">
                             <p>
-                    <p><strong>打开<span class="warning-text"><span style="color: rgb(224, 62, 45);">小红书、抖音或快手</span></span>，搜索第一步的关键词，搜索后往下滑，选<span class="STYLE1">4个</span>评论少或者没有评论的视频/图文</strong></p>
-                    <p><strong><span class="STYLE13">直接粘贴上面保存的文案，每个视频或者图文评论一条</span> </strong></p>
-                    <p><strong><span class="STYLE13">最后给自己<span class="STYLE1" style="color: red;">点个赞</span> ，<span class="STYLE1" style="color: blue;">并截图</span></span></strong> </p>
+                    <p><strong>打开<span class="warning-text"><span style="color: rgb(224, 62, 45);">贴吧（主）/ 小红书 / 快手 / 抖音</span></span>，搜索第二步的关键词，往下滑，选<span class="STYLE1">4个</span>评论少或者没有评论的帖子/视频</strong></p>
+                    <p><strong><span class="STYLE13">在评论区发送第一步保存的图片（图片评论），每个帖子/视频发1张，共4个</span> </strong></p>
+                    <p><strong><span class="STYLE13">发完后给自己<span class="STYLE1" style="color: red;">点个赞</span> ，<span class="STYLE1" style="color: blue;">并截图</span>（共4张）</span></strong> </p>
                                 <br>
 
                                 <strong class="highlight STYLE1 STYLE14">👇如下图所示👇</strong>
@@ -792,12 +902,12 @@ p s  3  。  L i  v  e ">直接送要的取🐵p s  3  。  L i  v  e </span>
                     <!-- 最后一步 -->
                     <div class="step-card">
                         <div class="step-header">
-                            <div class="step-number">3</div>
-                            <h3>最后一步</h3>
+                            <div class="step-number">4</div>
+                            <h3>第四步 · 提交截图</h3>
                         </div>
                         <div class="final-step">
                             <p>
-                                <b>将你刚评论的截图发给右下侧的 <span class="highlight-ai">AI机器人</span> <i class="fas fa-robot"></i><br><br>
+                                <b>将你刚发的4张图片评论截图发给右下侧的 <span class="highlight-ai">AI机器人</span> <i class="fas fa-robot"></i><br><br>
                                 机器人会在（10）秒内审核完，然后会在聊天框自动弹出所有资源的跳转网盘链接<br><br><strong class="highlight">注意：不规范截图和上传重复截图将重置进度！</strong><br><br>已完成示例：👇👇👇</b>
                                 
                             </p>
@@ -821,6 +931,11 @@ p s  3  。  L i  v  e ">直接送要的取🐵p s  3  。  L i  v  e </span>
 
     </div>
 
+    <!-- Lightbox 看大图 -->
+    <div class="lightbox-overlay" id="lightboxOverlay" onclick="closeLightbox(event)">
+        <span class="lightbox-close" onclick="closeLightbox(event)">&times;</span>
+        <img class="lightbox-content" id="lightboxImage" src="" alt="">
+    </div>
     <!-- 机器人界面HTML结构 -->
     <div class="service-trigger-btn" id="serviceTriggerBtn">
         <i class="fas fa-robot"></i>
@@ -847,7 +962,7 @@ p s  3  。  L i  v  e ">直接送要的取🐵p s  3  。  L i  v  e </span>
                         <span class="online-text">在线中</span>
                     </div>
                     <div class="message-bubble service-bubble">
-                        请将评论的规范截图都发送给我，审核通过后我会发送所有资源的跳转页链接~<br>
+                        请将4张图片评论的截图都发送给我，审核通过后我会发送所有资源的跳转页链接~<br>
                         注意：不规范截图和发送重复的截图将重置进度，所以是一定不能投机取巧的哦。
                     </div>
                 </div>
@@ -875,6 +990,7 @@ p s  3  。  L i  v  e ">直接送要的取🐵p s  3  。  L i  v  e </span>
                 span.addEventListener('click', function () {
                     const keyword = this.dataset.keyword;
                     copyToClipboard(keyword);
+                    if (window.setJumpKeyword) window.setJumpKeyword(keyword);
                 });
             });
 
@@ -929,7 +1045,7 @@ p s  3  。  L i  v  e ">直接送要的取🐵p s  3  。  L i  v  e </span>
             }
             
             // 初始化抖音跳转功能
-            initDouyinJump();
+            initPlatformJump();
         });
 
         // 2. 顶部轮播图切换功能
@@ -994,67 +1110,150 @@ p s  3  。  L i  v  e ">直接送要的取🐵p s  3  。  L i  v  e </span>
             alert('完成任务即可获取该资源，详情见下方步骤指南~');
         }
 
-        // 5. 抖音/小红书跳转功能
-        function initDouyinJump() {
-            const jumpKeywords = ["小远vlog", "咯咯哒vlog", "丸崽vlog" , "silk编号", ];
+        // 5. 四平台跳转：贴吧（主）→ 小红书 → 快手 → 抖音
+        const jumpKeywords = ["困熊", "霜降", "沈阳肘击大王", "小远vlog", "一个板栗栗", "silk编号"];
+
+        const platformConfig = {
+            tieba: {
+                name: "贴吧",
+                scheme: null, // 贴吧直接用网页版，手机会自动提示打开 App
+                web: function (k) { return "https://tieba.baidu.com/f/search/res?ie=utf-8&qw=" + encodeURIComponent(k); }
+            },
+            xhs: {
+                name: "小红书",
+                scheme: function (k) { return "xhsdiscover://search/result?keyword=" + encodeURIComponent(k); },
+                web: function (k) { return "https://www.xiaohongshu.com/search_result?keyword=" + encodeURIComponent(k) + "&source=web_search_result_notes"; }
+            },
+            kuaishou: {
+                name: "快手",
+                scheme: function (k) { return "kwai://search?keyword=" + encodeURIComponent(k); },
+                web: function (k) { return "https://www.kuaishou.com/search/video?searchKey=" + encodeURIComponent(k); }
+            },
+            douyin: {
+                name: "抖音",
+                scheme: function (k) { return "snssdk1128://search?keyword=" + encodeURIComponent(k); },
+                web: function (k) { return "https://www.douyin.com/search/" + encodeURIComponent(k); }
+            }
+        };
+
+        let currentKeyword = "";
+        let currentPlatform = "tieba";
+
+        function initPlatformJump() {
             const jumpKeywordDisplay = document.getElementById('jumpKeyword');
-            const jumpDouyinBtn = document.getElementById('jumpDouyinBtn');
-            const jumpXiaohongshuBtn = document.getElementById('jumpXiaohongshuBtn');
             const refreshJumpKeywordBtn = document.getElementById('refreshJumpKeywordBtn');
-            
-            // 随机选择一个关键词
+            const fallbackLink = document.getElementById('jumpWebFallback');
+
             function getRandomKeyword() {
-                const randomIndex = Math.floor(Math.random() * jumpKeywords.length);
-                return jumpKeywords[randomIndex];
+                return jumpKeywords[Math.floor(Math.random() * jumpKeywords.length)];
             }
-            
-            // 更新显示的关键词
+
+            function updateFallback() {
+                const cfg = platformConfig[currentPlatform];
+                if (fallbackLink) {
+                    fallbackLink.textContent = "用" + cfg.name + "网页版搜索";
+                    fallbackLink.href = cfg.web(currentKeyword);
+                }
+            }
+
             function updateJumpKeyword() {
-                const keyword = getRandomKeyword();
-                jumpKeywordDisplay.textContent = keyword;
-                return keyword;
+                currentKeyword = getRandomKeyword();
+                jumpKeywordDisplay.textContent = currentKeyword;
+                updateFallback();
+                return currentKeyword;
             }
-            
-            // 初始化显示关键词
-            let currentKeyword = updateJumpKeyword();
-            
-            // 跳转抖音
-            jumpDouyinBtn.addEventListener('click', function() {
-                const douyinUrl = `snssdk1128://search?keyword=${encodeURIComponent(currentKeyword)}`;
-                window.location.href = douyinUrl;
-                
-                // 备用提示
-                setTimeout(() => {
-                    alert('若未自动跳转抖音，请手动打开抖音搜索: ' + currentKeyword);
-                }, 1500);
+
+            function openPlatform(key) {
+                currentPlatform = key;
+                const cfg = platformConfig[key];
+                if (!cfg) return;
+                updateFallback();
+
+                const webUrl = cfg.web(currentKeyword);
+                if (!cfg.scheme) {
+                    window.location.href = webUrl;
+                    return;
+                }
+
+                let leftPage = false;
+                const onVisibility = function () {
+                    if (document.hidden) leftPage = true;
+                };
+                document.addEventListener('visibilitychange', onVisibility);
+
+                window.location.href = cfg.scheme(currentKeyword);
+
+                setTimeout(function () {
+                    document.removeEventListener('visibilitychange', onVisibility);
+                    // 1.3 秒后还停留在本页，说明没拉起 App，自动走网页版
+                    if (!leftPage && !document.hidden) {
+                        window.location.href = webUrl;
+                    }
+                }, 1300);
+            }
+
+            window.setJumpKeyword = function (k) {
+                if (!k) return;
+                currentKeyword = k;
+                if (jumpKeywordDisplay) jumpKeywordDisplay.textContent = k;
+                updateFallback();
+            };
+
+            document.getElementById('jumpTiebaBtn').addEventListener('click', function () { openPlatform('tieba'); });
+            document.getElementById('jumpXiaohongshuBtn').addEventListener('click', function () { openPlatform('xhs'); });
+            document.getElementById('jumpKuaishouBtn').addEventListener('click', function () { openPlatform('kuaishou'); });
+            document.getElementById('jumpDouyinBtn').addEventListener('click', function () { openPlatform('douyin'); });
+
+            if (fallbackLink) {
+                fallbackLink.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    window.location.href = platformConfig[currentPlatform].web(currentKeyword);
+                });
+            }
+
+            refreshJumpKeywordBtn.addEventListener('click', function () {
+                updateJumpKeyword();
+                this.style.transform = 'rotate(360deg)';
+                setTimeout(function () { this.style.transform = 'rotate(0)'; }.bind(this), 500);
             });
 
-            // 跳转小红书
-            jumpXiaohongshuBtn.addEventListener('click', function() {
-                // 小红书App Scheme
-                const xiaohongshuUrl = `xhsdiscover://search/result?keyword=${encodeURIComponent(currentKeyword)}`;
-                window.location.href = xiaohongshuUrl;
-                
-                // 备用提示
-                setTimeout(() => {
-                    alert('若未自动跳转小红书，请手动打开小红书搜索: ' + currentKeyword);
-                }, 1500);
-            });
-            
-            // 刷新关键词
-            refreshJumpKeywordBtn.addEventListener('click', function() {
-                currentKeyword = updateJumpKeyword();
-                this.style.transform = 'rotate(360deg)';
-                setTimeout(() => {
-                    this.style.transform = 'rotate(0)';
-                }, 500);
-            });
+            updateJumpKeyword();
         }
 
+        // 6. 第一步随机图片 + Lightbox
+        function setRandomImage() {
+            const images = ['a1.jpg', 'a2.jpg', 'a3.jpg', 'a4.jpg'];
+            const imgElement = document.getElementById('randomImage');
+            if (imgElement) {
+                const randomIndex = Math.floor(Math.random() * images.length);
+                imgElement.src = 'yibazhan/images/' + images[randomIndex];
+            }
+        }
+
+        function openLightbox(src) {
+            const overlay = document.getElementById('lightboxOverlay');
+            const lightboxImg = document.getElementById('lightboxImage');
+            if (!overlay || !lightboxImg) return;
+            lightboxImg.src = src;
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox(event) {
+            const overlay = document.getElementById('lightboxOverlay');
+            if (overlay) overlay.classList.remove('active');
+            document.body.style.overflow = '';
+            if (event) event.stopPropagation();
+        }
+
+        document.getElementById('lightboxImage').addEventListener('click', function (e) {
+            e.stopPropagation();
+        });
         // 6. 页面加载完成后初始化轮播和随机关键词
         window.onload = function() {
             showSlides(currentSlideIndex);
             showRewardSlides(currentRewardIndex);
+            setRandomImage();
         };
     </script>
 
@@ -1266,3 +1465,14 @@ p s  3  。  L i  v  e ">直接送要的取🐵p s  3  。  L i  v  e </span>
     </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
